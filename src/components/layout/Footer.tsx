@@ -11,15 +11,9 @@ export const Footer: React.FC = () => {
           <span>NCERT / CBSE Curriculum Master</span>
         </div>
 
-        <div className="flex items-center gap-4 text-[11px] font-mono text-slate-400">
-          <span className="flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-600" /> KaTeX Engine
-          </span>
-          <span className="flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 text-cyan-600" /> Apache ECharts
-          </span>
-          <span className="flex items-center gap-1">
-            <BookOpen className="w-3.5 h-3.5 text-cyan-600" /> CBSE Class 12
+        <div className="flex items-center gap-4 text-[11px] font-medium text-slate-500">
+          <span className="flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5 text-cyan-600" /> CBSE Class 12 Chemistry
           </span>
         </div>
       </div>

@@ -140,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             className="w-full py-2 px-3 rounded-xl bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 text-cyan-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
           >
             <Terminal className="w-3.5 h-3.5 text-cyan-600" />
-            <span>Launch Practice Engine</span>
+            <span>Practice Mode</span>
           </NavLink>
         </div>
       </aside>

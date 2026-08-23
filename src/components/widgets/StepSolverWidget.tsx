@@ -53,7 +53,7 @@ export const StepSolverWidget: React.FC<StepSolverWidgetProps> = ({ config }) =>
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-xs font-semibold uppercase tracking-widest text-cyan-700 bg-cyan-50 px-3 py-1 rounded-full border border-cyan-200 flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-cyan-600" />
-            {currentStep.badge || `Step ${currentStepIndex} — Calculation Matrix`}
+            {currentStep.badge || `Step ${currentStepIndex + 1} — Step Breakdown`}
           </span>
 
           {currentStep.codeSnippet && (

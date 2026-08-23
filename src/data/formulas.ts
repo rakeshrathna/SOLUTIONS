@@ -192,7 +192,7 @@ export const formulasData: Record<string, FormulaConfig> = {
   'molarity': {
     id: 'molarity',
     title: 'Molarity (M)',
-    formula: 'M = \\frac{n}{V} = \\frac{w_2 \\times 1000}{M_2 \\times V_{(\\text{mL})}}',
+    formula: 'M = \\frac{n}{V} = \\frac{w_2 \\times 1000}{M_2 \\times V \\text{ (in mL)}}',
     variables: {
       n: {
         label: 'Moles of Solute',
@@ -229,7 +229,7 @@ export const formulasData: Record<string, FormulaConfig> = {
   'molality': {
     id: 'molality',
     title: 'Molality (m)',
-    formula: 'm = \\frac{n}{W} = \\frac{w_2 \\times 1000}{M_2 \\times w_1_{(\\text{g})}}',
+    formula: 'm = \\frac{n}{W} = \\frac{w_2 \\times 1000}{M_2 \\times w_1 \\text{ (in g)}}',
     variables: {
       n: {
         label: 'Moles of Solute',
