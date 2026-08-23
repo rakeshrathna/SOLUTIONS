@@ -231,6 +231,11 @@ export const AcademyDashboardPage: React.FC = () => {
     setTimeout(() => setToast(null), 3000);
   };
 
+  const scrollToChapters = () => {
+    document.getElementById('chapters')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+
   return (
     <div className="min-h-screen bg-white text-slate-900 antialiased">
 
@@ -285,7 +290,7 @@ export const AcademyDashboardPage: React.FC = () => {
 
           {/* CTA */}
           <button
-            onClick={() => navigate('/solutions')}
+            onClick={scrollToChapters}
             className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white
                        transition-all duration-200 active:scale-95"
             style={{
@@ -346,7 +351,7 @@ export const AcademyDashboardPage: React.FC = () => {
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
-                  onClick={() => navigate('/solutions')}
+                  onClick={scrollToChapters}
                   className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white
                              transition-all duration-200 active:scale-95"
                   style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.35)` }}
@@ -552,7 +557,7 @@ export const AcademyDashboardPage: React.FC = () => {
               </div>
             </div>
             <button
-              onClick={() => navigate('/solutions')}
+              onClick={scrollToChapters}
               className="flex-shrink-0 flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white
                          text-base transition-all duration-200 active:scale-95"
               style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.3)` }}
