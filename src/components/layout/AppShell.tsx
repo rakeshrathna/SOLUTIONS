@@ -18,8 +18,10 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
         <main
-          className={`flex-1 w-full p-4 sm:p-6 lg:p-8 min-w-0 transition-all duration-300 ease-in-out ${
-            isSidebarOpen ? 'lg:pl-80' : 'lg:pl-0'
+          className={`min-w-0 transition-all duration-300 ease-in-out p-4 sm:p-6 lg:p-8 ${
+            isSidebarOpen
+              ? 'flex-1 w-full lg:pl-80'
+              : 'w-full lg:w-[80%] lg:mx-auto lg:pl-0 lg:flex-none'
           }`}
         >
           {children || <Outlet />}
