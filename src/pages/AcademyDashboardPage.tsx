@@ -1,486 +1,720 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  FlaskConical,
-  Zap,
-  Timer,
-  Atom,
-  Link,
-  Layers,
-  Droplets,
-  Wind,
-  Leaf,
-  Lock,
-  ChevronRight,
-  Sparkles,
-  GraduationCap,
-  Phone,
-  MapPin,
-  ExternalLink,
+  FlaskConical, Zap, Timer, Atom, Link2, Layers,
+  Droplets, Wind, Leaf, Lock, ChevronRight,
+  BookOpen, BarChart2, StickyNote, CheckSquare,
+  Phone, MapPin, ArrowRight, GraduationCap,
+  Beaker, Calculator, TrendingUp, ClipboardList,
+  Star, Users, Award,
 } from 'lucide-react';
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  DATA                                                                      */
-/* ─────────────────────────────────────────────────────────────────────────── */
+/* ─── Brand color ─────────────────────────────────────────── */
+const BRAND = 'rgb(21,0,154)';
+const BRAND_LIGHT = 'rgba(21,0,154,0.08)';
+const BRAND_BORDER = 'rgba(21,0,154,0.2)';
+const BRAND_MED = 'rgba(21,0,154,0.15)';
 
+/* ─── Chapters ─────────────────────────────────────────────── */
 const chapters = [
-  {
-    id: 1,
-    title: 'Solutions',
-    subtitle: 'Concentration · Raoult\'s Law · Colligative Properties',
-    icon: FlaskConical,
-    status: 'ACTIVE' as const,
-    route: '/solutions',
-    color: 'from-blue-700 to-indigo-800',
-    glow: 'rgba(21,0,154,0.45)',
-    badge: 'LIVE',
-    category: 'Physical Chemistry',
-  },
-  {
-    id: 2,
-    title: 'Electrochemistry',
-    subtitle: 'Galvanic Cells · Electrolysis · Nernst Equation',
-    icon: Zap,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-amber-600 to-orange-700',
-    glow: 'rgba(217,119,6,0.35)',
-    badge: 'SOON',
-    category: 'Physical Chemistry',
-  },
-  {
-    id: 3,
-    title: 'Chemical Kinetics',
-    subtitle: 'Rate Laws · Activation Energy · Order of Reaction',
-    icon: Timer,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-emerald-600 to-teal-700',
-    glow: 'rgba(5,150,105,0.35)',
-    badge: 'SOON',
-    category: 'Physical Chemistry',
-  },
-  {
-    id: 4,
-    title: 'd- and f-Block Elements',
-    subtitle: 'Transition Metals · Lanthanides · Actinides',
-    icon: Atom,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-violet-600 to-purple-700',
-    glow: 'rgba(124,58,237,0.35)',
-    badge: 'SOON',
-    category: 'Inorganic Chemistry',
-  },
-  {
-    id: 5,
-    title: 'Coordination Compounds',
-    subtitle: 'Ligands · CFSE · Werner\'s Theory',
-    icon: Link,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-rose-600 to-pink-700',
-    glow: 'rgba(225,29,72,0.35)',
-    badge: 'SOON',
-    category: 'Inorganic Chemistry',
-  },
-  {
-    id: 6,
-    title: 'Haloalkanes & Haloarenes',
-    subtitle: 'SN1 · SN2 · Nucleophilic Substitution',
-    icon: Layers,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-cyan-600 to-sky-700',
-    glow: 'rgba(8,145,178,0.35)',
-    badge: 'SOON',
-    category: 'Organic Chemistry',
-  },
-  {
-    id: 7,
-    title: 'Alcohols, Phenols & Ethers',
-    subtitle: 'Hydroxyl Group · Dehydration · Reactions',
-    icon: Droplets,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-lime-600 to-green-700',
-    glow: 'rgba(101,163,13,0.35)',
-    badge: 'SOON',
-    category: 'Organic Chemistry',
-  },
-  {
-    id: 8,
-    title: 'Aldehydes, Ketones & Carboxylic Acids',
-    subtitle: 'Carbonyl Chemistry · Nucleophilic Addition',
-    icon: Wind,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-orange-500 to-red-600',
-    glow: 'rgba(234,88,12,0.35)',
-    badge: 'SOON',
-    category: 'Organic Chemistry',
-  },
-  {
-    id: 9,
-    title: 'Amines',
-    subtitle: 'Basic Character · Diazonium Salts · Coupling Reactions',
-    icon: Atom,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-fuchsia-600 to-purple-700',
-    glow: 'rgba(192,38,211,0.35)',
-    badge: 'SOON',
-    category: 'Organic Chemistry',
-  },
-  {
-    id: 10,
-    title: 'Biomolecules',
-    subtitle: 'Carbohydrates · Proteins · Nucleic Acids · Vitamins',
-    icon: Leaf,
-    status: 'COMING_SOON' as const,
-    route: null,
-    color: 'from-teal-500 to-emerald-700',
-    glow: 'rgba(13,148,136,0.35)',
-    badge: 'SOON',
-    category: 'Organic Chemistry',
-  },
+  { id: 1, title: 'Solutions',                         subtitle: 'Concentration · Raoult\'s Law · Colligative Properties', icon: FlaskConical, status: 'ACTIVE',       route: '/solutions', category: 'Physical' },
+  { id: 2, title: 'Electrochemistry',                  subtitle: 'Galvanic Cells · Nernst Equation · Electrolysis',        icon: Zap,           status: 'COMING_SOON', route: null,          category: 'Physical' },
+  { id: 3, title: 'Chemical Kinetics',                 subtitle: 'Rate Laws · Activation Energy · Order of Reaction',      icon: Timer,         status: 'COMING_SOON', route: null,          category: 'Physical' },
+  { id: 4, title: 'd- and f-Block Elements',           subtitle: 'Transition Metals · Lanthanides · Actinides',            icon: Atom,          status: 'COMING_SOON', route: null,          category: 'Inorganic' },
+  { id: 5, title: 'Coordination Compounds',            subtitle: 'Ligands · CFSE · Werner\'s Theory',                      icon: Link2,         status: 'COMING_SOON', route: null,          category: 'Inorganic' },
+  { id: 6, title: 'Haloalkanes & Haloarenes',          subtitle: 'SN1 · SN2 · Nucleophilic Substitution',                  icon: Layers,        status: 'COMING_SOON', route: null,          category: 'Organic' },
+  { id: 7, title: 'Alcohols, Phenols & Ethers',        subtitle: 'Hydroxyl Group · Dehydration · Reactions',               icon: Droplets,      status: 'COMING_SOON', route: null,          category: 'Organic' },
+  { id: 8, title: 'Aldehydes, Ketones & Acids',        subtitle: 'Carbonyl Chemistry · Nucleophilic Addition',              icon: Wind,          status: 'COMING_SOON', route: null,          category: 'Organic' },
+  { id: 9, title: 'Amines',                            subtitle: 'Basic Character · Diazonium Salts · Coupling',           icon: Atom,          status: 'COMING_SOON', route: null,          category: 'Organic' },
+  { id: 10, title: 'Biomolecules',                     subtitle: 'Carbohydrates · Proteins · Nucleic Acids',               icon: Leaf,          status: 'COMING_SOON', route: null,          category: 'Organic' },
+];
+
+const features = [
+  { icon: Beaker,       label: 'Interactive Formulas',           desc: 'Drag sliders to see formulas compute results in real time.' },
+  { icon: TrendingUp,   label: 'Live Graphs & Visualizations',   desc: 'Dynamic ECharts curves that update as you change parameters.' },
+  { icon: FlaskConical, label: 'Physics Simulations',            desc: 'Particle, osmosis, and van\'t Hoff canvas simulations.' },
+  { icon: ClipboardList,label: 'Interactive Quizzes',            desc: '30 NCERT MCQs and numericals with instant feedback.' },
+  { icon: StickyNote,   label: 'Smart Notes & Bookmarks',        desc: 'Auto-collapsing notes that persist across sessions.' },
+  { icon: BarChart2,    label: 'Progress Tracking',              desc: 'Chapter mastery, unit scores, and completion badges.' },
+  { icon: Calculator,   label: 'Step-by-Step Solutions',         desc: 'Full arithmetic derivations for every NCERT problem.' },
+];
+
+const howItWorks = [
+  { step: '01', label: 'Pick a Chapter',    desc: 'Choose any of the 10 Chemistry chapters from this dashboard.' },
+  { step: '02', label: 'Study Interactively', desc: 'Read, simulate, visualize, and compute — all in one place.' },
+  { step: '03', label: 'Take Practice Tests', desc: 'Test yourself with NCERT MCQs and numerical problems.' },
+  { step: '04', label: 'Track Mastery',     desc: 'Review progress, saved notes, and revisit weak areas.' },
+];
+
+const stats = [
+  { icon: BookOpen,  value: '10',    label: 'Chapters Covered' },
+  { icon: Users,     value: '30+',   label: 'NCERT Problems' },
+  { icon: Award,     value: '8',     label: 'Interactive Units' },
+  { icon: Star,      value: '100%',  label: 'Free to Use' },
 ];
 
 const branches = [
-  { city: 'Perambur', address: 'MPM Street', phone: '9884234949' },
-  { city: 'Kodungaiyur', address: 'Near Pandiyan Theatre', phone: '9790924949' },
-  { city: 'Agaram Jn.', address: 'Agaram Jn.', phone: '7845977500' },
+  { city: 'Perambur',     address: 'MPM Street',             phone: '9884234949' },
+  { city: 'Kodungaiyur',  address: 'Near Pandiyan Theatre',  phone: '9790924949' },
+  { city: 'Agaram Jn.',   address: 'Agaram Jn.',             phone: '7845977500' },
 ];
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  LOGO SVG (abstract book + spark matching poster aesthetic)                */
-/* ─────────────────────────────────────────────────────────────────────────── */
-const EduIdealLogo: React.FC<{ size?: number }> = ({ size = 44 }) => (
-  <svg width={size} height={size} viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Outer shield */}
-    <rect x="2" y="2" width="40" height="40" rx="10" fill="#15009A" />
-    {/* Book pages */}
-    <path d="M11 14h10v18H11z" fill="white" opacity="0.9" rx="2"/>
-    <path d="M23 14h10v18H23z" fill="white" opacity="0.7" rx="2"/>
-    {/* Spine */}
-    <rect x="21" y="14" width="2" height="18" fill="#C7D2FE"/>
-    {/* Spark */}
-    <path d="M31 9l1.5 3 3 1.5-3 1.5L31 18l-1.5-3-3-1.5 3-1.5z" fill="#FCD34D"/>
+/* ─── Logo ─────────────────────────────────────────────────── */
+const Logo: React.FC<{ size?: number }> = ({ size = 36 }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
+    <rect width="36" height="36" rx="8" fill={BRAND} />
+    <path d="M8 12h8v14H8z" fill="white" fillOpacity=".9" rx="2" />
+    <path d="M20 12h8v14h-8z" fill="white" fillOpacity=".65" />
+    <rect x="17" y="12" width="2" height="14" fill="rgba(199,210,254,0.8)" />
+    <path d="M26 7l1.2 2.4 2.4 1.2-2.4 1.2L26 14l-1.2-2.4L22.4 10.4l2.4-1.2z" fill="#FCD34D" />
   </svg>
 );
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  CHAPTER CARD                                                              */
-/* ─────────────────────────────────────────────────────────────────────────── */
-interface ChapterCardProps {
-  chapter: typeof chapters[number];
-  animDelay: number;
-  onLaunch: (chapter: typeof chapters[number]) => void;
+/* ─── Category badge colors ────────────────────────────────── */
+const catColor: Record<string, string> = {
+  Physical:  'rgba(21,0,154,0.1)',
+  Inorganic: 'rgba(5,150,105,0.1)',
+  Organic:   'rgba(217,119,6,0.1)',
+};
+const catText: Record<string, string> = {
+  Physical:  BRAND,
+  Inorganic: '#047857',
+  Organic:   '#B45309',
+};
+const catBorder: Record<string, string> = {
+  Physical:  'rgba(21,0,154,0.2)',
+  Inorganic: 'rgba(5,150,105,0.2)',
+  Organic:   'rgba(217,119,6,0.2)',
+};
+
+/* ─── Animated counter hook ────────────────────────────────── */
+function useInView(ref: React.RefObject<Element>) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.2 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [ref]);
+  return visible;
 }
 
-const ChapterCard: React.FC<ChapterCardProps> = ({ chapter, animDelay, onLaunch }) => {
-  const [visible, setVisible] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const Icon = chapter.icon;
-  const isActive = chapter.status === 'ACTIVE';
+/* ─── Chapter Card ─────────────────────────────────────────── */
+const ChapterCard: React.FC<{
+  ch: typeof chapters[0];
+  delay: number;
+  onLock: (title: string) => void;
+}> = ({ ch, delay, onLock }) => {
+  const ref = useRef<HTMLDivElement>(null!);
+  const visible = useInView(ref);
+  const navigate = useNavigate();
+  const [hov, setHov] = useState(false);
+  const Icon = ch.icon;
+  const isActive = ch.status === 'ACTIVE';
 
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), animDelay);
-    return () => clearTimeout(t);
-  }, [animDelay]);
+  const handleClick = () => {
+    if (isActive && ch.route) navigate(ch.route);
+    else onLock(ch.title);
+  };
 
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => onLaunch(chapter)}
+      ref={ref}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      onClick={handleClick}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0) scale(1)' : 'translateY(28px) scale(0.96)',
-        transition: `opacity 0.55s cubic-bezier(0.4,0,0.2,1) ${animDelay}ms, transform 0.55s cubic-bezier(0.4,0,0.2,1) ${animDelay}ms`,
-        cursor: isActive ? 'pointer' : 'not-allowed',
-        boxShadow: hovered
-          ? `0 20px 50px ${chapter.glow}, 0 2px 8px rgba(0,0,0,0.18)`
-          : '0 4px 18px rgba(0,0,0,0.10)',
+        transform: visible ? 'translateY(0)' : 'translateY(24px)',
+        transition: `opacity 0.5s ease ${delay}ms, transform 0.5s ease ${delay}ms,
+                     box-shadow 0.25s ease, border-color 0.25s ease`,
+        cursor: isActive ? 'pointer' : 'default',
+        borderColor: hov && isActive ? BRAND : '#E2E8F0',
+        boxShadow: hov && isActive
+          ? `0 8px 32px rgba(21,0,154,0.14), 0 2px 8px rgba(21,0,154,0.08)`
+          : '0 1px 4px rgba(0,0,0,0.06)',
       }}
-      className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-md
-                 group transition-all duration-300"
+      className="relative bg-white rounded-2xl border p-5 flex flex-col gap-3 select-none"
     >
-      {/* Top gradient stripe */}
-      <div className={`h-1.5 w-full bg-gradient-to-r ${chapter.color}`} />
-
-      <div className="p-5">
-        {/* Number + Icon row */}
-        <div className="flex items-start justify-between mb-3">
-          <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${chapter.color} flex items-center justify-center shadow-lg
-                          transition-transform duration-300 ${hovered && isActive ? 'scale-110 rotate-3' : ''}`}>
-            <Icon className="w-5 h-5 text-white" />
-          </div>
-
-          <div className="flex flex-col items-end gap-1">
-            <span className="text-xs font-bold text-white/30 font-mono tracking-widest">
-              CH {String(chapter.id).padStart(2, '0')}
-            </span>
-            {isActive ? (
-              <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full
-                               bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-                LIVE
-              </span>
-            ) : (
-              <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full
-                               bg-white/5 text-white/30 border border-white/10">
-                <Lock className="w-2.5 h-2.5" />
-                SOON
-              </span>
-            )}
-          </div>
+      {/* Chapter number */}
+      <div className="flex items-start justify-between">
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black transition-all duration-300"
+          style={{
+            background: isActive ? BRAND : '#F1F5F9',
+            color: isActive ? 'white' : '#94A3B8',
+            transform: hov && isActive ? 'scale(1.08) rotate(3deg)' : 'scale(1) rotate(0deg)',
+          }}
+        >
+          <Icon className="w-5 h-5" />
         </div>
 
-        {/* Title & Subtitle */}
-        <h3 className={`font-bold text-sm leading-snug mb-1 transition-colors duration-200
-                        ${isActive ? 'text-white group-hover:text-blue-300' : 'text-white/40'}`}>
-          {chapter.title}
-        </h3>
-        <p className={`text-xs leading-relaxed line-clamp-2 ${isActive ? 'text-slate-400' : 'text-white/20'}`}>
-          {chapter.subtitle}
-        </p>
-
-        {/* Category pill */}
-        <div className="mt-3">
-          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border
-                           ${isActive ? 'bg-blue-900/40 text-blue-300 border-blue-700/40' : 'bg-white/5 text-white/20 border-white/10'}`}>
-            {chapter.category}
+        <div className="flex flex-col items-end gap-1.5">
+          <span className="text-[10px] font-bold tracking-widest text-slate-300 font-mono">
+            CH {String(ch.id).padStart(2, '0')}
           </span>
-        </div>
-
-        {/* Launch button (active only) */}
-        {isActive && (
-          <div className={`mt-4 flex items-center gap-2 transition-all duration-300
-                          ${hovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-            <div className="flex-1 h-px bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0" />
-            <span className="flex items-center gap-1 text-xs font-semibold text-blue-300">
-              Launch <ChevronRight className="w-3 h-3" />
+          {isActive ? (
+            <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ background: 'rgba(16,185,129,0.1)', color: '#059669', border: '1px solid rgba(16,185,129,0.25)' }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+              LIVE
             </span>
+          ) : (
+            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+              style={{ background: '#F8FAFC', color: '#94A3B8', border: '1px solid #E2E8F0' }}>
+              <Lock className="w-2.5 h-2.5" />
+              SOON
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Title & subtitle */}
+      <div>
+        <h3 className="font-bold text-sm leading-snug mb-1"
+          style={{ color: isActive ? '#0F172A' : '#94A3B8' }}>
+          {ch.title}
+        </h3>
+        <p className="text-[11px] leading-relaxed" style={{ color: isActive ? '#64748B' : '#CBD5E1' }}>
+          {ch.subtitle}
+        </p>
+      </div>
+
+      {/* Category + launch */}
+      <div className="flex items-center justify-between mt-auto pt-1">
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+          style={{
+            background: catColor[ch.category],
+            color: catText[ch.category],
+            border: `1px solid ${catBorder[ch.category]}`,
+          }}>
+          {ch.category}
+        </span>
+
+        {isActive && (
+          <div className="flex items-center gap-1 text-[11px] font-semibold transition-all duration-200"
+            style={{
+              color: BRAND,
+              opacity: hov ? 1 : 0,
+              transform: hov ? 'translateX(0)' : 'translateX(-4px)',
+            }}>
+            Launch <ChevronRight className="w-3 h-3" />
           </div>
         )}
       </div>
 
-      {/* Hover glow overlay */}
+      {/* Active bottom accent bar */}
       {isActive && (
-        <div className={`absolute inset-0 pointer-events-none rounded-2xl transition-opacity duration-300
-                        bg-gradient-to-br from-blue-500/5 to-indigo-500/5
-                        ${hovered ? 'opacity-100' : 'opacity-0'}`} />
+        <div className="absolute bottom-0 left-5 right-5 h-0.5 rounded-full transition-all duration-300"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${BRAND}, transparent)`,
+            opacity: hov ? 1 : 0,
+          }} />
       )}
     </div>
   );
 };
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  MAIN PAGE                                                                 */
-/* ─────────────────────────────────────────────────────────────────────────── */
+/* ─── Main Page ─────────────────────────────────────────────── */
 export const AcademyDashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const [headerVisible, setHeaderVisible] = useState(false);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setHeaderVisible(true), 80);
-    return () => clearTimeout(t);
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const handleLaunch = (chapter: typeof chapters[number]) => {
-    if (chapter.status === 'ACTIVE' && chapter.route) {
-      navigate(chapter.route);
-    } else {
-      setToastMsg(`Chapter ${chapter.id}: ${chapter.title} — Coming Soon for 2026 Batch!`);
-      setTimeout(() => setToastMsg(null), 3000);
-    }
+  const showToast = (title: string) => {
+    setToast(`Chapter: ${title} — Coming Soon for 2026 Batch!`);
+    setTimeout(() => setToast(null), 3000);
   };
 
   return (
-    <div
-      className="min-h-screen text-white relative overflow-x-hidden"
-      style={{
-        background: 'linear-gradient(135deg, #060B18 0%, #0D1530 40%, #050A1A 100%)',
-      }}
-    >
-      {/* Ambient background orbs */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(21,0,154,0.6) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-        <div className="absolute top-1/3 -right-32 w-80 h-80 rounded-full opacity-15"
-          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.5) 0%, transparent 70%)', filter: 'blur(50px)' }} />
-        <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, rgba(21,0,154,0.4) 0%, transparent 70%)', filter: 'blur(70px)' }} />
-      </div>
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
 
-      {/* Toast notification */}
-      <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500
-                      ${toastMsg ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-        <div className="flex items-center gap-3 px-5 py-3 rounded-2xl backdrop-blur-xl
-                        border border-amber-500/30 bg-amber-900/60 shadow-2xl shadow-amber-900/40">
+      {/* ── TOAST ─────────────────────────────────────────────── */}
+      <div className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-400
+                      ${toast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'}`}>
+        <div className="flex items-center gap-2.5 px-5 py-3 rounded-xl bg-slate-900 shadow-2xl border border-slate-700">
           <Lock className="w-4 h-4 text-amber-400 flex-shrink-0" />
-          <span className="text-sm font-medium text-amber-200">{toastMsg}</span>
+          <span className="text-sm font-medium text-white">{toast}</span>
         </div>
       </div>
 
-      {/* ── HERO HEADER ────────────────────────────────────────────────────── */}
+      {/* ── STICKY NAV ────────────────────────────────────────── */}
       <header
+        className="sticky top-0 z-40 transition-all duration-300"
         style={{
-          opacity: headerVisible ? 1 : 0,
-          transform: headerVisible ? 'translateY(0)' : 'translateY(-20px)',
-          transition: 'opacity 0.7s ease, transform 0.7s ease',
+          background: scrolled ? 'rgba(255,255,255,0.95)' : 'white',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          borderBottom: scrolled ? '1px solid #E2E8F0' : '1px solid transparent',
+          boxShadow: scrolled ? '0 2px 16px rgba(0,0,0,0.06)' : 'none',
         }}
-        className="relative z-10 px-4 sm:px-8 lg:px-16 pt-10 pb-12"
       >
-        {/* Glass card header */}
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6
-                          p-6 sm:p-8 rounded-3xl border border-white/10 backdrop-blur-xl
-                          bg-white/[0.04] shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
-            {/* Left: Branding */}
-            <div className="flex items-center gap-5">
-              <div className="relative">
-                <div className="absolute inset-0 rounded-2xl blur-xl opacity-60"
-                  style={{ background: 'rgba(21,0,154,0.8)' }} />
-                <div className="relative">
-                  <EduIdealLogo size={56} />
-                </div>
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+          {/* Logo + brand */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Logo size={34} />
+            <div>
+              <div className="font-black text-base leading-none tracking-tight" style={{ color: '#0F172A' }}>
+                EDUiDEAL
+                <span className="ml-1.5 font-black" style={{ color: BRAND }}>ACADEMY</span>
               </div>
-
-              <div>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-none"
-                    style={{
-                      background: 'linear-gradient(135deg, #FFFFFF 0%, #C7D2FE 60%, #818CF8 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}>
-                    EDUiDEAL
-                  </h1>
-                  <span className="text-2xl sm:text-3xl font-black text-white/80 tracking-tight">ACADEMY</span>
-                </div>
-                <p className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mt-1"
-                  style={{ color: 'rgba(199,210,254,0.6)' }}>
-                  Education For Life
-                </p>
-              </div>
-            </div>
-
-            {/* Right: Tag pill */}
-            <div className="flex flex-col items-center sm:items-end gap-2">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl
-                              bg-gradient-to-r from-blue-900/60 to-indigo-900/60
-                              border border-blue-500/30">
-                <GraduationCap className="w-4 h-4 text-blue-300" />
-                <span className="text-xs font-bold text-blue-200 tracking-wide">12th CBSE Chemistry</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-900/30 border border-emerald-500/20">
-                <Sparkles className="w-3 h-3 text-emerald-400" />
-                <span className="text-[11px] font-semibold text-emerald-300">Digitalised Learning Platform</span>
+              <div className="text-[9px] font-semibold tracking-[0.2em] uppercase text-slate-400 mt-0.5">
+                Education For Life
               </div>
             </div>
           </div>
 
-          {/* Tagline row */}
-          <div className="mt-6 text-center">
-            <p className="text-lg sm:text-xl font-semibold text-white/50">
-              Select a chapter to begin your{' '}
-              <span style={{
-                background: 'linear-gradient(90deg, #818CF8, #A5B4FC)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
-                interactive learning journey
-              </span>
-            </p>
-          </div>
+          {/* Nav links */}
+          <nav className="hidden md:flex items-center gap-6">
+            {[
+              { label: 'Chapters', href: '#chapters' },
+              { label: 'Features', href: '#features' },
+              { label: 'How It Works', href: '#how' },
+              { label: 'Branches', href: '#branches' },
+            ].map(n => (
+              <a key={n.label} href={n.href}
+                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                {n.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* CTA */}
+          <button
+            onClick={() => navigate('/solutions')}
+            className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white
+                       transition-all duration-200 active:scale-95"
+            style={{
+              background: BRAND,
+              boxShadow: `0 4px 14px rgba(21,0,154,0.3)`,
+            }}
+            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.45)')}
+            onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 4px 14px rgba(21,0,154,0.3)')}
+          >
+            Start Learning <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </header>
 
-      {/* ── CHAPTER GRID ───────────────────────────────────────────────────── */}
-      <main className="relative z-10 px-4 sm:px-8 lg:px-16 pb-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Section label */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            <span className="text-xs font-bold tracking-[0.3em] uppercase text-white/30">
-              Class 12 · All Chapters
-            </span>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden" style={{ background: 'white' }}>
+        {/* Subtle grid background */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(rgba(21,0,154,0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(21,0,154,0.04) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }} />
+
+        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left text */}
+            <div>
+              {/* Tag pills */}
+              <div className="flex flex-wrap items-center gap-2 mb-6">
+                {['12th CBSE', 'Chemistry', 'Interactive'].map(t => (
+                  <span key={t} className="text-xs font-semibold px-3 py-1 rounded-full"
+                    style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <h1 className="text-5xl sm:text-6xl font-black leading-[1.05] tracking-tight mb-6">
+                <span style={{ color: '#0F172A' }}>Master</span>
+                <br />
+                <span style={{
+                  background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  Chemistry
+                </span>
+                <br />
+                <span style={{ color: '#0F172A' }}>Interactively.</span>
+              </h1>
+
+              <p className="text-lg text-slate-500 leading-relaxed mb-8 max-w-md">
+                The complete Class 12 CBSE Chemistry platform. Explore formulas,
+                run simulations, solve NCERT problems, and track your mastery — all in one place.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => navigate('/solutions')}
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white
+                             transition-all duration-200 active:scale-95"
+                  style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.35)` }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(21,0,154,0.45)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.35)'; }}
+                >
+                  Start Chapter 1 <ArrowRight className="w-5 h-5" />
+                </button>
+                <a href="#chapters"
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold
+                             border-2 transition-all duration-200"
+                  style={{ borderColor: '#E2E8F0', color: '#374151' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = BRAND; (e.currentTarget as HTMLElement).style.color = BRAND; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2E8F0'; (e.currentTarget as HTMLElement).style.color = '#374151'; }}
+                >
+                  View All Chapters
+                </a>
+              </div>
+
+              {/* Trust badges */}
+              <div className="flex flex-wrap items-center gap-5 mt-8 pt-6 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 text-sm text-slate-500">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center"
+                    style={{ background: BRAND_LIGHT }}>
+                    <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
+                  </div>
+                  Free for all students
+                </div>
+                <div className="flex items-center gap-1.5 text-sm text-slate-500">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center"
+                    style={{ background: BRAND_LIGHT }}>
+                    <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
+                  </div>
+                  NCERT aligned content
+                </div>
+                <div className="flex items-center gap-1.5 text-sm text-slate-500">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center"
+                    style={{ background: BRAND_LIGHT }}>
+                    <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
+                  </div>
+                  Works on any device
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Stats card */}
+            <div className="hidden lg:block">
+              <div className="rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-100/80">
+                {/* Mock chapter preview card */}
+                <div className="flex items-center gap-3 mb-6 pb-5 border-b border-slate-100">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: BRAND }}>
+                    <FlaskConical className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm text-slate-900">Chapter 1: Solutions</div>
+                    <div className="text-xs text-slate-400">8 Interactive Units</div>
+                  </div>
+                  <span className="ml-auto flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: 'rgba(16,185,129,0.1)', color: '#059669', border: '1px solid rgba(16,185,129,0.25)' }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                    LIVE NOW
+                  </span>
+                </div>
+
+                {/* Stats grid */}
+                <div className="grid grid-cols-2 gap-4">
+                  {stats.map(s => {
+                    const Icon = s.icon;
+                    return (
+                      <div key={s.label} className="rounded-2xl p-5 border border-slate-100"
+                        style={{ background: BRAND_LIGHT }}>
+                        <Icon className="w-5 h-5 mb-2" style={{ color: BRAND }} />
+                        <div className="text-2xl font-black mb-0.5" style={{ color: BRAND }}>{s.value}</div>
+                        <div className="text-xs text-slate-500 font-medium">{s.label}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Partners row */}
+                <div className="mt-5 pt-5 border-t border-slate-100 flex items-center gap-3">
+                  <span className="text-xs text-slate-400 font-medium">In partnership with</span>
+                  <span className="text-xs font-bold px-3 py-1 rounded-lg"
+                    style={{ background: 'rgba(249,115,22,0.08)', color: '#EA580C', border: '1px solid rgba(249,115,22,0.2)' }}>
+                    Vedantu
+                  </span>
+                  <span className="text-xs font-bold px-3 py-1 rounded-lg"
+                    style={{ background: 'rgba(16,185,129,0.08)', color: '#059669', border: '1px solid rgba(16,185,129,0.2)' }}>
+                    NEET Prep
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CHAPTERS GRID ────────────────────────────────────── */}
+      <section id="chapters" className="py-20 bg-slate-50">
+        <div className="max-w-6xl mx-auto px-6">
+          {/* Section header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold
+                            uppercase tracking-widest mb-4"
+              style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}>
+              <GraduationCap className="w-3.5 h-3.5" />
+              12 Chemistry — All Chapters
+            </div>
+            <h2 className="text-4xl font-black text-slate-900 mb-3">
+              10 Chapters.{' '}
+              <span style={{
+                background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>One Platform.</span>
+            </h2>
+            <p className="text-slate-500 text-lg max-w-xl mx-auto">
+              Chapter 1 is fully interactive and live. More chapters launch through 2026.
+            </p>
           </div>
 
-          {/* 2×5 / 5×2 grid of chapter cards */}
+          {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {chapters.map((chapter, idx) => (
-              <ChapterCard
-                key={chapter.id}
-                chapter={chapter}
-                animDelay={120 + idx * 60}
-                onLaunch={handleLaunch}
-              />
+            {chapters.map((ch, i) => (
+              <ChapterCard key={ch.id} ch={ch} delay={i * 55} onLock={showToast} />
             ))}
           </div>
         </div>
-      </main>
+      </section>
 
-      {/* ── BRANCHES FOOTER ────────────────────────────────────────────────── */}
-      <footer className="relative z-10 px-4 sm:px-8 lg:px-16 pb-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="rounded-2xl border border-white/8 backdrop-blur-md bg-white/[0.03] px-6 py-5
-                          flex flex-col sm:flex-row items-center justify-between gap-5 flex-wrap">
-            {/* Branches */}
-            <div className="flex items-center gap-6 flex-wrap justify-center sm:justify-start">
-              <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/30">
-                Our Branches
-              </span>
-              {branches.map((b) => (
-                <div key={b.city} className="flex items-center gap-2">
-                  <MapPin className="w-3 h-3 text-blue-400 flex-shrink-0" />
-                  <div>
-                    <span className="text-xs font-bold text-white/70">{b.city}</span>
-                    <span className="text-[10px] text-white/30 ml-1">({b.address})</span>
-                  </div>
-                  <a href={`tel:${b.phone}`} className="flex items-center gap-1 text-[11px] font-semibold
-                             text-blue-300 hover:text-blue-200 transition-colors">
-                    <Phone className="w-2.5 h-2.5" />
-                    {b.phone}
-                  </a>
+      {/* ── FEATURES ─────────────────────────────────────────── */}
+      <section id="features" className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm font-bold tracking-widest uppercase mb-3" style={{ color: BRAND }}>
+              PLATFORM FEATURES
+            </p>
+            <h2 className="text-4xl font-black text-slate-900 mb-3">
+              Everything you need to{' '}
+              <span style={{
+                background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>excel in Chemistry</span>
+            </h2>
+            <p className="text-slate-500 text-lg">7 interactive learning tools baked into every chapter.</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <FeatureCard key={f.label} icon={<Icon className="w-5 h-5" />}
+                  label={f.label} desc={f.desc} delay={i * 70} />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ─────────────────────────────────────── */}
+      <section id="how" className="py-20" style={{ background: BRAND_LIGHT }}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <p className="text-sm font-bold tracking-widest uppercase mb-3" style={{ color: BRAND }}>
+              HOW IT WORKS
+            </p>
+            <h2 className="text-4xl font-black text-slate-900">
+              Four simple steps to mastery
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            {/* connector line */}
+            <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px"
+              style={{ background: `linear-gradient(90deg, ${BRAND_BORDER}, ${BRAND}, ${BRAND_BORDER})` }} />
+
+            {howItWorks.map((h, i) => (
+              <HowCard key={h.step} step={h.step} label={h.label} desc={h.desc} delay={i * 100} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA BANNER ───────────────────────────────────────── */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 px-10 py-10"
+            style={{
+              background: BRAND_LIGHT,
+              border: `2px solid ${BRAND_BORDER}`,
+            }}>
+            <div className="flex items-center gap-5">
+              <div className="text-5xl">🚀</div>
+              <div>
+                <h3 className="text-2xl font-black text-slate-900 mb-1">
+                  Ready to ace your Chemistry exam?
+                </h3>
+                <p className="text-slate-500">
+                  Start with Chapter 1: Solutions — fully interactive and free.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate('/solutions')}
+              className="flex-shrink-0 flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white
+                         text-base transition-all duration-200 active:scale-95"
+              style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.3)` }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(21,0,154,0.45)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.3)'; }}
+            >
+              Start Learning <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ───────────────────────────────────────────── */}
+      <footer id="branches" className="border-t border-slate-100 bg-white">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+            {/* Brand column */}
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-3 mb-4">
+                <Logo size={32} />
+                <div>
+                  <div className="font-black text-sm" style={{ color: BRAND }}>EDUiDEAL ACADEMY</div>
+                  <div className="text-[10px] text-slate-400 tracking-widest uppercase">Education For Life</div>
                 </div>
-              ))}
+              </div>
+              <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                The digitalised learning platform for 10th & 12th CBSE students. Interactive. Insightful. Free.
+              </p>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-2 py-1 rounded-lg"
+                  style={{ background: 'rgba(249,115,22,0.08)', color: '#EA580C', border: '1px solid rgba(249,115,22,0.2)' }}>
+                  Vedantu
+                </span>
+                <span className="text-xs font-bold px-2 py-1 rounded-lg"
+                  style={{ background: 'rgba(16,185,129,0.08)', color: '#059669', border: '1px solid rgba(16,185,129,0.2)' }}>
+                  NEET Prep
+                </span>
+              </div>
             </div>
 
-            {/* Partners */}
-            <div className="flex items-center gap-3 flex-wrap justify-center">
-              <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/30">
-                Partners
-              </span>
-              <span className="px-3 py-1 rounded-lg bg-orange-900/30 border border-orange-500/20
-                               text-xs font-bold text-orange-300">
-                Vedantu
-              </span>
-              <span className="px-3 py-1 rounded-lg bg-green-900/30 border border-green-500/20
-                               text-xs font-bold text-green-300">
-                NEET Prep
-              </span>
-              <a
-                href="https://solution-webpage.vercel.app"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1 px-3 py-1 rounded-lg border border-blue-500/20
-                           bg-blue-900/20 text-xs font-semibold text-blue-300
-                           hover:border-blue-400/40 hover:text-blue-200 transition-all"
-              >
-                <ExternalLink className="w-3 h-3" />
-                solution-webpage.vercel.app
-              </a>
+            {/* Chapters column */}
+            <div>
+              <h4 className="font-bold text-sm text-slate-900 mb-4">Chapters</h4>
+              <ul className="space-y-2">
+                {chapters.slice(0, 5).map(c => (
+                  <li key={c.id}>
+                    <span className="text-sm text-slate-500">
+                      {String(c.id).padStart(2, '0')}. {c.title}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
+            <div>
+              <h4 className="font-bold text-sm text-slate-900 mb-4">&nbsp;</h4>
+              <ul className="space-y-2 mt-0">
+                {chapters.slice(5).map(c => (
+                  <li key={c.id}>
+                    <span className="text-sm text-slate-500">
+                      {String(c.id).padStart(2, '0')}. {c.title}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Branches */}
+            <div>
+              <h4 className="font-bold text-sm text-slate-900 mb-4">Our Branches</h4>
+              <ul className="space-y-4">
+                {branches.map(b => (
+                  <li key={b.city} className="flex flex-col gap-0.5">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: BRAND }} />
+                      <span className="text-sm font-semibold text-slate-800">{b.city}</span>
+                    </div>
+                    <span className="text-xs text-slate-400 ml-5">{b.address}</span>
+                    <a href={`tel:${b.phone}`}
+                      className="flex items-center gap-1.5 ml-5 text-sm font-semibold transition-colors"
+                      style={{ color: BRAND }}
+                      onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                      onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
+                      <Phone className="w-3 h-3" />{b.phone}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-slate-400">© 2026 EDUiDEAL ACADEMY. All rights reserved.</span>
+            <a href="https://solution-webpage.vercel.app" target="_blank" rel="noreferrer"
+              className="text-xs font-medium transition-colors"
+              style={{ color: BRAND }}>
+              solution-webpage.vercel.app
+            </a>
           </div>
         </div>
       </footer>
+
     </div>
   );
 };
 
 export default AcademyDashboardPage;
+
+/* ─── Feature Card sub-component ──────────────────────────── */
+const FeatureCard: React.FC<{
+  icon: React.ReactNode; label: string; desc: string; delay: number;
+}> = ({ icon, label, desc, delay }) => {
+  const ref = useRef<HTMLDivElement>(null!);
+  const visible = useInView(ref);
+  const [hov, setHov] = useState(false);
+  return (
+    <div ref={ref}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(20px)',
+        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms,
+                     box-shadow 0.2s, border-color 0.2s`,
+        borderColor: hov ? BRAND_BORDER : '#E2E8F0',
+        boxShadow: hov ? `0 8px 28px rgba(21,0,154,0.1)` : '0 1px 4px rgba(0,0,0,0.05)',
+      }}
+      className="bg-white rounded-2xl border p-6 flex flex-col gap-3">
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
+        style={{
+          background: hov ? BRAND : BRAND_LIGHT,
+          color: hov ? 'white' : BRAND,
+          transform: hov ? 'scale(1.1)' : 'scale(1)',
+        }}>
+        {icon}
+      </div>
+      <h4 className="font-bold text-sm text-slate-900">{label}</h4>
+      <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+    </div>
+  );
+};
+
+/* ─── How Card sub-component ───────────────────────────────── */
+const HowCard: React.FC<{
+  step: string; label: string; desc: string; delay: number;
+}> = ({ step, label, desc, delay }) => {
+  const ref = useRef<HTMLDivElement>(null!);
+  const visible = useInView(ref);
+  return (
+    <div ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(20px)',
+        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms`,
+      }}
+      className="flex flex-col items-center text-center gap-4">
+      <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-black text-white relative"
+        style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.25)` }}>
+        {step}
+      </div>
+      <h4 className="font-bold text-slate-900">{label}</h4>
+      <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
+    </div>
+  );
+};
