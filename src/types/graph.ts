@@ -33,6 +33,22 @@ export interface GraphCurrentPoint {
   label?: string;
 }
 
+export interface GraphReferenceLine {
+  from: { x: number; y: number };
+  to: { x: number; y: number };
+  label?: string;
+  color?: string;
+  style?: 'dashed' | 'solid';
+}
+
+export interface GraphReferencePoint {
+  x: number;
+  y: number;
+  label: string;
+  position?: 'top' | 'bottom' | 'left' | 'right' | 'top-right';
+  color?: string;
+}
+
 export interface GraphConfig {
   id?: string;
   type: 'scatter' | 'line' | 'bar' | 'pie';
@@ -56,4 +72,7 @@ export interface GraphConfig {
   controls?: GraphControl[];
   annotations?: GraphAnnotation[];
   currentPoint?: GraphCurrentPoint;
+  referenceLines?: GraphReferenceLine[];
+  referencePoints?: GraphReferencePoint[];
 }
+

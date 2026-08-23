@@ -3,52 +3,109 @@ import { GraphConfig } from '../types/graph';
 export const graphsData: Record<string, GraphConfig> = {
   'henrys-law': {
     id: 'henrys-law',
-    type: 'scatter',
-    title: "Henry's Law: Pressure vs Mole Fraction",
-    description: "Demonstrates the linear relationship p = K_H × x. A steeper slope (higher K_H) indicates lower gas solubility in liquid.",
+    type: 'line',
+    title: "Henry's Law: Partial Pressure of HCl vs Mole Fraction",
+    description: "Experimental plot of partial pressure of HCl in torr versus its mole fraction in cyclohexane solution. At mole fraction x = 0.015, partial pressure p = 600 torr (Point A), giving Henry's constant K_H = 40,000 torr.",
     xAxis: {
-      label: 'Mole Fraction of Gas in Solution (x)',
+      label: 'Mole fraction of HCl in its solution in cyclohexane',
       variable: 'x',
       min: 0,
-      max: 0.0001,
+      max: 0.022,
       unit: ''
     },
     yAxis: {
-      label: 'Partial Pressure of Gas (p)',
+      label: 'Partial pressure of HCl / torr',
       variable: 'p',
       min: 0,
-      max: 10,
-      unit: 'bar'
+      max: 1000,
+      unit: 'torr'
     },
     series: [
       {
         name: "Henry's Law Line (p = K_H · x)",
-        formula: 'K_H * x * 1000',
-        color: '#14b8a6'
+        formula: 'K_H * x',
+        color: '#16a34a'
+      },
+      {
+        name: 'Experimental Data Points',
+        points: [
+          { x: 0.0025, y: 100 },
+          { x: 0.0050, y: 200 },
+          { x: 0.0075, y: 300 },
+          { x: 0.0100, y: 400 },
+          { x: 0.0125, y: 500 },
+          { x: 0.0150, y: 600, label: 'A' },
+          { x: 0.0175, y: 700 },
+          { x: 0.0190, y: 760 }
+        ],
+        color: 'rgb(21, 0, 154)'
       }
     ],
     controls: [
       {
         variable: 'K_H',
-        label: "Henry's Constant (K_H)",
-        min: 10,
-        max: 150,
-        step: 1,
-        default: 76.48,
-        unit: 'kbar'
+        label: "Henry's Constant K_H (Slope in torr)",
+        min: 20000,
+        max: 60000,
+        step: 1000,
+        default: 40000,
+        unit: 'torr'
+      },
+      {
+        variable: 'x_slider',
+        label: 'Mole Fraction x (HCl)',
+        min: 0.001,
+        max: 0.020,
+        step: 0.001,
+        default: 0.015,
+        unit: ''
+      },
+      {
+        variable: 'p_max',
+        label: 'Max Pressure Scale (Y-Axis Limit)',
+        min: 500,
+        max: 1500,
+        step: 50,
+        default: 1000,
+        unit: 'torr'
       }
     ],
     currentPoint: {
-      x: 0.0000129,
-      y: 0.987,
-      label: 'N₂ in H₂O at 293 K'
+      x: 0.015,
+      y: 600,
+      label: 'Point A (x = 0.015, p = 600 torr)'
     },
+    referenceLines: [
+      {
+        from: { x: 0, y: 600 },
+        to: { x: 0.015, y: 600 },
+        label: '600 torr',
+        style: 'dashed',
+        color: '#0f172a'
+      },
+      {
+        from: { x: 0.015, y: 0 },
+        to: { x: 0.015, y: 600 },
+        label: '0.015',
+        style: 'dashed',
+        color: '#0f172a'
+      }
+    ],
+    referencePoints: [
+      {
+        x: 0.015,
+        y: 600,
+        label: 'A',
+        position: 'right',
+        color: 'rgb(21, 0, 154)'
+      }
+    ],
     annotations: [
       {
         type: 'text',
-        x: 0.00005,
-        y: 6,
-        text: 'Higher K_H → Lower Solubility (Steeper Slope)'
+        x: 0.015,
+        y: 600,
+        text: 'Point A: Partial pressure = 600 torr at mole fraction = 0.015 (K_H = 40,000 torr)'
       }
     ]
   },
@@ -76,7 +133,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'p₁ = p₁⁰ (1 - x₂)',
         formula: 'p1_0 * (1 - x2)',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       },
       {
         name: 'p₂ = p₂⁰ · x₂',
@@ -107,6 +164,15 @@ export const graphsData: Record<string, GraphConfig> = {
         step: 10,
         default: 415,
         unit: 'mm Hg'
+      },
+      {
+        variable: 'x2_slider',
+        label: 'Mole Fraction x₂ (X-Axis Position)',
+        min: 0,
+        max: 1,
+        step: 0.01,
+        default: 0.688,
+        unit: ''
       }
     ],
     currentPoint: {
@@ -213,7 +279,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'Actual Total Pressure (Negative Deviation)',
         formula: 'p1_0 * (1 - x2) + p2_0 * x2 - deviation * x2 * (1 - x2)',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       }
     ],
     controls: [
@@ -277,7 +343,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'Pure Solvent (Water)',
         formula: 'Math.exp(12.5 - 4660 / T)',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       },
       {
         name: 'Solution (with Non-Volatile Solute)',
@@ -307,7 +373,7 @@ export const graphsData: Record<string, GraphConfig> = {
         type: 'verticalLine',
         x: 373.15,
         label: 'T_b⁰ = 373.15 K (Pure Solvent)',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       }
     ]
   },
@@ -335,7 +401,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'Liquid Solvent',
         formula: 'Math.exp(10.5 - 2800 / T)',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       },
       {
         name: 'Frozen Solid Solvent (Ice)',
@@ -364,7 +430,7 @@ export const graphsData: Record<string, GraphConfig> = {
         type: 'verticalLine',
         x: 273.15,
         label: 'T_f⁰ = 273.15 K (Pure Solvent)',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       }
     ]
   },
@@ -397,7 +463,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'ΔT_f = i · K_f · m (Water K_f=1.86)',
         formula: 'i * 1.86 * m',
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       }
     ],
     controls: [
@@ -439,7 +505,7 @@ export const graphsData: Record<string, GraphConfig> = {
           { x: 0.01, y: 1.97 },
           { x: 0.001, y: 2.00 }
         ],
-        color: '#3b82f6'
+        color: 'rgb(21, 0, 154)'
       },
       {
         name: 'KCl (i_theor = 2)',

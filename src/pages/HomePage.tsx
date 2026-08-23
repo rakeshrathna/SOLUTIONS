@@ -27,7 +27,7 @@ export const HomePage: React.FC = () => {
     <div className="space-y-8 animate-fade-in">
       {/* Hero Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 shadow-card">
-        <div className="relative z-10 max-w-3xl space-y-4">
+        <div className="relative z-10 w-full space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-50 text-cyan-700 border border-cyan-200">
               {chapterData.class}
@@ -36,7 +36,7 @@ export const HomePage: React.FC = () => {
               {chapterData.subject}
             </span>
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-              CBSE Term I Core
+              CBSE Class 12 Core
             </span>
           </div>
 
@@ -44,27 +44,27 @@ export const HomePage: React.FC = () => {
             Chapter 1: <span className="text-cyan-700">Solutions</span>
           </h1>
 
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <p className="text-sm text-slate-600 leading-relaxed max-w-4xl">
             {chapterData.description}
           </p>
 
-          {/* Quick Metrics */}
+          {/* Quick Metrics (Student-friendly Chemistry terms) */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
               <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Curriculum</span>
-              <div className="text-lg font-bold text-slate-900 font-mono mt-0.5">8 Units</div>
+              <div className="text-base sm:text-lg font-bold text-slate-900 font-mono mt-0.5">8 Units</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Simulations</span>
-              <div className="text-lg font-bold text-cyan-700 font-mono mt-0.5">3 Physics</div>
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Particle Labs</span>
+              <div className="text-base sm:text-lg font-bold text-cyan-700 font-mono mt-0.5">3 Interactive</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Dynamic Graphs</span>
-              <div className="text-lg font-bold text-cyan-600 font-mono mt-0.5">8 ECharts</div>
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Visual Curves</span>
+              <div className="text-base sm:text-lg font-bold text-cyan-600 font-mono mt-0.5">8 Interactive</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
               <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Exam Bank</span>
-              <div className="text-lg font-bold text-amber-700 font-mono mt-0.5">30 Problems</div>
+              <div className="text-base sm:text-lg font-bold text-amber-700 font-mono mt-0.5">30 NCERT Qs</div>
             </div>
           </div>
 

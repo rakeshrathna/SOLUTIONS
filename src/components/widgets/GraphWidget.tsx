@@ -3,6 +3,7 @@ import ReactECharts from 'echarts-for-react';
 import { GraphConfig } from '../../types/graph';
 import { SliderInput } from '../common/SliderInput';
 import { generateSeriesData } from '../../utils/graphDataGenerator';
+import { evaluateFormula } from '../../utils/formulaEvaluator';
 import { TrendingUp, RotateCcw, Info } from 'lucide-react';
 
 interface GraphWidgetProps {
@@ -38,48 +39,120 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
   };
 
   const chartOption = useMemo(() => {
-    const defaultColors = ['#15009A', '#3B4AEB', '#E11D48', '#059669', '#D97706'];
+    const defaultColors = ['rgb(21, 0, 154)', '#3B4AEB', '#E11D48', '#059669', '#D97706'];
 
-    const seriesList = config.series.map((s, idx) => {
+    // Dynamic active point based on X-axis slider control
+    const activeX = controlValues.x_slider ?? controlValues.x2_slider ?? controlValues.T_slider ?? controlValues.m_slider;
+    let activeY: number | undefined = undefined;
+
+    if (activeX !== undefined && config.series.length > 0) {
+      const mainSeries = config.series.find((s) => s.formula && !s.dashed) || config.series[0];
+      if (mainSeries && mainSeries.formula) {
+        const scope = {
+          ...controlValues,
+          [config.xAxis.variable]: activeX,
+          x: activeX,
+          x2: activeX,
+          T: activeX,
+          m: activeX
+        };
+        activeY = parseFloat(evaluateFormula(mainSeries.formula, scope).toFixed(2));
+      }
+    }
+
+    // Reference coordinates: dynamic active point if activeX exists, else fallback
+    const refX = activeX !== undefined ? activeX : (config.currentPoint?.x ?? 0.015);
+    const refY = activeY !== undefined ? activeY : (config.currentPoint?.y ?? 600);
+
+    // Dynamic reference lines connecting axes to (refX, refY)
+    const markLineData: any[] = [
+      [
+        { coord: [0, refY] },
+        { coord: [refX, refY] }
+      ],
+      [
+        { coord: [refX, 0] },
+        { coord: [refX, refY] }
+      ]
+    ];
+
+    // Point A or dynamic coordinate label
+    const isDefaultA = Math.abs(refX - 0.015) < 0.0005 && Math.abs(refY - 600) < 5;
+    const pointLabel = isDefaultA ? 'A' : `(${refX}, ${Math.round(refY)})`;
+
+    const markPointData: any[] = [
+      {
+        name: 'Active Point',
+        coord: [refX, refY],
+        symbol: 'circle',
+        symbolSize: 13,
+        itemStyle: {
+          color: 'rgb(21, 0, 154)',
+          borderColor: '#ffffff',
+          borderWidth: 2.5,
+          shadowBlur: 5,
+          shadowColor: 'rgba(21, 0, 154, 0.4)'
+        },
+        label: {
+          show: true,
+          formatter: pointLabel,
+          position: 'right',
+          color: '#0f172a',
+          fontWeight: 'bold',
+          fontSize: 16,
+          distance: 8
+        }
+      }
+    ];
+
+    const seriesList: any[] = config.series.map((s, idx) => {
       const dataPoints = generateSeriesData(s, config, controlValues, 80);
-      const isScatter = config.type === 'scatter' || (!s.formula && s.points);
+      const isScatter = s.points !== undefined || (config.type === 'scatter' && !s.formula);
       const color = s.color || defaultColors[idx % defaultColors.length];
+      const isFirstSeries = idx === 0;
 
       return {
         name: s.name,
         type: isScatter ? 'scatter' : 'line',
-        smooth: true,
+        smooth: false,
         showSymbol: isScatter,
-        symbolSize: isScatter ? 8 : 3,
+        symbol: 'circle',
+        symbolSize: isScatter ? 10 : 0,
         data: dataPoints.map((p) => [p.x, p.y]),
         lineStyle: {
           color: color,
-          width: 2.5,
+          width: isScatter ? 0 : 3,
           type: s.dashed ? 'dashed' : 'solid'
         },
         itemStyle: {
-          color: color
-        }
+          color: color,
+          borderColor: '#ffffff',
+          borderWidth: isScatter ? 2 : 0
+        },
+        markLine: isFirstSeries ? {
+          symbol: ['none', 'none'],
+          silent: true,
+          animation: true,
+          lineStyle: {
+            color: '#1e293b',
+            type: 'dashed',
+            width: 1.5
+          },
+          label: { show: false },
+          data: markLineData
+        } : undefined,
+        markPoint: isFirstSeries ? {
+          silent: true,
+          animation: true,
+          data: markPointData
+        } : undefined
       };
     });
-
-    if (config.currentPoint) {
-      seriesList.push({
-        name: config.currentPoint.label || 'Reference Point',
-        type: 'scatter',
-        smooth: false,
-        showSymbol: true,
-        symbolSize: 12,
-        data: [[config.currentPoint.x, config.currentPoint.y]],
-        lineStyle: { color: '#15009A', width: 2, type: 'solid' },
-        itemStyle: { color: '#15009A', borderColor: '#ffffff', borderWidth: 2 } as any
-      });
-    }
 
     return {
       backgroundColor: 'transparent',
       animation: true,
-      animationDuration: 250,
+      animationDuration: 200,
       tooltip: {
         trigger: 'axis',
         backgroundColor: '#FFFFFF',
@@ -109,35 +182,85 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
         icon: 'roundRect'
       },
       grid: {
-        left: '6%',
-        right: '4%',
-        bottom: '10%',
-        top: '12%',
+        left: '8%',
+        right: '5%',
+        bottom: '12%',
+        top: '10%',
         containLabel: true
       },
       xAxis: {
         name: config.xAxis.label,
         nameLocation: 'middle',
-        nameGap: 28,
-        nameTextStyle: { color: '#64748B', fontSize: 11, fontFamily: 'Inter' },
+        nameGap: 34,
+        nameTextStyle: { color: '#334155', fontSize: 11, fontWeight: 600, fontFamily: 'Inter' },
         type: 'value',
         min: config.xAxis.min,
-        max: config.xAxis.max,
-        axisLine: { lineStyle: { color: '#CBD5E1' } },
+        max: controlValues.x_max ?? config.xAxis.max,
+        interval: config.id === 'henrys-law' ? 0.005 : undefined,
+        axisLine: { lineStyle: { color: '#475569', width: 1.5 } },
         splitLine: { lineStyle: { color: '#F1F5F9' } },
-        axisLabel: { color: '#64748B', fontSize: 10, fontFamily: 'Inter' }
+        axisLabel: {
+          color: '#475569',
+          fontSize: 11,
+          fontFamily: 'Inter',
+          formatter: (val: number) => {
+            if (config.id === 'henrys-law') {
+              const v = parseFloat(val.toFixed(4));
+              const curRefX = parseFloat(refX.toFixed(4));
+              if (v === 0) return '0';
+              if (Math.abs(v - curRefX) < 0.0004) return `{bold|${curRefX}}`;
+              if (v === 0.010) return '0.010';
+              if (v === 0.015) return '0.015';
+              if (v === 0.020) return '0.020';
+              return '';
+            }
+            return val.toString();
+          },
+          rich: {
+            bold: {
+              fontWeight: 'bold',
+              color: '#0f172a',
+              fontSize: 12
+            }
+          }
+        }
       },
       yAxis: {
         name: config.yAxis.label,
         nameLocation: 'middle',
-        nameGap: 38,
-        nameTextStyle: { color: '#64748B', fontSize: 11, fontFamily: 'Inter' },
+        nameGap: 42,
+        nameTextStyle: { color: '#334155', fontSize: 11, fontWeight: 600, fontFamily: 'Inter' },
         type: 'value',
         min: config.yAxis.min ?? undefined,
-        max: config.yAxis.max ?? undefined,
-        axisLine: { lineStyle: { color: '#CBD5E1' } },
+        max: controlValues.p_max ?? controlValues.y_max ?? config.yAxis.max ?? undefined,
+        interval: config.id === 'henrys-law' ? 100 : undefined,
+        axisLine: { lineStyle: { color: '#475569', width: 1.5 } },
         splitLine: { lineStyle: { color: '#F1F5F9' } },
-        axisLabel: { color: '#64748B', fontSize: 10, fontFamily: 'Inter' }
+        axisLabel: {
+          color: '#475569',
+          fontSize: 11,
+          fontFamily: 'Inter',
+          formatter: (val: number) => {
+            if (config.id === 'henrys-law') {
+              const v = Math.round(val);
+              const curRefY = Math.round(refY);
+              if (v === 0) return '0';
+              if (Math.abs(v - curRefY) < 25) return `{bold|${curRefY}}`;
+              if (v === 500) return '500';
+              if (v === 600) return '600';
+              if (v === 1000) return '1000';
+              return '';
+            }
+            return val.toString();
+          },
+          rich: {
+            bold: {
+              fontWeight: 'bold',
+              color: '#0f172a',
+              fontSize: 12
+            }
+          }
+        }
       },
       series: seriesList
     };

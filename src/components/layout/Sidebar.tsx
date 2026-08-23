@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { chapterData } from '../../data/chapter';
 import { useProgressStore } from '../../stores/progressStore';
-import { CheckCircle2, Clock, ChevronRight, Layers, Terminal, StickyNote } from 'lucide-react';
+import { CheckCircle2, Clock, ChevronRight, Layers, Award, StickyNote } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* Sidebar Drawer */}
       <aside
-        className={`fixed top-14 bottom-0 left-0 z-40 w-72 md:w-80 bg-white/95 backdrop-blur-xl border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 shadow-sm ${
+        className={`fixed top-14 bottom-0 left-0 z-40 w-72 md:w-80 bg-white/95 backdrop-blur-xl border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out shadow-sm ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -139,7 +139,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="w-full py-2 px-3 rounded-xl bg-cyan-50 hover:bg-cyan-100 border border-cyan-300 text-cyan-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
           >
-            <Terminal className="w-3.5 h-3.5 text-cyan-600" />
+            <Award className="w-3.5 h-3.5 text-cyan-600" />
             <span>Practice Mode</span>
           </NavLink>
         </div>

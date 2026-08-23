@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useProgressStore } from '../../stores/progressStore';
-import { BookOpen, CheckSquare, BarChart2, StickyNote, Menu, Terminal } from 'lucide-react';
+import { BookOpen, CheckSquare, BarChart2, StickyNote, Menu } from 'lucide-react';
 
 interface HeaderProps {
+  isSidebarOpen?: boolean;
   onToggleSidebar: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
+export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSidebar }) => {
   const location = useLocation();
   const getChapterProgressPercentage = useProgressStore((state) => state.getChapterProgressPercentage);
   const notes = useProgressStore((state) => state.notes);
@@ -23,20 +24,21 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/90 border-b border-slate-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
-        {/* Left: Sidebar Toggle + Brand */}
+      <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+        {/* Left: 3-line Sidebar Toggle + Brand */}
         <div className="flex items-center gap-3">
           <button
             onClick={onToggleSidebar}
-            className="p-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-cyan-500 transition-all lg:hidden"
-            title="Toggle Curriculum Sidebar"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-800 hover:text-slate-950 transition-all flex items-center justify-center shadow-xs"
+            title={isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+            aria-label="Toggle Sidebar Navigation"
           >
-            <Menu className="w-4 h-4" />
+            <Menu className="w-5 h-5 text-slate-800" />
           </button>
 
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 shadow-sm group-hover:scale-105 transition-all">
-              <Terminal className="w-4 h-4 text-cyan-600" />
+              <BookOpen className="w-4 h-4 text-cyan-600" />
             </div>
             <div>
               <div className="flex items-center gap-2">

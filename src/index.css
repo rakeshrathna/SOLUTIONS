@@ -148,7 +148,9 @@ input[type="range"]:focus {
   color: var(--text-primary);
 }
 
-.katex .mord, .katex .mbin, .katex .mrel {
+.katex .mord,
+.katex .mbin,
+.katex .mrel {
   color: inherit;
 }
 
