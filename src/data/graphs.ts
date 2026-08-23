@@ -471,62 +471,113 @@ export const graphsData: Record<string, GraphConfig> = {
 
   'vanthoff-vs-concentration': {
     id: 'vanthoff-vs-concentration',
-    type: 'scatter',
-    title: "van't Hoff Factor (i) vs Concentration",
-    description: "As concentration approaches 0 (infinite dilution), inter-ionic attractions disappear and i reaches its theoretical stoichiometric limit.",
+    type: 'line',
+    title: "van 't Hoff Factor (i) vs Concentration",
+    description: "Demonstrates how van 't Hoff factor i varies with molal concentration m. As concentration approaches 0 (infinite dilution m → 0), inter-ionic attractions vanish and i approaches its exact theoretical integer limit (i = 3 for K₂SO₄, i = 2 for NaCl, i = 1 for Glucose, i = 0.5 for Acetic Acid dimerization).",
     xAxis: {
-      label: 'Concentration (molality m)',
+      label: 'Molal Concentration m (mol/kg)',
       variable: 'm',
       min: 0,
-      max: 1.1,
+      max: 1.0,
       unit: 'm'
     },
     yAxis: {
-      label: "van't Hoff Factor (i)",
+      label: "van 't Hoff Factor (i)",
       variable: 'i',
-      min: 1,
-      max: 3.5
+      min: 0,
+      max: 3.4,
+      unit: ''
     },
     series: [
       {
-        name: 'NaCl (i_theor = 2)',
-        points: [
-          { x: 1.0, y: 1.87 },
-          { x: 0.1, y: 1.94 },
-          { x: 0.01, y: 1.97 },
-          { x: 0.001, y: 2.00 }
-        ],
+        name: 'K₂SO₄ (n = 3, i → 3.0)',
+        formula: '3 - 0.68 * Math.sqrt(m)',
+        color: '#dc2626'
+      },
+      {
+        name: 'NaCl (n = 2, i → 2.0)',
+        formula: '2 - 0.13 * Math.sqrt(m)',
         color: 'rgb(21, 0, 154)'
       },
       {
-        name: 'KCl (i_theor = 2)',
-        points: [
-          { x: 1.0, y: 1.85 },
-          { x: 0.1, y: 1.94 },
-          { x: 0.01, y: 1.98 },
-          { x: 0.001, y: 2.00 }
-        ],
-        color: '#10b981'
+        name: 'MgSO₄ (n = 2, 2:2 salt, i → 2.0)',
+        formula: '2 - 0.79 * Math.sqrt(m)',
+        color: '#d97706'
       },
       {
-        name: 'MgSO₄ (i_theor = 2)',
-        points: [
-          { x: 1.0, y: 1.21 },
-          { x: 0.1, y: 1.53 },
-          { x: 0.01, y: 1.82 },
-          { x: 0.001, y: 2.00 }
-        ],
-        color: '#f59e0b'
+        name: 'Glucose / Urea (Non-electrolyte, i = 1.0)',
+        formula: '1.0',
+        color: '#059669'
       },
       {
-        name: 'K₂SO₄ (i_theor = 3)',
-        points: [
-          { x: 1.0, y: 2.32 },
-          { x: 0.1, y: 2.70 },
-          { x: 0.01, y: 2.84 },
-          { x: 0.001, y: 3.00 }
-        ],
-        color: '#f43f5e'
+        name: 'Ethanoic Acid in Benzene (Dimerization, i → 0.5)',
+        formula: '0.5 + 0.5 / (1 + 3 * Math.sqrt(m))',
+        color: '#7c3aed',
+        dashed: true
+      }
+    ],
+    controls: [
+      {
+        variable: 'm_slider',
+        label: 'Inspect Concentration m',
+        min: 0.001,
+        max: 1.0,
+        step: 0.01,
+        default: 0.10,
+        unit: 'm'
+      }
+    ],
+    referenceLines: [
+      {
+        from: { x: 0, y: 3.0 },
+        to: { x: 1.0, y: 3.0 },
+        label: 'i = 3 (K₂SO₄ Limit)',
+        style: 'dashed',
+        color: '#94a3b8'
+      },
+      {
+        from: { x: 0, y: 2.0 },
+        to: { x: 1.0, y: 2.0 },
+        label: 'i = 2 (NaCl Limit)',
+        style: 'dashed',
+        color: '#94a3b8'
+      },
+      {
+        from: { x: 0, y: 1.0 },
+        to: { x: 1.0, y: 1.0 },
+        label: 'i = 1 (Non-electrolyte)',
+        style: 'dashed',
+        color: '#94a3b8'
+      },
+      {
+        from: { x: 0, y: 0.5 },
+        to: { x: 1.0, y: 0.5 },
+        label: 'i = 0.5 (Dimerization Limit)',
+        style: 'dashed',
+        color: '#94a3b8'
+      }
+    ],
+    referencePoints: [
+      {
+        x: 0,
+        y: 3.0,
+        label: 'i = 3',
+        position: 'right',
+        color: '#dc2626'
+      },
+      {
+        x: 0,
+        y: 2.0,
+        label: 'i = 2',
+        position: 'right',
+        color: 'rgb(21, 0, 154)'
+      },
+      {
+        x: 0,
+        y: 1.0,
+        label: 'i = 1',
+        position: 'right',
+        color: '#059669'
       }
     ],
     annotations: [
@@ -534,7 +585,7 @@ export const graphsData: Record<string, GraphConfig> = {
         type: 'text',
         x: 0.5,
         y: 3.2,
-        text: 'At infinite dilution (c → 0), i approaches exact theoretical integer'
+        text: 'At infinite dilution (m → 0), inter-ionic attraction disappears and i reaches exact theoretical integer n.'
       }
     ]
   }
