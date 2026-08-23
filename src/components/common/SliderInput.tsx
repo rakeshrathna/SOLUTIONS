@@ -102,7 +102,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
         </p>
       )}
 
-      {/* Slider Track Area */}
+      {/* Slider Track Area with Dark Blue #15009A */}
       <div className="space-y-2 pt-0.5">
         <div className="relative flex items-center py-1">
           <input
@@ -114,7 +114,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
             onChange={handleSliderChange}
             className="w-full h-2 rounded-lg appearance-none cursor-pointer"
             style={{
-              background: `linear-gradient(to right, #0891B2 0%, #0891B2 ${percentage}%, #E2E8F0 ${percentage}%, #E2E8F0 100%)`
+              background: `linear-gradient(to right, #15009A 0%, #15009A ${percentage}%, #E2E8F0 ${percentage}%, #E2E8F0 100%)`
             }}
           />
         </div>
@@ -143,6 +143,3 @@ export const SliderInput: React.FC<SliderInputProps> = ({
     </div>
   );
 };
-
-
-

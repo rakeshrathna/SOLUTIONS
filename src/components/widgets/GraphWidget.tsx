@@ -38,7 +38,7 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
   };
 
   const chartOption = useMemo(() => {
-    const defaultColors = ['#0891B2', '#0284C7', '#E11D48', '#059669', '#D97706'];
+    const defaultColors = ['#15009A', '#3B4AEB', '#E11D48', '#059669', '#D97706'];
 
     const seriesList = config.series.map((s, idx) => {
       const dataPoints = generateSeriesData(s, config, controlValues, 80);
@@ -71,8 +71,8 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
         showSymbol: true,
         symbolSize: 12,
         data: [[config.currentPoint.x, config.currentPoint.y]],
-        lineStyle: { color: '#0891B2', width: 2, type: 'solid' },
-        itemStyle: { color: '#0891B2', borderColor: '#ffffff', borderWidth: 2 } as any
+        lineStyle: { color: '#15009A', width: 2, type: 'solid' },
+        itemStyle: { color: '#15009A', borderColor: '#ffffff', borderWidth: 2 } as any
       });
     }
 
@@ -89,7 +89,7 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
         extraCssText: 'box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1); border-radius: 8px; padding: 10px;',
         axisPointer: {
           type: 'cross',
-          lineStyle: { color: 'rgba(8, 145, 178, 0.4)', type: 'dashed' }
+          lineStyle: { color: 'rgba(21, 0, 154, 0.4)', type: 'dashed' }
         },
         formatter: (params: any) => {
           if (!params || !params.length) return '';
