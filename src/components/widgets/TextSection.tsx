@@ -115,10 +115,13 @@ export const TextSection: React.FC<TextSectionProps> = ({ title, content }) => {
     const lines = tableText.trim().split('\n').filter(l => l.trim().startsWith('|'));
     if (lines.length < 2) return <div key={key}>{tableText}</div>;
 
-    const headers = lines[0].split('|').map(s => s.trim()).filter(Boolean);
-    const rows = lines.slice(2).map(line =>
-      line.split('|').map(s => s.trim()).filter(Boolean)
-    );
+    const parseCells = (line: string) => {
+      const trimmed = line.trim().replace(/^\|/, '').replace(/\|$/, '');
+      return trimmed.split('|').map(s => s.trim());
+    };
+
+    const headers = parseCells(lines[0]);
+    const rows = lines.slice(2).map(line => parseCells(line));
 
     return (
       <div key={key} className="my-5 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -135,7 +138,7 @@ export const TextSection: React.FC<TextSectionProps> = ({ title, content }) => {
               <tr key={rIdx} className="hover:bg-slate-50/80 transition-all">
                 {row.map((cell, cIdx) => (
                   <td key={cIdx} className={`px-4 py-3 leading-relaxed ${cIdx === 0 ? 'font-mono text-slate-900 font-medium' : ''}`}>
-                    {renderInlineContent(cell)}
+                    {renderInlineContent(cell || '—')}
                   </td>
                 ))}
               </tr>

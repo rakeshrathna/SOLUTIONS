@@ -60,14 +60,14 @@ Depending on the physical state of solute and solvent, solutions are categorized
 | Type of Solution | Solute | Solvent | Common Examples |
 | :--- | :--- | :--- | :--- |
 | **Gaseous Solutions** | Gas | Gas | Mixture of Oxygen ($O_2$) and Nitrogen ($N_2$) gas |
-| | Liquid | Gas | Chloroform ($CHCl_3$) mixed with Nitrogen gas |
-| | Solid | Gas | Camphor in Nitrogen gas |
+| **Gaseous Solutions** | Liquid | Gas | Chloroform ($CHCl_3$) mixed with Nitrogen gas |
+| **Gaseous Solutions** | Solid | Gas | Camphor in Nitrogen gas |
 | **Liquid Solutions** | Gas | Liquid | Oxygen ($O_2$) dissolved in water; Soda water ($CO_2$ in water) |
-| | Liquid | Liquid | Ethanol dissolved in water |
-| | Solid | Liquid | Glucose dissolved in water; Saline ($NaCl$ in water) |
+| **Liquid Solutions** | Liquid | Liquid | Ethanol dissolved in water |
+| **Liquid Solutions** | Solid | Liquid | Glucose dissolved in water; Saline ($NaCl$ in water) |
 | **Solid Solutions** | Gas | Solid | Solution of Hydrogen in Palladium ($H_2 / Pd$) |
-| | Liquid | Solid | Amalgam of Mercury with Sodium ($Na-Hg$) |
-| | Solid | Solid | Copper dissolved in Gold; Brass ($Zn$ in $Cu$) |
+| **Solid Solutions** | Liquid | Solid | Amalgam of Mercury with Sodium ($Na-Hg$) |
+| **Solid Solutions** | Solid | Solid | Copper dissolved in Gold; Brass ($Zn$ in $Cu$) |
         `
       },
       {
