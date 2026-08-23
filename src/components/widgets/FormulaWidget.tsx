@@ -70,15 +70,15 @@ export const FormulaWidget: React.FC<FormulaWidgetProps> = ({ config }) => {
       </div>
 
       {/* Main Grid: Controls (Sliders + Manual Inputs) on Left, Calculated Result + Insights on Right */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Controls Column (Left) */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 flex flex-col gap-3.5">
           <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-600 px-1">
             <span>Parameters (Adjust Slider or Type Value)</span>
           </div>
 
           {/* Variables list */}
-          <div className="space-y-4">
+          <div className="flex-1 flex flex-col justify-between gap-3.5">
             {Object.entries(config.variables).map(([key, variable]) => (
               <SliderInput
                 key={key}
@@ -97,12 +97,12 @@ export const FormulaWidget: React.FC<FormulaWidgetProps> = ({ config }) => {
         </div>
 
         {/* Calculated Result Column (Right) */}
-        <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="lg:col-span-5 flex flex-col gap-3.5">
           <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-600 px-1">
             <span>Calculated Result</span>
           </div>
 
-          <div className="p-6 rounded-xl bg-gradient-to-br from-cyan-50/90 via-white to-slate-50 border border-cyan-200/80 shadow-sm flex flex-col justify-between min-h-[200px]">
+          <div className="p-5 sm:p-6 rounded-xl bg-gradient-to-br from-cyan-50/90 via-white to-slate-50 border border-cyan-200/80 shadow-sm flex flex-col justify-between min-h-[170px]">
             <div>
               <span className="text-xs uppercase tracking-wider font-semibold text-slate-600">
                 {config.result.label}
@@ -114,7 +114,7 @@ export const FormulaWidget: React.FC<FormulaWidgetProps> = ({ config }) => {
               </div>
             </div>
 
-            <div className="my-5 overflow-x-auto">
+            <div className="my-4 overflow-x-auto">
               <div className="flex flex-wrap items-baseline gap-3">
                 <div className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-mono leading-none">
                   <MathRenderer math={formattedMathResult} />
@@ -135,19 +135,21 @@ export const FormulaWidget: React.FC<FormulaWidgetProps> = ({ config }) => {
 
           {/* Key Insights if available */}
           {config.keyInsights && config.keyInsights.length > 0 && (
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-cyan-800">
-                <HelpCircle className="w-3.5 h-3.5 text-cyan-600" />
-                <span>NCERT Exam Insights</span>
+            <div className="flex-1 p-4.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-cyan-800 mb-2">
+                  <HelpCircle className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>NCERT Exam Insights</span>
+                </div>
+                <ul className="space-y-1.5 text-xs text-slate-600">
+                  {config.keyInsights.map((insight, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-cyan-600 font-bold">•</span>
+                      <span className="leading-relaxed">{insight}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-1.5 text-xs text-slate-600">
-                {config.keyInsights.map((insight, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-cyan-600 font-bold">•</span>
-                    <span className="leading-relaxed">{insight}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           )}
         </div>

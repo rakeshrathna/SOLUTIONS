@@ -94,7 +94,7 @@ export const formulasData: Record<string, FormulaConfig> = {
       },
       V: {
         label: 'Total Volume of Solution',
-        symbol: 'V',
+        symbol: 'V_{\\text{solution}}',
         unit: 'mL',
         min: 10,
         max: 1000,
@@ -121,7 +121,7 @@ export const formulasData: Record<string, FormulaConfig> = {
     variables: {
       w_solute: {
         label: 'Mass of Solute',
-        symbol: 'w_2',
+        symbol: 'w_{\\text{solute}}',
         unit: 'g',
         min: 0.0001,
         max: 1,
