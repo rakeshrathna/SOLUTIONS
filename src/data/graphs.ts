@@ -59,15 +59,6 @@ export const graphsData: Record<string, GraphConfig> = {
         step: 0.001,
         default: 0.015,
         unit: ''
-      },
-      {
-        variable: 'p_max',
-        label: 'Max Pressure Scale (Y-Axis Limit)',
-        min: 500,
-        max: 1500,
-        step: 50,
-        default: 1000,
-        unit: 'torr'
       }
     ],
     currentPoint: {
