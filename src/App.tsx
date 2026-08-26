@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell';
 import { AcademyDashboardPage } from './pages/AcademyDashboardPage';
+import { ChemistryLessonsPage } from './pages/ChemistryLessonsPage';
 import { HomePage } from './pages/HomePage';
 import { LessonPage } from './pages/LessonPage';
 import { PracticePage } from './pages/PracticePage';
@@ -13,8 +14,11 @@ export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Academy Master Dashboard — no AppShell wrapper (full-bleed dark design) */}
+        {/* Learnova Main Dashboard */}
         <Route path="/" element={<AcademyDashboardPage />} />
+
+        {/* Dedicated Chemistry Lessons page */}
+        <Route path="/chemistry" element={<ChemistryLessonsPage />} />
 
         {/* Solutions chapter app — uses AppShell (header + sidebar) */}
         <Route path="/" element={<AppShell />}>

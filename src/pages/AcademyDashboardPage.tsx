@@ -1,220 +1,334 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
+import { subjectsData, chemistryLessonsData, Subject, ChemistryLesson } from '../data/curriculumData';
 import {
   FlaskConical, Zap, Timer, Atom, Link2, Layers,
   Droplets, Wind, Leaf, Lock, ChevronRight,
   BookOpen, BarChart2, StickyNote, CheckSquare,
   Phone, MapPin, ArrowRight, GraduationCap,
   Beaker, Calculator, TrendingUp, ClipboardList,
-  Star, Users, Award,
+  Star, Users, Award, Sparkles, CheckCircle2
 } from 'lucide-react';
 
 /* ─── Brand color ─────────────────────────────────────────── */
 const BRAND = 'rgb(21,0,154)';
-const BRAND_LIGHT = 'rgba(21,0,154,0.08)';
-const BRAND_BORDER = 'rgba(21,0,154,0.2)';
-const BRAND_MED = 'rgba(21,0,154,0.15)';
+const BRAND_LIGHT = 'rgba(21,0,154,0.06)';
+const BRAND_BORDER = 'rgba(21,0,154,0.18)';
+const BRAND_MED = 'rgba(21,0,154,0.12)';
 
-/* ─── Chapters ─────────────────────────────────────────────── */
-const chapters = [
-  { id: 1, title: 'Solutions',                         subtitle: 'Concentration · Raoult\'s Law · Colligative Properties', icon: FlaskConical, status: 'ACTIVE',       route: '/solutions', category: 'Physical' },
-  { id: 2, title: 'Electrochemistry',                  subtitle: 'Galvanic Cells · Nernst Equation · Electrolysis',        icon: Zap,           status: 'COMING_SOON', route: null,          category: 'Physical' },
-  { id: 3, title: 'Chemical Kinetics',                 subtitle: 'Rate Laws · Activation Energy · Order of Reaction',      icon: Timer,         status: 'COMING_SOON', route: null,          category: 'Physical' },
-  { id: 4, title: 'd- and f-Block Elements',           subtitle: 'Transition Metals · Lanthanides · Actinides',            icon: Atom,          status: 'COMING_SOON', route: null,          category: 'Inorganic' },
-  { id: 5, title: 'Coordination Compounds',            subtitle: 'Ligands · CFSE · Werner\'s Theory',                      icon: Link2,         status: 'COMING_SOON', route: null,          category: 'Inorganic' },
-  { id: 6, title: 'Haloalkanes & Haloarenes',          subtitle: 'SN1 · SN2 · Nucleophilic Substitution',                  icon: Layers,        status: 'COMING_SOON', route: null,          category: 'Organic' },
-  { id: 7, title: 'Alcohols, Phenols & Ethers',        subtitle: 'Hydroxyl Group · Dehydration · Reactions',               icon: Droplets,      status: 'COMING_SOON', route: null,          category: 'Organic' },
-  { id: 8, title: 'Aldehydes, Ketones & Acids',        subtitle: 'Carbonyl Chemistry · Nucleophilic Addition',              icon: Wind,          status: 'COMING_SOON', route: null,          category: 'Organic' },
-  { id: 9, title: 'Amines',                            subtitle: 'Basic Character · Diazonium Salts · Coupling',           icon: Atom,          status: 'COMING_SOON', route: null,          category: 'Organic' },
-  { id: 10, title: 'Biomolecules',                     subtitle: 'Carbohydrates · Proteins · Nucleic Acids',               icon: Leaf,          status: 'COMING_SOON', route: null,          category: 'Organic' },
-];
+/* ─── Icon resolver map ───────────────────────────────────── */
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  FlaskConical,
+  Zap,
+  Timer,
+  Atom,
+  Link2,
+  Layers,
+  Droplets,
+  Wind,
+  Leaf,
+  Calculator,
+  TrendingUp,
+};
+
+const catColor: Record<string, string> = {
+  Physical: 'rgba(21,0,154,0.08)',
+  Inorganic: 'rgba(5,150,105,0.08)',
+  Organic: 'rgba(217,119,6,0.08)',
+};
+const catText: Record<string, string> = {
+  Physical: BRAND,
+  Inorganic: '#047857',
+  Organic: '#B45309',
+};
+const catBorder: Record<string, string> = {
+  Physical: 'rgba(21,0,154,0.2)',
+  Inorganic: 'rgba(5,150,105,0.2)',
+  Organic: 'rgba(217,119,6,0.2)',
+};
 
 const features = [
-  { icon: Beaker,       label: 'Interactive Formulas',           desc: 'Drag sliders to see formulas compute results in real time.' },
-  { icon: TrendingUp,   label: 'Live Graphs & Visualizations',   desc: 'Dynamic ECharts curves that update as you change parameters.' },
-  { icon: FlaskConical, label: 'Physics Simulations',            desc: 'Particle, osmosis, and van\'t Hoff canvas simulations.' },
-  { icon: ClipboardList,label: 'Interactive Quizzes',            desc: '30 NCERT MCQs and numericals with instant feedback.' },
-  { icon: StickyNote,   label: 'Smart Notes & Bookmarks',        desc: 'Auto-collapsing notes that persist across sessions.' },
-  { icon: BarChart2,    label: 'Progress Tracking',              desc: 'Chapter mastery, unit scores, and completion badges.' },
-  { icon: Calculator,   label: 'Step-by-Step Solutions',         desc: 'Full arithmetic derivations for every NCERT problem.' },
+  { icon: Beaker, label: 'Interactive Formulas', desc: 'Drag sliders to see formulas compute results in real time.' },
+  { icon: TrendingUp, label: 'Live Graphs & Visualizations', desc: 'Dynamic ECharts curves that update as you change parameters.' },
+  { icon: FlaskConical, label: 'Physics Simulations', desc: 'Particle, osmosis, and van\'t Hoff canvas simulations.' },
+  { icon: ClipboardList, label: 'Interactive Quizzes', desc: '30 NCERT MCQs and numericals with instant feedback.' },
+  { icon: StickyNote, label: 'Smart Notes & Bookmarks', desc: 'Auto-collapsing notes that persist across sessions.' },
+  { icon: BarChart2, label: 'Progress Tracking', desc: 'Chapter mastery, unit scores, and completion badges.' },
+  { icon: Calculator, label: 'Step-by-Step Solutions', desc: 'Full arithmetic derivations for every NCERT problem.' },
 ];
 
 const howItWorks = [
-  { step: '01', label: 'Pick a Chapter',    desc: 'Choose any of the 10 Chemistry chapters from this dashboard.' },
-  { step: '02', label: 'Study Interactively', desc: 'Read, simulate, visualize, and compute — all in one place.' },
-  { step: '03', label: 'Take Practice Tests', desc: 'Test yourself with NCERT MCQs and numerical problems.' },
-  { step: '04', label: 'Track Mastery',     desc: 'Review progress, saved notes, and revisit weak areas.' },
+  { step: '01', label: 'Pick a Subject', desc: 'Choose Chemistry, Physics, or Mathematics from your dashboard.' },
+  { step: '02', label: 'Select a Lesson', desc: 'Pick from 10 CBSE Class 12 curriculum lessons.' },
+  { step: '03', label: 'Study Interactively', desc: 'Read, simulate, visualize, and compute — all in one place.' },
+  { step: '04', label: 'Track Mastery', desc: 'Take practice tests, review notes, and monitor your score.' },
 ];
 
 const stats = [
-  { icon: BookOpen,  value: '10',    label: 'Chapters Covered' },
-  { icon: Users,     value: '30+',   label: 'NCERT Problems' },
-  { icon: Award,     value: '8',     label: 'Interactive Units' },
-  { icon: Star,      value: '100%',  label: 'Free to Use' },
+  { icon: BookOpen, value: '3', label: 'Subjects Covered' },
+  { icon: Award, value: '10', label: 'Chemistry Lessons' },
+  { icon: Users, value: '30+', label: 'NCERT Problems' },
+  { icon: Star, value: '100%', label: 'Free to Use' },
 ];
 
 const branches = [
-  { city: 'Perambur',     address: 'MPM Street',             phone: '9884234949' },
-  { city: 'Kodungaiyur',  address: 'Near Pandiyan Theatre',  phone: '9790924949' },
-  { city: 'Agaram Jn.',   address: 'Agaram Jn.',             phone: '7845977500' },
+  { city: 'Perambur', address: 'MPM Street', phone: '9884234949' },
+  { city: 'Kodungaiyur', address: 'Near Pandiyan Theatre', phone: '9790924949' },
+  { city: 'Agaram Jn.', address: 'Agaram Jn.', phone: '7845977500' },
 ];
 
-/* ─── Logo ─────────────────────────────────────────────────── */
-const Logo: React.FC<{ size?: number; className?: string }> = ({ size = 38, className = '' }) => (
-  <img
-    src={logoImg}
-    alt="EDUiDEAL Academy Logo"
-    style={{ height: size, width: 'auto' }}
-    className={`object-contain select-none drop-shadow-xs ${className}`}
-  />
-);
-
-/* ─── Category badge colors ────────────────────────────────── */
-const catColor: Record<string, string> = {
-  Physical:  'rgba(21,0,154,0.1)',
-  Inorganic: 'rgba(5,150,105,0.1)',
-  Organic:   'rgba(217,119,6,0.1)',
-};
-const catText: Record<string, string> = {
-  Physical:  BRAND,
-  Inorganic: '#047857',
-  Organic:   '#B45309',
-};
-const catBorder: Record<string, string> = {
-  Physical:  'rgba(21,0,154,0.2)',
-  Inorganic: 'rgba(5,150,105,0.2)',
-  Organic:   'rgba(217,119,6,0.2)',
-};
-
-/* ─── Animated counter hook ────────────────────────────────── */
+/* ─── Animated in-view hook ────────────────────────────────── */
 function useInView(ref: React.RefObject<Element>) {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.2 });
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.15 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, [ref]);
   return visible;
 }
 
-/* ─── Chapter Card ─────────────────────────────────────────── */
-const ChapterCard: React.FC<{
-  ch: typeof chapters[0];
-  delay: number;
-  onLock: (title: string) => void;
-}> = ({ ch, delay, onLock }) => {
-  const ref = useRef<HTMLDivElement>(null!);
-  const visible = useInView(ref);
+/* ─── Subject Card Component ───────────────────────────────── */
+const SubjectCard: React.FC<{
+  subject: Subject;
+  onLocked: (title: string) => void;
+}> = ({ subject, onLocked }) => {
   const navigate = useNavigate();
-  const [hov, setHov] = useState(false);
-  const Icon = ch.icon;
-  const isActive = ch.status === 'ACTIVE';
+  const Icon = iconMap[subject.iconName] || FlaskConical;
+  const isActive = subject.status === 'ACTIVE';
 
-  const handleClick = () => {
-    if (isActive && ch.route) navigate(ch.route);
-    else onLock(ch.title);
+  const handleCardClick = () => {
+    if (isActive && subject.route) {
+      navigate(subject.route);
+    } else {
+      onLocked(subject.name);
+    }
   };
 
   return (
     <div
-      ref={ref}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      onClick={handleClick}
+      onClick={handleCardClick}
+      className={`relative rounded-3xl border p-7 flex flex-col justify-between transition-all duration-300 select-none ${
+        isActive
+          ? 'bg-white border-slate-200 hover:border-[#15009A] hover:shadow-2xl hover:shadow-indigo-900/10 cursor-pointer group'
+          : 'bg-slate-50/80 border-slate-200/80 opacity-55 cursor-not-allowed'
+      }`}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(24px)',
-        transition: `opacity 0.5s ease ${delay}ms, transform 0.5s ease ${delay}ms,
-                     box-shadow 0.25s ease, border-color 0.25s ease`,
-        cursor: isActive ? 'pointer' : 'default',
-        borderColor: hov && isActive ? BRAND : '#E2E8F0',
-        boxShadow: hov && isActive
-          ? `0 8px 32px rgba(21,0,154,0.14), 0 2px 8px rgba(21,0,154,0.08)`
-          : '0 1px 4px rgba(0,0,0,0.06)',
+        boxShadow: isActive ? '0 4px 20px rgba(0,0,0,0.04)' : 'none',
       }}
-      className="relative bg-white rounded-2xl border p-5 flex flex-col gap-3 select-none"
     >
-      {/* Chapter number */}
-      <div className="flex items-start justify-between">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-black transition-all duration-300"
-          style={{
-            background: isActive ? BRAND : '#F1F5F9',
-            color: isActive ? 'white' : '#94A3B8',
-            transform: hov && isActive ? 'scale(1.08) rotate(3deg)' : 'scale(1) rotate(0deg)',
-          }}
-        >
-          <Icon className="w-5 h-5" />
-        </div>
-
-        <div className="flex flex-col items-end gap-1.5">
-          <span className="text-[10px] font-bold tracking-widest text-slate-300 font-mono">
-            CH {String(ch.id).padStart(2, '0')}
-          </span>
-          {isActive ? (
-            <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: 'rgba(16,185,129,0.1)', color: '#059669', border: '1px solid rgba(16,185,129,0.25)' }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-              LIVE
-            </span>
-          ) : (
-            <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              style={{ background: '#F8FAFC', color: '#94A3B8', border: '1px solid #E2E8F0' }}>
-              <Lock className="w-2.5 h-2.5" />
-              SOON
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Title & subtitle */}
       <div>
-        <h3 className="font-bold text-sm leading-snug mb-1"
-          style={{ color: isActive ? '#0F172A' : '#94A3B8' }}>
-          {ch.title}
+        <div className="flex items-start justify-between gap-4 mb-5">
+          <div
+            className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+              isActive
+                ? 'text-white shadow-md group-hover:scale-105 group-hover:rotate-1'
+                : 'bg-slate-200 text-slate-400'
+            }`}
+            style={{
+              background: isActive ? BRAND : undefined,
+            }}
+          >
+            <Icon className="w-7 h-7" />
+          </div>
+
+          <div>
+            {isActive ? (
+              <span className="flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                Available Now
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-slate-200/70 text-slate-500 border border-slate-300/60">
+                <Lock className="w-3 h-3" />
+                Coming Soon
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="mb-2">
+          <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
+            {subject.badge}
+          </span>
+        </div>
+
+        <h3
+          className={`text-2xl font-extrabold tracking-tight mb-2.5 ${
+            isActive ? 'text-slate-900 group-hover:text-[#15009A] transition-colors' : 'text-slate-700'
+          }`}
+        >
+          {subject.name}
         </h3>
-        <p className="text-[11px] leading-relaxed" style={{ color: isActive ? '#64748B' : '#CBD5E1' }}>
-          {ch.subtitle}
+
+        <p className="text-sm text-slate-600 leading-relaxed mb-6">
+          {subject.description}
         </p>
+
+        <div className="space-y-2 mb-6 pt-4 border-t border-slate-100">
+          {subject.features.map((feat) => (
+            <div key={feat} className="flex items-center gap-2 text-xs text-slate-600">
+              <CheckCircle2
+                className={`w-3.5 h-3.5 flex-shrink-0 ${
+                  isActive ? 'text-[#15009A]' : 'text-slate-400'
+                }`}
+              />
+              <span>{feat}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Category + launch */}
-      <div className="flex items-center justify-between mt-auto pt-1">
-        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-          style={{
-            background: catColor[ch.category],
-            color: catText[ch.category],
-            border: `1px solid ${catBorder[ch.category]}`,
-          }}>
-          {ch.category}
-        </span>
-
-        {isActive && (
-          <div className="flex items-center gap-1 text-[11px] font-semibold transition-all duration-200"
+      <div className="pt-2">
+        {isActive ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (subject.route) navigate(subject.route);
+            }}
+            className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-sm font-bold text-white transition-all shadow-md active:scale-95 group-hover:shadow-lg"
             style={{
-              color: BRAND,
-              opacity: hov ? 1 : 0,
-              transform: hov ? 'translateX(0)' : 'translateX(-4px)',
-            }}>
-            Launch <ChevronRight className="w-3 h-3" />
-          </div>
+              background: BRAND,
+              boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.92')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          >
+            <span>Start Learning</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        ) : (
+          <button
+            disabled
+            className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-sm font-semibold bg-slate-200 text-slate-400 border border-slate-300/60 cursor-not-allowed"
+          >
+            <Lock className="w-4 h-4" />
+            <span>Coming Soon</span>
+          </button>
         )}
       </div>
-
-      {/* Active bottom accent bar */}
-      {isActive && (
-        <div className="absolute bottom-0 left-5 right-5 h-0.5 rounded-full transition-all duration-300"
-          style={{
-            background: `linear-gradient(90deg, transparent, ${BRAND}, transparent)`,
-            opacity: hov ? 1 : 0,
-          }} />
-      )}
     </div>
   );
 };
 
-/* ─── Main Page ─────────────────────────────────────────────── */
+/* ─── Chapter / Lesson Card Component ──────────────────────── */
+const LessonCard: React.FC<{
+  lesson: ChemistryLesson;
+  onLocked: (title: string) => void;
+}> = ({ lesson, onLocked }) => {
+  const navigate = useNavigate();
+  const Icon = iconMap[lesson.iconName] || FlaskConical;
+  const isActive = lesson.status === 'ACTIVE';
+
+  const handleClick = () => {
+    if (isActive && lesson.route) {
+      navigate(lesson.route);
+    } else {
+      onLocked(lesson.title);
+    }
+  };
+
+  return (
+    <div
+      onClick={handleClick}
+      className={`relative rounded-2xl border p-5 flex flex-col justify-between transition-all duration-200 select-none ${
+        isActive
+          ? 'bg-white border-slate-200 hover:border-[#15009A] hover:shadow-xl hover:shadow-indigo-900/5 cursor-pointer group'
+          : 'bg-white/60 border-slate-200/70 opacity-55 cursor-not-allowed'
+      }`}
+      style={{
+        boxShadow: isActive ? '0 2px 8px rgba(0,0,0,0.04)' : 'none',
+      }}
+    >
+      <div>
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div
+            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+              isActive ? 'text-white shadow-xs group-hover:scale-105' : 'bg-slate-100 text-slate-400'
+            }`}
+            style={{
+              background: isActive ? BRAND : undefined,
+            }}
+          >
+            <Icon className="w-5 h-5" />
+          </div>
+
+          <div className="flex flex-col items-end gap-1">
+            <span className="text-[10px] font-bold font-mono tracking-widest text-slate-400">
+              CH {String(lesson.lessonNumber).padStart(2, '0')}
+            </span>
+            {isActive ? (
+              <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                LIVE
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200">
+                <Lock className="w-2.5 h-2.5" />
+                LOCKED
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="mb-2">
+          <span
+            className="text-[10px] font-semibold px-2 py-0.5 rounded-md"
+            style={{
+              background: catColor[lesson.category],
+              color: catText[lesson.category],
+              border: `1px solid ${catBorder[lesson.category]}`,
+            }}
+          >
+            {lesson.category}
+          </span>
+        </div>
+
+        <h4
+          className={`font-bold text-sm leading-snug mb-1 ${
+            isActive ? 'text-slate-900 group-hover:text-[#15009A] transition-colors' : 'text-slate-700'
+          }`}
+        >
+          {lesson.title}
+        </h4>
+
+        <p className="text-[11px] font-medium text-slate-500 mb-2 leading-relaxed">
+          {lesson.subtitle}
+        </p>
+
+        <p className="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-4">
+          {lesson.description}
+        </p>
+      </div>
+
+      <div className="pt-3 border-t border-slate-100 mt-auto">
+        {isActive ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (lesson.route) navigate(lesson.route);
+            }}
+            className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold text-white transition-all shadow-xs"
+            style={{ background: BRAND }}
+          >
+            Start Learning <ArrowRight className="w-3 h-3" />
+          </button>
+        ) : (
+          <button
+            disabled
+            className="w-full flex items-center justify-center gap-1 py-2 px-3 rounded-lg text-xs font-semibold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
+          >
+            <Lock className="w-3 h-3" />
+            <span>Coming Soon</span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ─── Main Academy Dashboard Page ──────────────────────────── */
 export const AcademyDashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const [toast, setToast] = useState<string | null>(null);
@@ -226,309 +340,292 @@ export const AcademyDashboardPage: React.FC = () => {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const showToast = (title: string) => {
-    setToast(`Chapter: ${title} — Coming Soon for 2026 Batch!`);
-    setTimeout(() => setToast(null), 3000);
+  const showToast = (name: string) => {
+    setToast(`${name} — Content is being prepared for upcoming release!`);
+    setTimeout(() => setToast(null), 3200);
   };
 
-  const scrollToChapters = () => {
-    document.getElementById('chapters')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToSubjects = () => {
+    document.getElementById('subjects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 antialiased">
-
-      {/* ── TOAST ─────────────────────────────────────────────── */}
-      <div className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-400
-                      ${toast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'}`}>
-        <div className="flex items-center gap-2.5 px-5 py-3 rounded-xl bg-slate-900 shadow-2xl border border-slate-700">
+    <div className="min-h-screen bg-white text-slate-900 antialiased font-sans">
+      <div
+        className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
+          toast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'
+        }`}
+      >
+        <div className="flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-900/95 text-white shadow-2xl border border-slate-700 backdrop-blur-md">
           <Lock className="w-4 h-4 text-amber-400 flex-shrink-0" />
-          <span className="text-sm font-medium text-white">{toast}</span>
+          <span className="text-xs sm:text-sm font-medium">{toast}</span>
         </div>
       </div>
 
-      {/* ── STICKY NAV ────────────────────────────────────────── */}
       <header
-        className="sticky top-0 z-40 transition-all duration-300"
+        className="sticky top-0 z-40 transition-all duration-300 bg-white/95 backdrop-blur-xl border-b border-slate-200"
         style={{
-          background: scrolled ? 'rgba(255,255,255,0.95)' : 'white',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: scrolled ? '1px solid #E2E8F0' : '1px solid transparent',
           boxShadow: scrolled ? '0 2px 16px rgba(0,0,0,0.06)' : 'none',
         }}
       >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
-          {/* Logo + brand */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Logo size={34} />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-6">
+          <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+              <img src={logoImg} alt="EDUiDEAL Academy Logo" className="w-full h-full object-contain" />
+            </div>
             <div>
-              <div className="font-black text-base leading-none tracking-tight" style={{ color: '#0F172A' }}>
-                EDUiDEAL
-                <span className="ml-1.5 font-black" style={{ color: BRAND }}>ACADEMY</span>
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="font-extrabold text-base tracking-tight text-slate-900">
+                  Learnova
+                </span>
+                <span className="text-[10px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded bg-indigo-50 text-[#15009A] border border-indigo-100">
+                  EDUiDEAL
+                </span>
               </div>
-              <div className="text-[9px] font-semibold tracking-[0.2em] uppercase text-slate-400 mt-0.5">
-                Education For Life
+              <div className="text-[9px] font-semibold tracking-wider uppercase text-slate-400 mt-0.5">
+                The Digitalized Learning World
               </div>
             </div>
-          </div>
+          </Link>
 
-          {/* Nav links */}
           <nav className="hidden md:flex items-center gap-6">
             {[
-              { label: 'Chapters', href: '#chapters' },
+              { label: 'Subjects', href: '#subjects' },
+              { label: 'Chemistry Lessons', href: '#chemistry-lessons' },
               { label: 'Features', href: '#features' },
               { label: 'How It Works', href: '#how' },
               { label: 'Branches', href: '#branches' },
-            ].map(n => (
-              <a key={n.label} href={n.href}
-                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+            ].map((n) => (
+              <a
+                key={n.label}
+                href={n.href}
+                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+              >
                 {n.label}
               </a>
             ))}
           </nav>
 
-          {/* CTA */}
           <button
-            onClick={scrollToChapters}
-            className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white
-                       transition-all duration-200 active:scale-95"
+            onClick={() => navigate('/chemistry')}
+            className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-200 active:scale-95 shadow-sm"
             style={{
               background: BRAND,
-              boxShadow: `0 4px 14px rgba(21,0,154,0.3)`,
+              boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
             }}
-            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.45)')}
-            onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 4px 14px rgba(21,0,154,0.3)')}
           >
-            Start Learning <ArrowRight className="w-4 h-4" />
+            Start Chemistry <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </header>
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden" style={{ background: 'white' }}>
-        {/* Subtle grid background */}
-        <div className="absolute inset-0 pointer-events-none"
+      <section className="relative overflow-hidden bg-white border-b border-slate-100">
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `linear-gradient(rgba(21,0,154,0.04) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(21,0,154,0.04) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-          }} />
+            backgroundImage: `linear-gradient(rgba(21,0,154,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(21,0,154,0.03) 1px, transparent 1px)`,
+            backgroundSize: '36px 36px',
+          }}
+        />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left text */}
-            <div>
-              {/* Tag pills */}
-              <div className="flex flex-wrap items-center gap-2 mb-6">
-                {['12th CBSE', 'Chemistry', 'Interactive'].map(t => (
-                  <span key={t} className="text-xs font-semibold px-3 py-1 rounded-full"
-                    style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}>
-                    {t}
-                  </span>
-                ))}
-              </div>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20 pb-20 sm:pb-24">
+          <div className="max-w-3xl">
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              <span
+                className="text-xs font-semibold px-3 py-1 rounded-full"
+                style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}
+              >
+                CBSE Class 12 Core
+              </span>
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                Digitalized STEM Learning
+              </span>
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                Live Curriculum
+              </span>
+            </div>
 
-              <h1 className="text-5xl sm:text-6xl font-black leading-[1.05] tracking-tight mb-6">
-                <span style={{ color: '#0F172A' }}>Master</span>
-                <br />
-                <span style={{
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight text-slate-900 mb-4">
+              Welcome to{' '}
+              <span
+                style={{
                   background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                }}>
-                  Chemistry
-                </span>
-                <br />
-                <span style={{ color: '#0F172A' }}>Interactively.</span>
-              </h1>
+                }}
+              >
+                Learnova
+              </span>
+            </h1>
 
-              <p className="text-lg text-slate-500 leading-relaxed mb-8 max-w-md">
-                The complete Class 12 CBSE Chemistry platform. Explore formulas,
-                run simulations, solve NCERT problems, and track your mastery — all in one place.
-              </p>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-700 mb-6 tracking-tight">
+              The Digitalized Learning World
+            </h2>
 
-              {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4">
-                <button
-                  onClick={scrollToChapters}
-                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white
-                             transition-all duration-200 active:scale-95"
-                  style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.35)` }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(21,0,154,0.45)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.35)'; }}
-                >
-                  Start Chapter 1 <ArrowRight className="w-5 h-5" />
-                </button>
-                <a href="#chapters"
-                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold
-                             border-2 transition-all duration-200"
-                  style={{ borderColor: '#E2E8F0', color: '#374151' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = BRAND; (e.currentTarget as HTMLElement).style.color = BRAND; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2E8F0'; (e.currentTarget as HTMLElement).style.color = '#374151'; }}
-                >
-                  View All Chapters
-                </a>
-              </div>
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl">
+              Explore interactive concepts, visual learning, formulas, notes, and practice questions designed for CBSE Class 12 students.
+            </p>
 
-              {/* Trust badges */}
-              <div className="flex flex-wrap items-center gap-5 mt-8 pt-6 border-t border-slate-100">
-                <div className="flex items-center gap-1.5 text-sm text-slate-500">
-                  <div className="w-4 h-4 rounded-full flex items-center justify-center"
-                    style={{ background: BRAND_LIGHT }}>
-                    <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
-                  </div>
-                  Free for all students
-                </div>
-                <div className="flex items-center gap-1.5 text-sm text-slate-500">
-                  <div className="w-4 h-4 rounded-full flex items-center justify-center"
-                    style={{ background: BRAND_LIGHT }}>
-                    <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
-                  </div>
-                  NCERT aligned content
-                </div>
-                <div className="flex items-center gap-1.5 text-sm text-slate-500">
-                  <div className="w-4 h-4 rounded-full flex items-center justify-center"
-                    style={{ background: BRAND_LIGHT }}>
-                    <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
-                  </div>
-                  Works on any device
-                </div>
-              </div>
+            <div className="flex flex-wrap items-center gap-4">
+              <button
+                onClick={scrollToSubjects}
+                className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white transition-all duration-200 active:scale-95 shadow-md"
+                style={{ background: BRAND, boxShadow: '0 6px 20px rgba(21,0,154,0.35)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 10px 28px rgba(21,0,154,0.45)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.35)';
+                }}
+              >
+                Choose Your Subject <ArrowRight className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={() => navigate('/chemistry')}
+                className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold border-2 transition-all duration-200 bg-white text-slate-700 hover:text-[#15009A] hover:border-[#15009A] shadow-xs"
+              >
+                <FlaskConical className="w-5 h-5 text-[#15009A]" />
+                Explore Chemistry Lessons
+              </button>
             </div>
 
-            {/* Right: Stats card */}
-            <div className="hidden lg:block">
-              <div className="rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-100/80">
-                {/* Mock chapter preview card */}
-                <div className="flex items-center gap-3 mb-6 pb-5 border-b border-slate-100">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: BRAND }}>
-                    <FlaskConical className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm text-slate-900">Chapter 1: Solutions</div>
-                    <div className="text-xs text-slate-400">8 Interactive Units</div>
-                  </div>
-                  <span className="ml-auto flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(16,185,129,0.1)', color: '#059669', border: '1px solid rgba(16,185,129,0.25)' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                    LIVE NOW
-                  </span>
+            <div className="flex flex-wrap items-center gap-6 mt-10 pt-6 border-t border-slate-100 text-xs sm:text-sm text-slate-500 font-medium">
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: BRAND_LIGHT }}>
+                  <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
                 </div>
-
-                {/* Stats grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  {stats.map(s => {
-                    const Icon = s.icon;
-                    return (
-                      <div key={s.label} className="rounded-2xl p-5 border border-slate-100"
-                        style={{ background: BRAND_LIGHT }}>
-                        <Icon className="w-5 h-5 mb-2" style={{ color: BRAND }} />
-                        <div className="text-2xl font-black mb-0.5" style={{ color: BRAND }}>{s.value}</div>
-                        <div className="text-xs text-slate-500 font-medium">{s.label}</div>
-                      </div>
-                    );
-                  })}
+                NCERT Aligned
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: BRAND_LIGHT }}>
+                  <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
                 </div>
-
-                {/* Partners row */}
-                <div className="mt-5 pt-5 border-t border-slate-100 flex items-center gap-3">
-                  <span className="text-xs text-slate-400 font-medium">In partnership with</span>
-                  <span className="text-xs font-bold px-3 py-1 rounded-lg"
-                    style={{ background: 'rgba(249,115,22,0.08)', color: '#EA580C', border: '1px solid rgba(249,115,22,0.2)' }}>
-                    Vedantu
-                  </span>
-                  <span className="text-xs font-bold px-3 py-1 rounded-lg"
-                    style={{ background: 'rgba(16,185,129,0.08)', color: '#059669', border: '1px solid rgba(16,185,129,0.2)' }}>
-                    NEET Prep
-                  </span>
+                Interactive STEM Simulations
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: BRAND_LIGHT }}>
+                  <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
                 </div>
+                CBSE 2026 Batch Ready
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── CHAPTERS GRID ────────────────────────────────────── */}
-      <section id="chapters" className="py-20 bg-slate-50">
-        <div className="max-w-6xl mx-auto px-6">
-          {/* Section header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold
-                            uppercase tracking-widest mb-4"
-              style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}>
+      <section id="subjects" className="py-20 bg-slate-50 border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-3"
+              style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}
+            >
               <GraduationCap className="w-3.5 h-3.5" />
-              12 Chemistry — All Chapters
+              CBSE Class 12 Streams
             </div>
-            <h2 className="text-4xl font-black text-slate-900 mb-3">
-              10 Chapters.{' '}
-              <span style={{
-                background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>One Platform.</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">
+              Choose Your Subject
             </h2>
-            <p className="text-slate-500 text-lg max-w-xl mx-auto">
-              Chapter 1 is fully interactive and live. More chapters launch through 2026.
+            <p className="text-slate-600 text-base sm:text-lg max-w-xl mx-auto">
+              Select your subject to explore interactive lessons, real-time formula computation, and topic-wise practice.
             </p>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {chapters.map((ch, i) => (
-              <ChapterCard key={ch.id} ch={ch} delay={i * 55} onLock={showToast} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {subjectsData.map((subj) => (
+              <SubjectCard key={subj.id} subject={subj} onLocked={showToast} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FEATURES ─────────────────────────────────────────── */}
-      <section id="features" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm font-bold tracking-widest uppercase mb-3" style={{ color: BRAND }}>
+      <section id="chemistry-lessons" className="py-20 bg-white border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+            <div>
+              <div
+                className="inline-flex items-center gap-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-3"
+                style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}
+              >
+                <FlaskConical className="w-3.5 h-3.5" />
+                Chemistry Curriculum
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
+                Chemistry — 10 Lessons
+              </h2>
+              <p className="text-slate-500 text-sm sm:text-base mt-1">
+                Lesson 1 (Solutions) is fully interactive. Lessons 2–10 are coming soon for complete curriculum coverage.
+              </p>
+            </div>
+
+            <button
+              onClick={() => navigate('/chemistry')}
+              className="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl border border-slate-200 hover:border-[#15009A] text-slate-700 hover:text-[#15009A] transition-colors self-start sm:self-auto"
+            >
+              View Dedicated Chemistry Page <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {chemistryLessonsData.map((lesson) => (
+              <LessonCard key={lesson.id} lesson={lesson} onLocked={showToast} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="features" className="py-20 bg-slate-50 border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <p className="text-xs font-bold tracking-widest uppercase mb-3 text-[#15009A]">
               PLATFORM FEATURES
             </p>
-            <h2 className="text-4xl font-black text-slate-900 mb-3">
-              Everything you need to{' '}
-              <span style={{
-                background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>excel in Chemistry</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">
+              Built for Visual & Interactive Learning
             </h2>
-            <p className="text-slate-500 text-lg">7 interactive learning tools baked into every chapter.</p>
+            <p className="text-slate-600 text-base sm:text-lg">
+              7 advanced STEM learning tools integrated directly into every curriculum unit.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((f, i) => {
               const Icon = f.icon;
               return (
-                <FeatureCard key={f.label} icon={<Icon className="w-5 h-5" />}
-                  label={f.label} desc={f.desc} delay={i * 70} />
+                <FeatureCard
+                  key={f.label}
+                  icon={<Icon className="w-5 h-5" />}
+                  label={f.label}
+                  desc={f.desc}
+                  delay={i * 60}
+                />
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────── */}
       <section id="how" className="py-20" style={{ background: BRAND_LIGHT }}>
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
-            <p className="text-sm font-bold tracking-widest uppercase mb-3" style={{ color: BRAND }}>
+            <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: BRAND }}>
               HOW IT WORKS
             </p>
-            <h2 className="text-4xl font-black text-slate-900">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
               Four simple steps to mastery
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-            {/* connector line */}
-            <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px"
-              style={{ background: `linear-gradient(90deg, ${BRAND_BORDER}, ${BRAND}, ${BRAND_BORDER})` }} />
+            <div
+              className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px pointer-events-none"
+              style={{ background: `linear-gradient(90deg, ${BRAND_BORDER}, ${BRAND}, ${BRAND_BORDER})` }}
+            />
 
             {howItWorks.map((h, i) => (
               <HowCard key={h.step} step={h.step} label={h.label} desc={h.desc} delay={i * 100} />
@@ -537,161 +634,123 @@ export const AcademyDashboardPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── CTA BANNER ───────────────────────────────────────── */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 px-10 py-10"
-            style={{
-              background: BRAND_LIGHT,
-              border: `2px solid ${BRAND_BORDER}`,
-            }}>
-            <div className="flex items-center gap-5">
-              <div className="text-5xl">🚀</div>
-              <div>
-                <h3 className="text-2xl font-black text-slate-900 mb-1">
-                  Ready to ace your Chemistry exam?
-                </h3>
-                <p className="text-slate-500">
-                  Start with Chapter 1: Solutions — fully interactive and free.
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={scrollToChapters}
-              className="flex-shrink-0 flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white
-                         text-base transition-all duration-200 active:scale-95"
-              style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.3)` }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(21,0,154,0.45)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.3)'; }}
-            >
-              Start Learning <ArrowRight className="w-5 h-5" />
-            </button>
+      <section className="py-16 bg-white border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {stats.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div
+                  key={s.label}
+                  className="rounded-2xl p-6 border border-slate-200 text-center flex flex-col items-center justify-center bg-slate-50/70"
+                >
+                  <Icon className="w-6 h-6 mb-2 text-[#15009A]" />
+                  <div className="text-3xl font-black text-[#15009A] mb-1">{s.value}</div>
+                  <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">{s.label}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────── */}
-      <footer id="branches" className="border-t border-slate-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-14">
+      <footer id="branches" className="bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {/* Brand column */}
-            <div className="md:col-span-1">
+            <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <Logo size={32} />
+                <img src={logoImg} alt="EDUiDEAL Academy" className="h-9 w-auto object-contain" />
                 <div>
-                  <div className="font-black text-sm" style={{ color: BRAND }}>EDUiDEAL ACADEMY</div>
-                  <div className="text-[10px] text-slate-400 tracking-widest uppercase">Education For Life</div>
+                  <div className="font-black text-base text-slate-900">
+                    Learnova <span style={{ color: BRAND }}>— EDUiDEAL ACADEMY</span>
+                  </div>
+                  <div className="text-[10px] text-slate-400 tracking-widest uppercase font-semibold">
+                    The Digitalized Learning World
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-slate-500 leading-relaxed mb-4">
-                The digitalised learning platform for 10th & 12th CBSE students. Interactive. Insightful. Free.
+              <p className="text-sm text-slate-500 leading-relaxed mb-4 max-w-md">
+                The digitalized STEM learning platform for CBSE Class 12 students. Interactive simulations, formula calculators, and NCERT practice questions.
               </p>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold px-2 py-1 rounded-lg"
-                  style={{ background: 'rgba(249,115,22,0.08)', color: '#EA580C', border: '1px solid rgba(249,115,22,0.2)' }}>
-                  Vedantu
-                </span>
-                <span className="text-xs font-bold px-2 py-1 rounded-lg"
-                  style={{ background: 'rgba(16,185,129,0.08)', color: '#059669', border: '1px solid rgba(16,185,129,0.2)' }}>
-                  NEET Prep
-                </span>
-              </div>
             </div>
 
-            {/* Chapters column */}
-            <div>
-              <h4 className="font-bold text-sm text-slate-900 mb-4">Chapters</h4>
-              <ul className="space-y-2">
-                {chapters.slice(0, 5).map(c => (
-                  <li key={c.id}>
-                    <span className="text-sm text-slate-500">
-                      {String(c.id).padStart(2, '0')}. {c.title}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-sm text-slate-900 mb-4">&nbsp;</h4>
-              <ul className="space-y-2 mt-0">
-                {chapters.slice(5).map(c => (
-                  <li key={c.id}>
-                    <span className="text-sm text-slate-500">
-                      {String(c.id).padStart(2, '0')}. {c.title}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Branches */}
-            <div>
-              <h4 className="font-bold text-sm text-slate-900 mb-4">Our Branches</h4>
-              <ul className="space-y-4">
-                {branches.map(b => (
-                  <li key={b.city} className="flex flex-col gap-0.5">
+            <div className="md:col-span-2">
+              <h4 className="font-bold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+                EDUiDEAL Academy Branches
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {branches.map((b) => (
+                  <div key={b.city} className="flex flex-col gap-0.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: BRAND }} />
+                      <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#15009A]" />
                       <span className="text-sm font-semibold text-slate-800">{b.city}</span>
                     </div>
-                    <span className="text-xs text-slate-400 ml-5">{b.address}</span>
-                    <a href={`tel:${b.phone}`}
-                      className="flex items-center gap-1.5 ml-5 text-sm font-semibold transition-colors"
-                      style={{ color: BRAND }}
-                      onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
-                      onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
-                      <Phone className="w-3 h-3" />{b.phone}
+                    <span className="text-xs text-slate-500 ml-5">{b.address}</span>
+                    <a
+                      href={`tel:${b.phone}`}
+                      className="flex items-center gap-1 ml-5 text-xs font-bold text-[#15009A] mt-1 hover:underline"
+                    >
+                      <Phone className="w-3 h-3" />
+                      {b.phone}
                     </a>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
 
-          {/* Bottom bar */}
-          <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-xs text-slate-400">© 2026 EDUiDEAL ACADEMY. All rights reserved.</span>
-            <a href="https://solution-webpage.vercel.app" target="_blank" rel="noreferrer"
-              className="text-xs font-medium transition-colors"
-              style={{ color: BRAND }}>
+          <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+            <span>© 2026 Learnova • EDUiDEAL ACADEMY. All rights reserved.</span>
+            <a
+              href="https://solution-webpage.vercel.app"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs font-semibold transition-colors"
+              style={{ color: BRAND }}
+            >
               solution-webpage.vercel.app
             </a>
           </div>
         </div>
       </footer>
-
     </div>
   );
 };
 
 export default AcademyDashboardPage;
 
-/* ─── Feature Card sub-component ──────────────────────────── */
+/* ─── Feature Card Sub-Component ───────────────────────────── */
 const FeatureCard: React.FC<{
-  icon: React.ReactNode; label: string; desc: string; delay: number;
+  icon: React.ReactNode;
+  label: string;
+  desc: string;
+  delay: number;
 }> = ({ icon, label, desc, delay }) => {
   const ref = useRef<HTMLDivElement>(null!);
   const visible = useInView(ref);
   const [hov, setHov] = useState(false);
   return (
-    <div ref={ref}
+    <div
+      ref={ref}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(20px)',
-        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms,
-                     box-shadow 0.2s, border-color 0.2s`,
+        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms, box-shadow 0.2s, border-color 0.2s`,
         borderColor: hov ? BRAND_BORDER : '#E2E8F0',
-        boxShadow: hov ? `0 8px 28px rgba(21,0,154,0.1)` : '0 1px 4px rgba(0,0,0,0.05)',
+        boxShadow: hov ? '0 8px 28px rgba(21,0,154,0.1)' : '0 1px 4px rgba(0,0,0,0.05)',
       }}
-      className="bg-white rounded-2xl border p-6 flex flex-col gap-3">
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
+      className="bg-white rounded-2xl border p-6 flex flex-col gap-3"
+    >
+      <div
+        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
         style={{
           background: hov ? BRAND : BRAND_LIGHT,
           color: hov ? 'white' : BRAND,
           transform: hov ? 'scale(1.1)' : 'scale(1)',
-        }}>
+        }}
+      >
         {icon}
       </div>
       <h4 className="font-bold text-sm text-slate-900">{label}</h4>
@@ -699,27 +758,34 @@ const FeatureCard: React.FC<{
     </div>
   );
 };
-
-/* ─── How Card sub-component ───────────────────────────────── */
+/* ─── How Card Sub-Component ───────────────────────────────── */
 const HowCard: React.FC<{
-  step: string; label: string; desc: string; delay: number;
+  step: string;
+  label: string;
+  desc: string;
+  delay: number;
 }> = ({ step, label, desc, delay }) => {
   const ref = useRef<HTMLDivElement>(null!);
   const visible = useInView(ref);
   return (
-    <div ref={ref}
+    <div
+      ref={ref}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(20px)',
         transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms`,
       }}
-      className="flex flex-col items-center text-center gap-4">
-      <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-black text-white relative"
-        style={{ background: BRAND, boxShadow: `0 6px 20px rgba(21,0,154,0.25)` }}>
+      className="flex flex-col items-center text-center gap-3"
+    >
+      <div
+        className="w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black text-white relative shadow-md"
+        style={{ background: BRAND, boxShadow: '0 6px 20px rgba(21,0,154,0.25)' }}
+      >
         {step}
       </div>
-      <h4 className="font-bold text-slate-900">{label}</h4>
-      <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
+      <h4 className="font-bold text-sm text-slate-900">{label}</h4>
+      <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
     </div>
   );
 };
+

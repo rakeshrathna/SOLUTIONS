@@ -37,14 +37,14 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
             <Menu className="w-5 h-5 text-slate-800" />
           </button>
 
-          <Link to="/" className="flex items-center gap-2.5 group" title="EDUiDEAL Academy — Home">
+          <Link to="/" className="flex items-center gap-2.5 group" title="Learnova — EDUiDEAL Academy">
             <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center p-0.5 shadow-xs group-hover:scale-105 transition-all overflow-hidden">
-              <img src={logoImg} alt="EDUiDEAL Academy" className="w-full h-full object-contain" />
+              <img src={logoImg} alt="EDUiDEAL Academy Logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-sm tracking-tight text-slate-900 group-hover:text-[#15009A] transition-colors">
-                  EDUiDEAL
+                  Learnova
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
                   CHEMISTRY 12
