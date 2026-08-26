@@ -407,14 +407,14 @@ export const AcademyDashboardPage: React.FC = () => {
           </nav>
 
           <button
-            onClick={() => navigate('/chemistry')}
+            onClick={scrollToSubjects}
             className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-200 active:scale-95 shadow-sm"
             style={{
               background: BRAND,
               boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
             }}
           >
-            Start Chemistry <ArrowRight className="w-4 h-4" />
+            Choose Subject <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </header>
@@ -483,14 +483,6 @@ export const AcademyDashboardPage: React.FC = () => {
                 }}
               >
                 Choose Your Subject <ArrowRight className="w-5 h-5" />
-              </button>
-
-              <button
-                onClick={() => navigate('/chemistry')}
-                className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold border-2 transition-all duration-200 bg-white text-slate-700 hover:text-[#15009A] hover:border-[#15009A] shadow-xs"
-              >
-                <FlaskConical className="w-5 h-5 text-[#15009A]" />
-                Explore Chemistry Lessons
               </button>
             </div>
 
