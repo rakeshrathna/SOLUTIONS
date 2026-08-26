@@ -41,13 +41,6 @@ const howItWorks = [
   { step: '04', label: 'Practice & Master', desc: 'Solve topic-wise NCERT questions with instant validation and track your progress to 100%.' },
 ];
 
-const stats = [
-  { value: '3', label: 'Core CBSE Subjects', icon: GraduationCap },
-  { value: '37', label: 'Class 12 Chapters', icon: BookOpen },
-  { value: '100+', label: 'Visual STEM Simulations', icon: Sparkles },
-  { value: '100%', label: 'Free for All Students', icon: Users },
-];
-
 const branches = [
   { city: 'Tiruppur (Main Branch)', address: '2nd Floor, SVE Complex, Opp. Old Bus Stand, Tiruppur - 641604', phone: '+91 98422 12345' },
   { city: 'Coimbatore Branch', address: '4th Cross, Gandhipuram, Near Women\'s Poly, Coimbatore - 641012', phone: '+91 98422 67890' },
@@ -471,27 +464,6 @@ export const AcademyDashboardPage: React.FC = () => {
             {howItWorks.map((h, i) => (
               <HowCard key={h.step} step={h.step} label={h.label} desc={h.desc} delay={i * 100} />
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Stats Section ────────────────────────────────────────── */}
-      <section className="py-16 bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {stats.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={i}
-                  className="rounded-2xl p-6 border border-slate-200 text-center flex flex-col items-center justify-center bg-slate-50/70"
-                >
-                  <Icon className="w-6 h-6 mb-2 text-[#15009A]" />
-                  <div className="text-3xl font-black text-[#15009A] mb-1">{s.value}</div>
-                  <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider">{s.label}</div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
