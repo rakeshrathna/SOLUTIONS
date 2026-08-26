@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logoImg from '../assets/logo.png';
 import {
   FlaskConical, Zap, Timer, Atom, Link2, Layers,
   Droplets, Wind, Leaf, Lock, ChevronRight,
@@ -60,14 +61,13 @@ const branches = [
 ];
 
 /* ─── Logo ─────────────────────────────────────────────────── */
-const Logo: React.FC<{ size?: number }> = ({ size = 36 }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
-    <rect width="36" height="36" rx="8" fill={BRAND} />
-    <path d="M8 12h8v14H8z" fill="white" fillOpacity=".9" rx="2" />
-    <path d="M20 12h8v14h-8z" fill="white" fillOpacity=".65" />
-    <rect x="17" y="12" width="2" height="14" fill="rgba(199,210,254,0.8)" />
-    <path d="M26 7l1.2 2.4 2.4 1.2-2.4 1.2L26 14l-1.2-2.4L22.4 10.4l2.4-1.2z" fill="#FCD34D" />
-  </svg>
+const Logo: React.FC<{ size?: number; className?: string }> = ({ size = 38, className = '' }) => (
+  <img
+    src={logoImg}
+    alt="EDUiDEAL Academy Logo"
+    style={{ height: size, width: 'auto' }}
+    className={`object-contain select-none drop-shadow-xs ${className}`}
+  />
 );
 
 /* ─── Category badge colors ────────────────────────────────── */

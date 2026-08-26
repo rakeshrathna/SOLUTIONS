@@ -29,6 +29,9 @@ export const HomePage: React.FC = () => {
       <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 shadow-card">
         <div className="relative z-10 w-full space-y-4">
           <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-indigo-50 text-[#15009A] border border-indigo-200">
+              EDUiDEAL Academy
+            </span>
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-cyan-50 text-cyan-700 border border-cyan-200">
               {chapterData.class}
             </span>

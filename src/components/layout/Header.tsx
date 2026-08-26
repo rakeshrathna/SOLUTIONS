@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useProgressStore } from '../../stores/progressStore';
 import { BookOpen, CheckSquare, BarChart2, StickyNote, Menu } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 interface HeaderProps {
   isSidebarOpen?: boolean;
@@ -36,17 +37,17 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
             <Menu className="w-5 h-5 text-slate-800" />
           </button>
 
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 shadow-sm group-hover:scale-105 transition-all">
-              <BookOpen className="w-4 h-4 text-cyan-600" />
+          <Link to="/" className="flex items-center gap-2.5 group" title="EDUiDEAL Academy — Home">
+            <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center p-0.5 shadow-xs group-hover:scale-105 transition-all overflow-hidden">
+              <img src={logoImg} alt="EDUiDEAL Academy" className="w-full h-full object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm tracking-tight text-slate-900 group-hover:text-cyan-700 transition-colors">
-                  CHEMISTRY 12
+                <span className="font-extrabold text-sm tracking-tight text-slate-900 group-hover:text-[#15009A] transition-colors">
+                  EDUiDEAL
                 </span>
-                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-cyan-50 text-cyan-700 border border-cyan-200">
-                  SOLUTIONS
+                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  CHEMISTRY 12
                 </span>
               </div>
             </div>
