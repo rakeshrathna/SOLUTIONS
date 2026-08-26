@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
-import studentsImg from '../assets/hero-students.jpg';
+import studentsImg from '../assets/hero-students.png';
 import { subjectsData, Subject } from '../data/curriculumData';
 import {
   FlaskConical, Zap, Calculator, TrendingUp, Lock,
@@ -368,14 +368,21 @@ export const AcademyDashboardPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Two Students Illustration (Clean Blend, No Container Box) */}
-            <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
+            {/* Right Column: Two Students Illustration (Clean Transparent Blend, No Card Container) */}
+            <div className="lg:col-span-5 flex items-center justify-center lg:justify-end relative">
+              {/* Subtle ambient lighting effect */}
+              <div
+                className="absolute w-72 h-72 rounded-full pointer-events-none opacity-50 blur-3xl -z-0"
+                style={{
+                  background: 'radial-gradient(circle, rgba(79, 70, 229, 0.2) 0%, rgba(21, 0, 154, 0.08) 60%, transparent 80%)',
+                }}
+              />
               <img
                 src={studentsImg}
                 alt="Learnova CBSE Class 12 Students"
-                className="w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px] h-auto object-contain select-none transition-transform duration-300 hover:scale-[1.02]"
+                className="relative z-10 w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px] h-auto object-contain select-none transition-transform duration-300 hover:scale-[1.02]"
                 style={{
-                  filter: 'drop-shadow(0 20px 30px rgba(21, 0, 154, 0.12))',
+                  filter: 'drop-shadow(0 15px 25px rgba(21, 0, 154, 0.12))',
                 }}
               />
             </div>
