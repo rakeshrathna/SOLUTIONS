@@ -67,7 +67,8 @@ const getStoredStudents = (): StudentAdminItem[] => {
   const raw = localStorage.getItem(STORAGE_KEY_STUDENTS);
   if (!raw) return [];
   try {
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
@@ -75,19 +76,6 @@ const getStoredStudents = (): StudentAdminItem[] => {
 
 const saveStoredStudents = (students: StudentAdminItem[]) => {
   localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(students));
-};
-
-const parseResponseData = async (response: Response) => {
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    try {
-      return await response.json();
-    } catch {
-      return { message: 'Invalid server JSON response' };
-    }
-  }
-  const text = await response.text();
-  return { message: text || `Server returned error (${response.status})` };
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -110,19 +98,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         body: JSON.stringify({ registerNumber: reg, password: pass }),
       });
 
-      if (response.ok) {
-        const data = await parseResponseData(response);
-        localStorage.setItem(STORAGE_KEY_TOKEN, data.token);
-        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data.user));
+      const contentType = response.headers.get('content-type');
+      if (response.ok && contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (data.token && data.user) {
+          localStorage.setItem(STORAGE_KEY_TOKEN, data.token);
+          localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data.user));
 
-        set({
-          token: data.token,
-          user: data.user,
-          isLoading: false,
-          error: null,
-        });
+          set({
+            token: data.token,
+            user: data.user,
+            isLoading: false,
+            error: null,
+          });
 
-        return true;
+          return true;
+        }
       }
     } catch {
       // Backend endpoint unavailable or running static on Vercel
@@ -204,16 +195,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const response = await fetch('/api/student/dashboard', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (response.ok) {
-        const data = await parseResponseData(response);
-        set({ studentDashboard: data, isLoading: false });
-        return;
+      const contentType = response.headers.get('content-type');
+      if (response.ok && contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (data && Array.isArray(data.subjects)) {
+          set({ studentDashboard: data, isLoading: false });
+          return;
+        }
       }
     } catch {
       // Backend fallback
     }
 
-    // Fallback for Vercel
+    // Fallback for Vercel static host
     const students = getStoredStudents();
     const currentStudent = students.find((s) => s.registerNumber === user.registerNumber);
 
@@ -249,8 +243,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        return await parseResponseData(response);
+      const contentType = response.headers.get('content-type');
+      if (response.ok && contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (data && data.registerNumber) {
+          // Sync to local state
+          const existing = getStoredStudents();
+          saveStoredStudents([data, ...existing]);
+          return data;
+        }
       }
     } catch {
       // Fallback for static host
@@ -283,14 +284,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   fetchAdminStudents: async () => {
     const { token } = get();
-    if (!token) return [];
+    if (!token) return getStoredStudents();
 
     try {
       const response = await fetch('/api/admin/students', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (response.ok) {
-        return await parseResponseData(response);
+      const contentType = response.headers.get('content-type');
+      if (response.ok && contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          saveStoredStudents(data);
+          return data;
+        }
       }
     } catch {
       // Fallback

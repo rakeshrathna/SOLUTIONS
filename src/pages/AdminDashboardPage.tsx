@@ -46,7 +46,7 @@ export const AdminDashboardPage: React.FC = () => {
   const loadStudents = async () => {
     try {
       const list = await fetchAdminStudents();
-      setStudents(list || []);
+      setStudents(Array.isArray(list) ? list : []);
     } catch {
       setStudents([]);
     }
@@ -95,7 +95,7 @@ export const AdminDashboardPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-4">
         <div className="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#15009A] border border-indigo-200 flex items-center justify-center mx-auto">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#15009A] border border-indigo-200 flex items-center justify-center mx-auto text-xl">
             🔒
           </div>
           <h2 className="text-xl font-black text-slate-900">Admin Authorization Required</h2>
@@ -113,6 +113,8 @@ export const AdminDashboardPage: React.FC = () => {
       </div>
     );
   }
+
+  const safeStudents = Array.isArray(students) ? students : [];
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased selection:bg-[#15009A] selection:text-white">
@@ -205,7 +207,7 @@ export const AdminDashboardPage: React.FC = () => {
               <div>
                 <p className="text-xs text-slate-500 font-mono">Enrolled Subjects</p>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {createdResult.enrolledSubjects.map((sub) => (
+                  {(createdResult.enrolledSubjects || []).map((sub) => (
                     <span key={sub} className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-50 text-[#15009A] font-bold border border-indigo-200">
                       {sub}
                     </span>
@@ -224,7 +226,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Users className="w-5 h-5 text-[#15009A]" />
-              <h2 className="text-lg font-extrabold text-slate-900">Registered Students ({students.length})</h2>
+              <h2 className="text-lg font-extrabold text-slate-900">Registered Students ({safeStudents.length})</h2>
             </div>
           </div>
 
@@ -240,58 +242,61 @@ export const AdminDashboardPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {students.length === 0 ? (
+                {safeStudents.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="py-8 text-center text-slate-500 text-sm font-medium">
                       No students created yet. Click "+ Add Student" above to enroll students.
                     </td>
                   </tr>
                 ) : (
-                  students.map((st) => (
-                    <tr key={st.registerNumber} className="hover:bg-slate-50 transition-colors">
-                      <td className="py-4 px-4 font-mono font-extrabold text-[#15009A]">{st.registerNumber}</td>
-                      <td className="py-4 px-4 font-bold text-slate-900">{st.studentName}</td>
-                      <td className="py-4 px-4 text-slate-600 font-medium">{st.className} ({st.board})</td>
-                      <td className="py-4 px-4">
-                        <div className="flex flex-wrap gap-1.5">
-                          {st.enrolledSubjects.includes('CHEMISTRY') ? (
-                            <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
-                              Chemistry ✓
-                            </span>
-                          ) : (
-                            <span className="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-400 border border-slate-200">
-                              Chemistry ✗
-                            </span>
-                          )}
+                  safeStudents.map((st) => {
+                    const enrolled = Array.isArray(st.enrolledSubjects) ? st.enrolledSubjects : [];
+                    return (
+                      <tr key={st.registerNumber || st.studentId} className="hover:bg-slate-50 transition-colors">
+                        <td className="py-4 px-4 font-mono font-extrabold text-[#15009A]">{st.registerNumber}</td>
+                        <td className="py-4 px-4 font-bold text-slate-900">{st.studentName}</td>
+                        <td className="py-4 px-4 text-slate-600 font-medium">{st.className} ({st.board})</td>
+                        <td className="py-4 px-4">
+                          <div className="flex flex-wrap gap-1.5">
+                            {enrolled.includes('CHEMISTRY') ? (
+                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                Chemistry ✓
+                              </span>
+                            ) : (
+                              <span className="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-400 border border-slate-200">
+                                Chemistry ✗
+                              </span>
+                            )}
 
-                          {st.enrolledSubjects.includes('PHYSICS') ? (
-                            <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200">
-                              Physics ✓
-                            </span>
-                          ) : (
-                            <span className="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-400 border border-slate-200">
-                              Physics ✗
-                            </span>
-                          )}
+                            {enrolled.includes('PHYSICS') ? (
+                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200">
+                                Physics ✓
+                              </span>
+                            ) : (
+                              <span className="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-400 border border-slate-200">
+                                Physics ✗
+                              </span>
+                            )}
 
-                          {st.enrolledSubjects.includes('MATHEMATICS') ? (
-                            <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">
-                              Mathematics ✓
-                            </span>
-                          ) : (
-                            <span className="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-400 border border-slate-200">
-                              Mathematics ✗
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-right">
-                        <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                          ACTIVE
-                        </span>
-                      </td>
-                    </tr>
-                  ))
+                            {enrolled.includes('MATHEMATICS') ? (
+                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                Mathematics ✓
+                              </span>
+                            ) : (
+                              <span className="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-400 border border-slate-200">
+                                Mathematics ✗
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-right">
+                          <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            ACTIVE
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>
