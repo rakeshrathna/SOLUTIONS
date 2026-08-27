@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
 import studentsImg from '../assets/hero-students.png';
@@ -6,17 +6,15 @@ import { subjectsData, Subject } from '../data/curriculumData';
 import { useAuthStore } from '../stores/authStore';
 import {
   FlaskConical, Zap, Calculator, TrendingUp, Lock,
-  BookOpen, BarChart2, StickyNote, CheckSquare,
-  Phone, MapPin, ArrowRight, GraduationCap,
-  Beaker, ClipboardList, Star, Users, Award, Sparkles, CheckCircle2,
-  LogIn, ShieldCheck, UserCheck, Play
+  StickyNote, CheckSquare, Phone, ArrowRight, GraduationCap,
+  Beaker, ClipboardList, Sparkles, CheckCircle2,
+  LogIn, Play, Award, BarChart2
 } from 'lucide-react';
 
 /* ─── Brand color tokens ──────────────────────────────────── */
 const BRAND = 'rgb(21,0,154)';
 const BRAND_LIGHT = 'rgba(21,0,154,0.06)';
 const BRAND_BORDER = 'rgba(21,0,154,0.18)';
-const BRAND_MED = 'rgba(21,0,154,0.12)';
 
 /* ─── Icon resolver map ───────────────────────────────────── */
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -56,11 +54,11 @@ const SubjectCard: React.FC<{
 }> = ({ subject, onLocked }) => {
   const navigate = useNavigate();
   const Icon = iconMap[subject.iconName] || FlaskConical;
-  const isActive = subject.status === 'ACTIVE';
+  const isChemistry = subject.id === 'chemistry';
 
   const handleClick = () => {
-    if (isActive && subject.route) {
-      navigate(subject.route);
+    if (isChemistry) {
+      navigate('/chemistry');
     } else {
       onLocked(subject.name);
     }
@@ -70,9 +68,9 @@ const SubjectCard: React.FC<{
     <div
       onClick={handleClick}
       className={`group relative flex flex-col justify-between rounded-3xl p-7 transition-all duration-300 border ${
-        isActive
-          ? 'bg-white border-slate-200 shadow-md hover:shadow-2xl hover:border-[#15009A] hover:-translate-y-1.5 cursor-pointer'
-          : 'bg-slate-50/80 border-slate-200/80 opacity-60 cursor-not-allowed'
+        isChemistry
+          ? 'bg-white border-emerald-300 shadow-md hover:shadow-2xl hover:border-[#15009A] hover:-translate-y-1.5 cursor-pointer ring-2 ring-emerald-500/20'
+          : 'bg-slate-50/80 border-slate-200/80 opacity-75 cursor-pointer hover:border-slate-300'
       }`}
       style={{
         minHeight: '420px',
@@ -83,29 +81,30 @@ const SubjectCard: React.FC<{
         <div className="flex items-center justify-between mb-6">
           <div
             className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 ${
-              isActive ? 'group-hover:scale-110' : ''
+              isChemistry ? 'group-hover:scale-110' : ''
             }`}
             style={{
-              background: isActive ? BRAND_LIGHT : 'rgba(100, 116, 139, 0.08)',
-              color: isActive ? BRAND : '#64748B',
-              border: `1px solid ${isActive ? BRAND_BORDER : 'rgba(100, 116, 139, 0.2)'}`,
+              background: isChemistry ? BRAND_LIGHT : 'rgba(100, 116, 139, 0.08)',
+              color: isChemistry ? BRAND : '#64748B',
+              border: `1px solid ${isChemistry ? BRAND_BORDER : 'rgba(100, 116, 139, 0.2)'}`,
             }}
           >
             <Icon className="w-7 h-7" />
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200 font-mono">
               {subject.badge}
             </span>
-            {isActive ? (
-              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                Live
+            {isChemistry ? (
+              <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center gap-1.5 shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-ping" />
+                <span>DEMO ENABLED</span>
               </span>
             ) : (
-              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1">
-                <Lock className="w-3 h-3" /> Coming Soon
+              <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1">
+                <Lock className="w-3 h-3 text-amber-600" />
+                <span>LOCKED</span>
               </span>
             )}
           </div>
@@ -114,7 +113,7 @@ const SubjectCard: React.FC<{
         {/* Title */}
         <h3
           className={`text-2xl font-black mb-3 tracking-tight ${
-            isActive ? 'text-slate-900 group-hover:text-[#15009A] transition-colors' : 'text-slate-700'
+            isChemistry ? 'text-slate-900 group-hover:text-[#15009A] transition-colors' : 'text-slate-700'
           }`}
         >
           {subject.name}
@@ -132,8 +131,8 @@ const SubjectCard: React.FC<{
               <div
                 className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{
-                  background: isActive ? BRAND_LIGHT : 'rgba(100, 116, 139, 0.1)',
-                  color: isActive ? BRAND : '#64748B',
+                  background: isChemistry ? BRAND_LIGHT : 'rgba(100, 116, 139, 0.1)',
+                  color: isChemistry ? BRAND : '#64748B',
                 }}
               >
                 <CheckCircle2 className="w-3 h-3" />
@@ -146,17 +145,18 @@ const SubjectCard: React.FC<{
 
       {/* Action CTA Button */}
       <div className="pt-4 border-t border-slate-100">
-        {isActive ? (
+        {isChemistry ? (
           <div
             className="w-full flex items-center justify-between py-3.5 px-5 rounded-xl font-bold text-sm text-white transition-all shadow-md group-hover:shadow-lg"
             style={{ background: BRAND }}
           >
-            <span>Explore {subject.name}</span>
+            <span>Explore Chemistry (Public Demo)</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </div>
         ) : (
-          <div className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-semibold text-sm text-slate-400 bg-slate-100 border border-slate-200">
-            <Lock className="w-3.5 h-3.5" /> Coming Soon
+          <div className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-semibold text-xs text-slate-500 bg-slate-100 border border-slate-200 group-hover:bg-slate-200 transition-colors">
+            <Lock className="w-3.5 h-3.5 text-amber-600" />
+            <span>Requires Student Enrollment</span>
           </div>
         )}
       </div>
@@ -171,7 +171,7 @@ export const AcademyDashboardPage: React.FC = () => {
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const showToast = (subjName: string) => {
-    setToastMsg(`${subjName} curriculum modules are currently in development and will be available soon.`);
+    setToastMsg(`${subjName} requires student enrollment. Chemistry is currently available as the public demo!`);
     setTimeout(() => setToastMsg(null), 4000);
   };
 
@@ -232,7 +232,7 @@ export const AcademyDashboardPage: React.FC = () => {
             </div>
           </a>
 
-          {/* Center Navigation Links (Platform Generic) */}
+          {/* Center Navigation Links */}
           <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((n) => (
               <a
@@ -245,19 +245,19 @@ export const AcademyDashboardPage: React.FC = () => {
             ))}
           </nav>
 
-          {/* Right Header Buttons: Try Demo + Sign In Portal */}
+          {/* Right Header Buttons: Try Demo (Scrolls to Subjects) + Sign In Portal */}
           <div className="flex items-center gap-3">
-            <Link
-              to="/solutions"
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all"
+            <button
+              onClick={scrollToSubjects}
+              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 text-indigo-600 fill-indigo-600" />
               <span>Try Demo</span>
-            </Link>
+            </button>
 
             <button
               onClick={handlePortalClick}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all duration-200 active:scale-95 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
               style={{
                 background: BRAND,
                 boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
@@ -313,19 +313,19 @@ export const AcademyDashboardPage: React.FC = () => {
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={scrollToSubjects}
-                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg"
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg cursor-pointer"
                   style={{ background: BRAND, boxShadow: '0 6px 20px rgba(21,0,154,0.35)' }}
                 >
                   Choose Your Subject <ArrowRight className="w-5 h-5" />
                 </button>
 
-                <Link
-                  to="/solutions"
-                  className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all"
+                <button
+                  onClick={scrollToSubjects}
+                  className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all cursor-pointer"
                 >
                   <Play className="w-4 h-4 text-indigo-600 fill-indigo-600" />
                   <span>Try Demo</span>
-                </Link>
+                </button>
               </div>
 
               {/* Generic Platform Trust Badges */}
@@ -372,7 +372,7 @@ export const AcademyDashboardPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── Main Subject Section ────────────────────────────────── */}
+      {/* ─── Main Subject Section (Public Demo Target) ───────────── */}
       <section id="subjects" className="py-16 sm:py-24 bg-slate-50/60 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-14">
@@ -386,7 +386,7 @@ export const AcademyDashboardPage: React.FC = () => {
               Choose Your Subject
             </h2>
             <p className="text-base text-slate-600">
-              Select a subject to access chapter-wise interactive learning modules, step-by-step formula calculators, dynamic graphs, and NCERT practice questions.
+              Select a subject below to access chapter-wise interactive learning modules. <strong className="text-[#15009A]">Chemistry</strong> is unlocked for public demo access!
             </p>
           </div>
 
