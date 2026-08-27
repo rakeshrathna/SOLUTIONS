@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
 import studentsImg from '../assets/hero-students.png';
 import { subjectsData, Subject } from '../data/curriculumData';
+import { useAuthStore } from '../stores/authStore';
 import {
   FlaskConical, Zap, Calculator, TrendingUp, Lock,
   BookOpen, BarChart2, StickyNote, CheckSquare,
   Phone, MapPin, ArrowRight, GraduationCap,
-  Beaker, ClipboardList, Star, Users, Award, Sparkles, CheckCircle2
+  Beaker, ClipboardList, Star, Users, Award, Sparkles, CheckCircle2,
+  LogIn, ShieldCheck, UserCheck, Play
 } from 'lucide-react';
 
 /* ─── Brand color tokens ──────────────────────────────────── */
@@ -46,24 +48,6 @@ const branches = [
   { city: 'KODUNGAIYUR', address: 'near Pandiyan Theatre', phone: '9790924949' },
   { city: 'AGARAM, JN.', address: 'Agaram Junction', phone: '7845977500' },
 ];
-
-/* ─── Intersection Observer hook ──────────────────────────── */
-function useInView(ref: React.RefObject<HTMLElement>) {
-  const [isInView, setIsInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-        obs.unobserve(el);
-      }
-    }, { threshold: 0.1 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [ref]);
-  return isInView;
-}
 
 /* ─── Subject Card Component ───────────────────────────────── */
 const SubjectCard: React.FC<{
@@ -182,6 +166,8 @@ const SubjectCard: React.FC<{
 
 /* ─── Main Dashboard Page ─────────────────────────────────── */
 export const AcademyDashboardPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const showToast = (subjName: string) => {
@@ -193,6 +179,16 @@ export const AcademyDashboardPage: React.FC = () => {
     const el = document.getElementById('subjects');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handlePortalClick = () => {
+    if (!user) {
+      navigate('/login');
+    } else if (user.role === 'ADMIN') {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/student/dashboard');
     }
   };
 
@@ -249,17 +245,28 @@ export const AcademyDashboardPage: React.FC = () => {
             ))}
           </nav>
 
-          {/* Primary Navbar CTA */}
-          <button
-            onClick={scrollToSubjects}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-200 active:scale-95 shadow-sm"
-            style={{
-              background: BRAND,
-              boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
-            }}
-          >
-            Choose Subject <ArrowRight className="w-4 h-4" />
-          </button>
+          {/* Right Header Buttons: Try Demo + Sign In Portal */}
+          <div className="flex items-center gap-3">
+            <Link
+              to="/solutions"
+              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all"
+            >
+              <Play className="w-3.5 h-3.5 text-indigo-600 fill-indigo-600" />
+              <span>Try Demo</span>
+            </Link>
+
+            <button
+              onClick={handlePortalClick}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all duration-200 active:scale-95 shadow-sm"
+              style={{
+                background: BRAND,
+                boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
+              }}
+            >
+              <LogIn className="w-4 h-4" />
+              <span>{user ? (user.role === 'ADMIN' ? 'Admin Portal' : 'My Dashboard') : 'Sign In Portal'}</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -278,64 +285,47 @@ export const AcademyDashboardPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Hero Text & Primary CTA */}
             <div className="lg:col-span-7">
-              {/* Badges */}
-              <div className="flex flex-wrap items-center gap-2 mb-6">
-                <span
-                  className="text-xs font-semibold px-3 py-1 rounded-full"
-                  style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}
-                >
-                  CBSE Class 12 Core
-                </span>
-                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-                  Digitalized STEM Learning
-                </span>
-                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                  Live Curriculum
-                </span>
+              {/* Institution Badge */}
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold mb-6 border"
+                style={{ background: BRAND_LIGHT, color: BRAND, borderColor: BRAND_BORDER }}
+              >
+                <GraduationCap className="w-4 h-4" />
+                <span>EDUiDEAL ACADEMY • CLASS 12 CBSE</span>
               </div>
 
               {/* Main Heading */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight text-slate-900 mb-4">
-                Welcome to{' '}
-                <span
-                  style={{
-                    background: `linear-gradient(135deg, ${BRAND} 0%, #4F46E5 100%)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  Learnova
-                </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-4">
+                Welcome to <span style={{ color: BRAND }}>Learnova</span>
               </h1>
 
               {/* Subtitle */}
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-700 mb-6 tracking-tight">
+              <p className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight mb-4">
                 The Digitalized Learning World
-              </h2>
+              </p>
 
-              {/* Short Supporting Description */}
+              {/* Supporting Description */}
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-xl">
                 Explore interactive concepts, visual learning, formulas, notes, and practice questions designed for CBSE Class 12 students.
               </p>
 
-              {/* Primary Call to Action Button */}
+              {/* Primary Call to Action Buttons */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={scrollToSubjects}
                   className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg"
                   style={{ background: BRAND, boxShadow: '0 6px 20px rgba(21,0,154,0.35)' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.boxShadow = '0 10px 28px rgba(21,0,154,0.45)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(21,0,154,0.35)';
-                  }}
                 >
                   Choose Your Subject <ArrowRight className="w-5 h-5" />
                 </button>
+
+                <Link
+                  to="/solutions"
+                  className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all"
+                >
+                  <Play className="w-4 h-4 text-indigo-600 fill-indigo-600" />
+                  <span>Try Demo</span>
+                </Link>
               </div>
 
               {/* Generic Platform Trust Badges */}
@@ -361,9 +351,8 @@ export const AcademyDashboardPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Two Students Illustration (Clean Transparent Blend, No Card Container) */}
+            {/* Right Column: Two Students Illustration */}
             <div className="lg:col-span-5 flex items-center justify-center lg:justify-end relative">
-              {/* Subtle ambient lighting effect */}
               <div
                 className="absolute w-72 h-72 rounded-full pointer-events-none opacity-50 blur-3xl -z-0"
                 style={{
@@ -383,27 +372,26 @@ export const AcademyDashboardPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── Choose Your Subject Section (3 Equal Cards) ────────── */}
-      <section id="subjects" className="py-20 bg-slate-50 border-b border-slate-200">
+      {/* ─── Main Subject Section ────────────────────────────────── */}
+      <section id="subjects" className="py-16 sm:py-24 bg-slate-50/60 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-3"
-              style={{ background: BRAND_LIGHT, color: BRAND, border: `1px solid ${BRAND_BORDER}` }}
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span
+              className="text-xs font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block border"
+              style={{ background: BRAND_LIGHT, color: BRAND, borderColor: BRAND_BORDER }}
             >
-              <GraduationCap className="w-3.5 h-3.5" />
-              CBSE Class 12 Streams
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">
+              CLASS 12 CBSE CURRICULUM
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
               Choose Your Subject
             </h2>
-            <p className="text-slate-600 text-base sm:text-lg max-w-xl mx-auto">
-              Select your subject to explore interactive lessons, real-time formula computation, and topic-wise practice.
+            <p className="text-base text-slate-600">
+              Select a subject to access chapter-wise interactive learning modules, step-by-step formula calculators, dynamic graphs, and NCERT practice questions.
             </p>
           </div>
 
-          {/* 3 Equal Subject Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* 3 Subject Cards Side-by-Side */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {subjectsData.map((subj) => (
               <SubjectCard key={subj.id} subject={subj} onLocked={showToast} />
             ))}
@@ -411,196 +399,120 @@ export const AcademyDashboardPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── Platform Features Section ───────────────────────────── */}
-      <section id="features" className="py-20 bg-white border-b border-slate-200">
+      {/* ─── Platform Features Grid ─────────────────────────────── */}
+      <section id="features" className="py-16 sm:py-24 bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <p className="text-xs font-bold tracking-widest uppercase mb-3 text-[#15009A]">
-              PLATFORM FEATURES
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">
-              Built for Visual & Interactive Learning
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-3">
+              Why Learn with Learnova?
             </h2>
-            <p className="text-slate-600 text-base sm:text-lg">
-              7 advanced STEM learning tools integrated directly into every curriculum unit.
+            <p className="text-slate-600 text-sm">
+              Our digitalized learning tools are engineered specifically for CBSE Class 12 board preparation and competitive entrance exams.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f, i) => {
-              const Icon = f.icon;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feat, i) => {
+              const IconComp = feat.icon;
               return (
-                <FeatureCard
-                  key={f.label}
-                  icon={<Icon className="w-5 h-5" />}
-                  label={f.label}
-                  desc={f.desc}
-                  delay={i * 60}
-                />
+                <div
+                  key={i}
+                  className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition-shadow"
+                >
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                    style={{ background: BRAND_LIGHT, color: BRAND }}
+                  >
+                    <IconComp className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{feat.label}</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">{feat.desc}</p>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* ─── How It Works Section ─────────────────────────────────── */}
-      <section id="how" className="py-20" style={{ background: BRAND_LIGHT }}>
+      {/* ─── How It Works Step Guide ────────────────────────────── */}
+      <section id="how" className="py-16 sm:py-24 bg-slate-50/60 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: BRAND }}>
-              HOW IT WORKS
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-              Four simple steps to mastery
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-3">
+              How It Works
             </h2>
+            <p className="text-slate-600 text-sm">
+              A structured 4-step learning path to master CBSE Class 12 concepts.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-            <div
-              className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px pointer-events-none"
-              style={{ background: `linear-gradient(90deg, ${BRAND_BORDER}, ${BRAND}, ${BRAND_BORDER})` }}
-            />
-
-            {howItWorks.map((h, i) => (
-              <HowCard key={h.step} step={h.step} label={h.label} desc={h.desc} delay={i * 100} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {howItWorks.map((hw) => (
+              <div key={hw.step} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs relative">
+                <span
+                  className="text-2xl font-black font-mono block mb-3"
+                  style={{ color: BRAND }}
+                >
+                  {hw.step}
+                </span>
+                <h3 className="text-base font-bold text-slate-900 mb-2">{hw.label}</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">{hw.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Footer ──────────────────────────────────────────────── */}
-      <footer id="branches" className="bg-white border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <img src={logoImg} alt="EDUiDEAL Academy" className="h-9 w-auto object-contain" />
+      {/* ─── Institution Branches Footer ───────────────────────── */}
+      <footer id="branches" className="bg-slate-950 text-white pt-16 pb-12 mt-auto">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-12 border-b border-slate-800">
+            {/* Brand column */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center">
+                  <img src={logoImg} alt="EDUiDEAL Logo" className="w-full h-full object-contain" />
+                </div>
                 <div>
-                  <div className="font-black text-base text-slate-900">
-                    Learnova <span style={{ color: BRAND }}>— EDUiDEAL ACADEMY</span>
-                  </div>
-                  <div className="text-[10px] text-slate-400 tracking-widest uppercase font-semibold">
-                    The Digitalized Learning World
-                  </div>
+                  <span className="font-extrabold text-xl tracking-tight text-white">Learnova</span>
+                  <p className="text-xs text-slate-400 font-mono">EDUiDEAL Academy</p>
                 </div>
               </div>
-              <p className="text-sm text-slate-500 leading-relaxed mb-4 max-w-md">
-                The digitalized STEM learning platform for CBSE Class 12 students. Interactive simulations, formula calculators, and NCERT practice questions.
+              <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                Empowering CBSE Class 12 students with interactive digitalized learning tools, STEM simulations, and comprehensive NCERT concept masteries.
               </p>
             </div>
 
-            <div className="md:col-span-2">
-              <h4 className="font-bold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+            {/* Branches column */}
+            <div className="lg:col-span-7 space-y-4">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
                 EDUiDEAL Academy Branches
-              </h4>
+              </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {branches.map((b) => (
-                  <div key={b.city} className="flex flex-col gap-0.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#15009A]" />
-                      <span className="text-sm font-semibold text-slate-800">{b.city}</span>
-                    </div>
-                    <span className="text-xs text-slate-500 ml-5">{b.address}</span>
-                    <a
-                      href={`tel:${b.phone}`}
-                      className="flex items-center gap-1 ml-5 text-xs font-bold text-[#15009A] mt-1 hover:underline"
-                    >
-                      <Phone className="w-3 h-3" />
-                      {b.phone}
-                    </a>
+                  <div key={b.city} className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                    <p className="text-xs font-bold text-indigo-400 uppercase tracking-wide font-mono">{b.city}</p>
+                    <p className="text-xs text-slate-300 font-medium">{b.address}</p>
+                    <p className="text-xs text-slate-400 font-mono flex items-center gap-1 pt-1">
+                      <Phone className="w-3 h-3 text-slate-500" />
+                      <span>{b.phone}</span>
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-            <span>© 2026 Learnova • EDUiDEAL ACADEMY. All rights reserved.</span>
-            <a
-              href="https://solution-webpage.vercel.app"
-              target="_blank"
-              rel="noreferrer"
-              className="text-xs font-semibold transition-colors"
-              style={{ color: BRAND }}
-            >
-              solution-webpage.vercel.app
-            </a>
+          <div className="pt-8 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono">
+            <div>© 2026 Learnova — The Digitalized Learning World. All rights reserved.</div>
+            <div className="flex items-center gap-4">
+              <Link to="/login" className="hover:text-white transition-colors">Portal Login</Link>
+              <span>•</span>
+              <a href="#subjects" className="hover:text-white transition-colors">Class 12 CBSE</a>
+            </div>
           </div>
         </div>
       </footer>
-    </div>
-  );
-};
-
-export default AcademyDashboardPage;
-
-/* ─── Feature Card Sub-Component ───────────────────────────── */
-const FeatureCard: React.FC<{
-  icon: React.ReactNode;
-  label: string;
-  desc: string;
-  delay: number;
-}> = ({ icon, label, desc, delay }) => {
-  const ref = useRef<HTMLDivElement>(null!);
-  const visible = useInView(ref);
-  const [hov, setHov] = useState(false);
-  return (
-    <div
-      ref={ref}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(20px)',
-        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms, box-shadow 0.2s, border-color 0.2s`,
-        borderColor: hov ? BRAND_BORDER : '#E2E8F0',
-        boxShadow: hov ? '0 8px 28px rgba(21,0,154,0.1)' : '0 1px 4px rgba(0,0,0,0.05)',
-      }}
-      className="bg-white rounded-2xl border p-6 flex flex-col gap-3"
-    >
-      <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
-        style={{
-          background: hov ? BRAND : BRAND_LIGHT,
-          color: hov ? 'white' : BRAND,
-          transform: hov ? 'scale(1.1)' : 'scale(1)',
-        }}
-      >
-        {icon}
-      </div>
-      <h4 className="font-bold text-sm text-slate-900">{label}</h4>
-      <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
-    </div>
-  );
-};
-
-/* ─── How Card Sub-Component ───────────────────────────────── */
-const HowCard: React.FC<{
-  step: string;
-  label: string;
-  desc: string;
-  delay: number;
-}> = ({ step, label, desc, delay }) => {
-  const ref = useRef<HTMLDivElement>(null!);
-  const visible = useInView(ref);
-  return (
-    <div
-      ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(20px)',
-        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms`,
-      }}
-      className="flex flex-col items-center text-center gap-3"
-    >
-      <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black text-white relative shadow-md"
-        style={{ background: BRAND, boxShadow: '0 6px 20px rgba(21,0,154,0.25)' }}
-      >
-        {step}
-      </div>
-      <h4 className="font-bold text-sm text-slate-900">{label}</h4>
-      <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
     </div>
   );
 };

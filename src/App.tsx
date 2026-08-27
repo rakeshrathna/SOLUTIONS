@@ -9,6 +9,9 @@ import { PracticePage } from './pages/PracticePage';
 import { NotesPage } from './pages/NotesPage';
 import { ProgressPage } from './pages/ProgressPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { LoginPage } from './pages/LoginPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { StudentDashboardPage } from './pages/StudentDashboardPage';
 
 export const App: React.FC = () => {
   return (
@@ -16,6 +19,11 @@ export const App: React.FC = () => {
       <Routes>
         {/* Learnova Main Dashboard */}
         <Route path="/" element={<AcademyDashboardPage />} />
+
+        {/* Authentication & PostgreSQL Managed Portals */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/student/dashboard" element={<StudentDashboardPage />} />
 
         {/* Dedicated Chemistry Lessons page */}
         <Route path="/chemistry" element={<ChemistryLessonsPage />} />
