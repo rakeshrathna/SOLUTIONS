@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore, StudentAdminItem } from '../stores/authStore';
-import { UserPlus, LogOut, CheckCircle2, Users, Sparkles, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useAuthStore, StudentAdminItem, UserInfo } from '../stores/authStore';
+import { UserPlus, LogOut, CheckCircle2, Users, Sparkles, AlertCircle } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 
 const BRAND = 'rgb(21,0,154)';
 
+const getEffectiveUser = (storeUser: UserInfo | null): UserInfo | null => {
+  if (storeUser) return storeUser;
+  const raw = localStorage.getItem('learnova_auth_user');
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
 export const AdminDashboardPage: React.FC = () => {
-  const { user, logout, createStudent, fetchAdminStudents } = useAuthStore();
+  const { user: storeUser, logout, createStudent, fetchAdminStudents } = useAuthStore();
   const navigate = useNavigate();
 
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(() => getEffectiveUser(storeUser));
   const [students, setStudents] = useState<StudentAdminItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [studentName, setStudentName] = useState('');
@@ -22,16 +34,22 @@ export const AdminDashboardPage: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user || user.role !== 'ADMIN') {
+    const active = getEffectiveUser(storeUser);
+    if (!active || active.role !== 'ADMIN') {
       navigate('/login');
       return;
     }
+    setCurrentUser(active);
     loadStudents();
-  }, [user, navigate]);
+  }, [storeUser, navigate]);
 
   const loadStudents = async () => {
-    const list = await fetchAdminStudents();
-    setStudents(list);
+    try {
+      const list = await fetchAdminStudents();
+      setStudents(list || []);
+    } catch {
+      setStudents([]);
+    }
   };
 
   const handleToggleSubject = (code: string) => {
@@ -71,8 +89,29 @@ export const AdminDashboardPage: React.FC = () => {
     navigate('/login');
   };
 
-  if (!user || user.role !== 'ADMIN') {
-    return null;
+  const effectiveAdmin = currentUser || getEffectiveUser(storeUser);
+
+  if (!effectiveAdmin || effectiveAdmin.role !== 'ADMIN') {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-4">
+        <div className="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#15009A] border border-indigo-200 flex items-center justify-center mx-auto">
+            🔒
+          </div>
+          <h2 className="text-xl font-black text-slate-900">Admin Authorization Required</h2>
+          <p className="text-xs text-slate-500 font-mono">
+            Please sign in with administrator credentials (212224040265 / htna2006) to view the admin dashboard.
+          </p>
+          <button
+            onClick={() => navigate('/login')}
+            className="w-full py-3 rounded-xl text-white font-extrabold text-xs shadow-md"
+            style={{ background: BRAND }}
+          >
+            Go to Login Portal
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -91,14 +130,14 @@ export const AdminDashboardPage: React.FC = () => {
                   ADMINISTRATION
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-mono">EDUiDEAL Academy — PostgreSQL Managed Portal</p>
+              <p className="text-xs text-slate-500 font-mono">EDUiDEAL Academy — Managed Student Portal</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-semibold text-slate-800">Admin Reg: {user.registerNumber}</p>
-              <p className="text-[11px] text-slate-500 font-mono">Role: {user.role}</p>
+              <p className="text-xs font-semibold text-slate-800">Admin Reg: {effectiveAdmin.registerNumber}</p>
+              <p className="text-[11px] text-slate-500 font-mono">Role: {effectiveAdmin.role}</p>
             </div>
             <button
               onClick={handleLogout}
@@ -121,7 +160,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="space-y-2 z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-100 text-xs font-mono font-semibold border border-white/20">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>PostgreSQL Transactional Enrollment Management</span>
+              <span>Transactional Student Enrollment Management</span>
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">
               Class 12 CBSE Student Administration
@@ -185,7 +224,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Users className="w-5 h-5 text-[#15009A]" />
-              <h2 className="text-lg font-extrabold text-slate-900">Registered Students in PostgreSQL ({students.length})</h2>
+              <h2 className="text-lg font-extrabold text-slate-900">Registered Students ({students.length})</h2>
             </div>
           </div>
 

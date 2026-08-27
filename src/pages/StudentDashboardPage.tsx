@@ -1,22 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore, UserInfo } from '../stores/authStore';
 import { BookOpen, Lock, CheckCircle2, User, LogOut, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 
 const BRAND = 'rgb(21,0,154)';
 
+const getEffectiveUser = (storeUser: UserInfo | null): UserInfo | null => {
+  if (storeUser) return storeUser;
+  const raw = localStorage.getItem('learnova_auth_user');
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
 export const StudentDashboardPage: React.FC = () => {
-  const { user, studentDashboard, fetchStudentDashboard, logout } = useAuthStore();
+  const { user: storeUser, studentDashboard, fetchStudentDashboard, logout } = useAuthStore();
   const navigate = useNavigate();
 
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(() => getEffectiveUser(storeUser));
+
   useEffect(() => {
-    if (!user) {
+    const active = getEffectiveUser(storeUser);
+    if (!active) {
       navigate('/login');
       return;
     }
+    setCurrentUser(active);
     fetchStudentDashboard();
-  }, [user, navigate]);
+  }, [storeUser, navigate]);
 
   const handleLogout = () => {
     logout();
@@ -28,6 +43,31 @@ export const StudentDashboardPage: React.FC = () => {
     const sub = studentDashboard.subjects.find((s) => s.code.toUpperCase() === code.toUpperCase());
     return sub ? sub.status : 'LOCKED';
   };
+
+  const activeUser = currentUser || getEffectiveUser(storeUser);
+
+  if (!activeUser) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-4">
+        <div className="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#15009A] border border-indigo-200 flex items-center justify-center mx-auto">
+            🎓
+          </div>
+          <h2 className="text-xl font-black text-slate-900">Student Portal Login Required</h2>
+          <p className="text-xs text-slate-500 font-mono">
+            Please sign in with your student register number & password to access your dashboard.
+          </p>
+          <button
+            onClick={() => navigate('/login')}
+            className="w-full py-3 rounded-xl text-white font-extrabold text-xs shadow-md"
+            style={{ background: BRAND }}
+          >
+            Go to Sign In Portal
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased selection:bg-[#15009A] selection:text-white">
@@ -45,14 +85,12 @@ export const StudentDashboardPage: React.FC = () => {
           </Link>
 
           <div className="flex items-center gap-4">
-            {studentDashboard && (
-              <div className="text-right hidden sm:block">
-                <p className="text-xs font-bold text-slate-900">{studentDashboard.studentName}</p>
-                <p className="text-[11px] text-[#15009A] font-mono font-bold">
-                  Reg: {studentDashboard.registerNumber} • {studentDashboard.className} ({studentDashboard.board})
-                </p>
-              </div>
-            )}
+            <div className="text-right hidden sm:block">
+              <p className="text-xs font-bold text-slate-900">{studentDashboard?.studentName || activeUser.studentName || 'Student'}</p>
+              <p className="text-[11px] text-[#15009A] font-mono font-bold">
+                Reg: {activeUser.registerNumber} • {studentDashboard?.className || 'Class 12'} ({studentDashboard?.board || 'CBSE'})
+              </p>
+            </div>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all"
@@ -77,16 +115,16 @@ export const StudentDashboardPage: React.FC = () => {
               <span>Authenticated Student Account</span>
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">
-              Welcome, {studentDashboard?.studentName || 'Student'}!
+              Welcome, {studentDashboard?.studentName || activeUser.studentName || 'Student'}!
             </h1>
             <p className="text-sm text-indigo-100/80 max-w-2xl font-mono">
-              Register Number: {studentDashboard?.registerNumber} • Curriculum: {studentDashboard?.className} {studentDashboard?.board}
+              Register Number: {activeUser.registerNumber} • Curriculum: {studentDashboard?.className || 'Class 12'} {studentDashboard?.board || 'CBSE'}
             </p>
           </div>
 
           <div className="flex items-center gap-2 bg-white/10 p-3 rounded-2xl border border-white/20 font-mono text-xs text-white font-medium">
             <ShieldCheck className="w-5 h-5 text-emerald-300" />
-            <span>PostgreSQL Authorization Active</span>
+            <span>Subject Authorization Active</span>
           </div>
         </div>
 
