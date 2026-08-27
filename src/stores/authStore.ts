@@ -38,7 +38,7 @@ interface AuthState {
   studentDashboard: StudentDashboardData | null;
   isLoading: boolean;
   error: string | null;
-  login: (registerNumber: string, password: String) => Promise<boolean>;
+  login: (registerNumber: string, password: string) => Promise<boolean>;
   logout: () => void;
   fetchStudentDashboard: () => Promise<void>;
   createStudent: (data: { studentName: string; className: string; board: string; subjects: string[] }) => Promise<StudentAdminItem>;
@@ -59,6 +59,19 @@ const getStoredUser = (): UserInfo | null => {
   }
 };
 
+const parseResponseData = async (response: Response) => {
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    try {
+      return await response.json();
+    } catch {
+      return { message: 'Invalid server JSON response' };
+    }
+  }
+  const text = await response.text();
+  return { message: text || `Server returned error (${response.status})` };
+};
+
 export const useAuthStore = create<AuthState>((set, get) => ({
   token: getStoredToken(),
   user: getStoredUser(),
@@ -75,9 +88,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         body: JSON.stringify({ registerNumber, password }),
       });
 
-      const data = await response.json();
+      const data = await parseResponseData(response);
+
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed. Please check credentials.');
+        throw new Error(data.message || 'Login failed. Invalid register number or password.');
       }
 
       localStorage.setItem('learnova_auth_token', data.token);
@@ -112,7 +126,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const response = await fetch('/api/student/dashboard', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await response.json();
+      const data = await parseResponseData(response);
       if (response.ok) {
         set({ studentDashboard: data, isLoading: false });
       } else {
@@ -136,7 +150,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       body: JSON.stringify(formData),
     });
 
-    const data = await response.json();
+    const data = await parseResponseData(response);
     if (!response.ok) {
       throw new Error(data.message || 'Failed to create student');
     }
@@ -147,11 +161,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { token } = get();
     if (!token) return [];
 
-    const response = await fetch('/api/admin/students', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (response.ok) {
-      return await response.json();
+    try {
+      const response = await fetch('/api/admin/students', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        return await parseResponseData(response);
+      }
+    } catch {
+      return [];
     }
     return [];
   },
