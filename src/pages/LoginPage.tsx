@@ -1,172 +1,176 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../stores/authStore';
-import { Lock, Key, ShieldCheck, UserCheck, ArrowRight, ArrowLeft } from 'lucide-react';
-import logoImg from '../assets/logo.png';
-
-const BRAND = 'rgb(21,0,154)';
+import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
+import logo from '../assets/eduideal-logo.png';
 
 export const LoginPage: React.FC = () => {
-  const [registerNumber, setRegisterNumber] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, isLoading, error } = useAuthStore();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!registerNumber.trim() || !password.trim()) return;
+    setError('');
+    setLoading(true);
 
-    const success = await login(registerNumber.trim(), password.trim());
-    if (success) {
-      const currentUser = useAuthStore.getState().user;
-      if (currentUser?.role === 'ADMIN') {
-        navigate('/admin/dashboard');
+    try {
+      const response = await api.post('/auth/login', {
+        username: username.trim(),
+        password: password,
+      });
+
+      const { token, role, username: authUser } = response.data;
+      login({ token, role, username: authUser });
+
+      const targetPath = role === 'ADMIN' ? '/admin/dashboard' : (role === 'STUDENT' ? '/student/dashboard' : '/');
+      navigate(targetPath);
+    } catch (err: any) {
+      console.error('Login request failed:', err);
+      if (err.response) {
+        const status = err.response.status;
+        const msg = err.response.data?.message || err.response.data?.error;
+        if (status === 401 || status === 403) {
+          setError(msg || 'Invalid username or password.');
+        } else if (msg) {
+          setError(msg);
+        } else {
+          setError(`Authentication failed (HTTP ${status}). Please check your credentials.`);
+        }
+      } else if (err.message) {
+        setError(`Network error: ${err.message}. Please check your connection.`);
       } else {
-        navigate('/student/dashboard');
+        setError('Connection failed. Please ensure backend server is running.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleAdminDemoFill = () => {
-    setRegisterNumber('212224040265');
-    setPassword('htna2006');
+  const handleQuickFill = () => {
+    setUsername('admin@eduideal.i3.in');
+    setPassword('ideal@i3-edu');
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col justify-between selection:bg-[#15009A] selection:text-white font-sans antialiased">
-      {/* ── STICKY WHITE HEADER (Matches Main Dashboard) ────────────────── */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform overflow-hidden">
-              <img src={logoImg} alt="EDUiDEAL Academy Logo" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black text-lg tracking-tight text-slate-900 group-hover:text-[#15009A] transition-colors">
-                  Learnova
-                </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  CBSE 12
-                </span>
-              </div>
-              <div className="text-[10px] text-slate-500 font-medium tracking-wide">
-                EDUiDEAL ACADEMY
-              </div>
-            </div>
-          </Link>
-
+    <div className="auth-page">
+      <div className="auth-card">
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}>
           <Link
             to="/"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition-all"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              fontSize: '0.825rem',
+              fontWeight: 600,
+              color: '#64748B',
+              textDecoration: 'none',
+              padding: '0.35rem 0.75rem',
+              borderRadius: '6px',
+              backgroundColor: '#F1F5F9',
+              transition: 'all 0.2s ease',
+            }}
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Overview</span>
+            ← Back to Home
           </Link>
         </div>
-      </header>
 
-      {/* ── MAIN LOGIN CONTAINER (White Primary, Blue Secondary) ─────────── */}
-      <main className="max-w-md w-full mx-auto px-4 py-12">
-        <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/50">
-          <div className="text-center mb-8">
-            <div
-              className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-md"
-              style={{
-                background: 'rgba(21,0,154,0.06)',
-                color: BRAND,
-                border: '1px solid rgba(21,0,154,0.18)',
-              }}
-            >
-              <Lock className="w-7 h-7" />
-            </div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Portal Authentication</h1>
-            <p className="text-sm text-slate-500 mt-1">
-              Sign in using your assigned Register Number & Password
-            </p>
+        <img src={logo} alt="EduIdeal Academy" className="auth-logo" />
+        <h1 className="auth-title">Admin & Student Portal</h1>
+        <p className="auth-subtitle">Sign in to access your EduIdeal dashboard</p>
+
+        {error && <div className="alert-error">{error}</div>}
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Username / Register Number</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g. admin@eduideal.i3.in"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           </div>
 
-          {error && (
-            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-start gap-2.5">
-              <span className="font-bold">⚠️</span>
-              <span>{error}</span>
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className="form-input"
+                placeholder="••••••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ paddingRight: '40px' }}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  color: '#64748B',
+                }}
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? '👁️' : '🙈'}
+              </button>
             </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-xs font-mono font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
-                Register Number
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. 212224040265 or 00000001"
-                  value={registerNumber}
-                  onChange={(e) => setRegisterNumber(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#15009A] focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono text-sm shadow-xs"
-                />
-                <UserCheck className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-mono font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#15009A] focus:ring-2 focus:ring-indigo-500/20 transition-all text-sm shadow-xs"
-                />
-                <Key className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3.5 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
-              style={{
-                background: BRAND,
-                boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
-              }}
-            >
-              {isLoading ? (
-                <span>Authenticating...</span>
-              ) : (
-                <>
-                  <span>Sign In</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Quick Admin Helper Button */}
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <p className="text-xs text-slate-500 mb-3 text-center font-medium">Initial Administrator Credentials Helper:</p>
-            <button
-              type="button"
-              onClick={handleAdminDemoFill}
-              className="w-full py-2.5 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-[#15009A] text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
-            >
-              <ShieldCheck className="w-4 h-4 text-[#15009A]" />
-              <span>Fill Admin: 212224040265 / htna2006</span>
-            </button>
           </div>
+
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div style={{ marginTop: '1.25rem', padding: '0.75rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '0.825rem', color: '#475569', textAlign: 'left' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+            <strong>Default Admin Credentials:</strong>
+          </div>
+          Username: <code>admin@eduideal.i3.in</code><br />
+          Password: <code>ideal@i3-edu</code>
+          <button
+            type="button"
+            onClick={handleQuickFill}
+            style={{
+              marginTop: '0.6rem',
+              width: '100%',
+              padding: '0.45rem 0.75rem',
+              backgroundColor: '#EFF6FF',
+              color: '#1D4ED8',
+              border: '1px solid #BFDBFE',
+              borderRadius: '6px',
+              fontSize: '0.785rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              transition: 'background 0.2s',
+            }}
+          >
+            ⚡ Auto-Fill Admin Login
+          </button>
         </div>
-      </main>
-
-      {/* ── FOOTER ──────────────────────────────────────────────────────── */}
-      <footer className="py-6 text-center text-xs text-slate-500 border-t border-slate-200 bg-white font-mono">
-        EDUiDEAL Academy — Learnova Digitalized Learning World © 2026
-      </footer>
+      </div>
     </div>
   );
 };
+
+export default LoginPage;
