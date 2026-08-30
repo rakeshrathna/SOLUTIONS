@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import { Lock, Key, ShieldCheck, UserCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Key, ShieldCheck, UserCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 import eduidealLogo from '../assets/eduideal-logo.png';
 
 const BRAND = '#C0222E';
@@ -59,21 +59,12 @@ export const LoginPage: React.FC = () => {
       {/* ── MAIN LOGIN CONTAINER (White Primary, Red Action) ─────────── */}
       <main className="max-w-md w-full mx-auto px-4 py-12">
         <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 shadow-xl shadow-slate-200/50">
-          <div className="text-center mb-8">
-            <div
-              className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-md"
-              style={{
-                background: 'rgba(218,67,76,0.08)',
-                color: BRAND,
-                border: '1px solid rgba(218,67,76,0.22)',
-              }}
-            >
-              <Lock className="w-7 h-7" />
-            </div>
-            <h1 className="text-2xl font-black text-black tracking-tight">Portal Authentication</h1>
-            <p className="text-sm text-[#555555] mt-1">
-              Sign in using your assigned Register Number & Password
-            </p>
+          <div className="text-center mb-8 flex flex-col items-center justify-center">
+            <img
+              src={eduidealLogo}
+              alt="EDUiDEAL Academy Logo"
+              className="h-12 sm:h-14 w-auto object-contain mx-auto"
+            />
           </div>
 
           {error && (
