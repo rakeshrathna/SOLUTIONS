@@ -47,7 +47,7 @@ export const LessonPage: React.FC = () => {
       <div className="flex items-center justify-between gap-4">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-600 hover:text-cyan-700 transition-colors font-medium"
+          className="inline-flex items-center gap-1.5 text-xs text-[#555555] hover:text-[#DA434C] transition-colors font-medium cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
           <span>Back to Chapter Directory</span>
@@ -80,12 +80,12 @@ export const LessonPage: React.FC = () => {
       </div>
 
       {/* Lesson Header Banner */}
-      <div className="w-full rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-card space-y-4">
+      <div className="w-full rounded-2xl border border-[#E5E5E5] bg-white p-6 sm:p-8 shadow-card space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded bg-cyan-50 text-cyan-700 border border-cyan-200 uppercase tracking-wider">
+          <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded bg-rose-50 text-[#DA434C] border border-rose-200 uppercase tracking-wider">
             Unit {lesson.order} of {chapterData.lessons.length}
           </span>
-          <div className="flex items-center gap-3 text-xs font-mono text-slate-500">
+          <div className="flex items-center gap-3 text-xs font-mono text-[#555555]">
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5 text-slate-400" />
               ~{lesson.estimatedTime} mins
@@ -99,7 +99,7 @@ export const LessonPage: React.FC = () => {
         </div>
 
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-black tracking-tight leading-tight">
             {lesson.title}
           </h1>
           {lesson.description && (

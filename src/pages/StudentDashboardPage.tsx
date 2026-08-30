@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore, UserInfo } from '../stores/authStore';
 import { BookOpen, Lock, CheckCircle2, User, LogOut, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
-import logoImg from '../assets/logo.png';
+import eduidealLogo from '../assets/eduideal-logo.png';
 
-const BRAND = 'rgb(21,0,154)';
+const BRAND = '#DA434C';
+const BRAND_HOVER = '#C93640';
 
 const getEffectiveUser = (storeUser: UserInfo | null): UserInfo | null => {
   if (storeUser) return storeUser;
@@ -48,18 +49,18 @@ export const StudentDashboardPage: React.FC = () => {
 
   if (!activeUser) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-4">
-        <div className="bg-white border border-slate-200 rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#15009A] border border-indigo-200 flex items-center justify-center mx-auto">
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+        <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center justify-center mx-auto">
             🎓
           </div>
-          <h2 className="text-xl font-black text-slate-900">Student Portal Login Required</h2>
-          <p className="text-xs text-slate-500 font-mono">
+          <h2 className="text-xl font-black text-black">Student Portal Login Required</h2>
+          <p className="text-xs text-[#555555] font-mono">
             Please sign in with your student register number & password to access your dashboard.
           </p>
           <button
             onClick={() => navigate('/login')}
-            className="w-full py-3 rounded-xl text-white font-extrabold text-xs shadow-md"
+            className="w-full py-3 rounded-xl text-white font-extrabold text-xs shadow-md cursor-pointer"
             style={{ background: BRAND }}
           >
             Go to Sign In Portal
@@ -70,30 +71,28 @@ export const StudentDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased selection:bg-[#15009A] selection:text-white">
+    <div className="min-h-screen bg-white text-black font-sans antialiased selection:bg-[#DA434C] selection:text-white">
       {/* ── STICKY WHITE HEADER ────────────────────────────────────────── */}
-      <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+      <header className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-xs">
-              <img src={logoImg} alt="EDUiDEAL Logo" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <span className="font-black text-lg text-slate-900">Learnova Student Portal</span>
-              <p className="text-xs text-slate-500 font-mono">EDUiDEAL Academy</p>
+            <img src={eduidealLogo} alt="EDUiDEAL Logo" className="h-8 sm:h-9 w-auto object-contain block" />
+            <div className="hidden sm:block">
+              <span className="font-black text-sm text-black">Learnova Student Portal</span>
+              <p className="text-xs text-[#555555] font-mono">EDUiDEAL Academy</p>
             </div>
           </Link>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-bold text-slate-900">{studentDashboard?.studentName || activeUser.studentName || 'Student'}</p>
-              <p className="text-[11px] text-[#15009A] font-mono font-bold">
+              <p className="text-xs font-bold text-black">{studentDashboard?.studentName || activeUser.studentName || 'Student'}</p>
+              <p className="text-[11px] text-[#DA434C] font-mono font-bold">
                 Reg: {activeUser.registerNumber} • {studentDashboard?.className || 'Class 12'} ({studentDashboard?.board || 'CBSE'})
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-[#DA434C] text-xs font-bold transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Sign Out</span>
@@ -107,17 +106,17 @@ export const StudentDashboardPage: React.FC = () => {
         {/* Student Profile Banner */}
         <div
           className="p-8 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-          style={{ background: BRAND }}
+          style={{ background: BRAND, boxShadow: '0 10px 25px -3px rgba(218, 67, 76, 0.25)' }}
         >
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-100 text-xs font-mono font-semibold border border-white/20">
-              <User className="w-3.5 h-3.5 text-cyan-300" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-mono font-semibold border border-white/20">
+              <User className="w-3.5 h-3.5 text-amber-300" />
               <span>Authenticated Student Account</span>
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">
               Welcome, {studentDashboard?.studentName || activeUser.studentName || 'Student'}!
             </h1>
-            <p className="text-sm text-indigo-100/80 max-w-2xl font-mono">
+            <p className="text-sm text-white/90 max-w-2xl font-mono">
               Register Number: {activeUser.registerNumber} • Curriculum: {studentDashboard?.className || 'Class 12'} {studentDashboard?.board || 'CBSE'}
             </p>
           </div>
@@ -130,8 +129,8 @@ export const StudentDashboardPage: React.FC = () => {
 
         {/* 3 Subject Cards Section */}
         <div className="space-y-4">
-          <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-[#15009A]" />
+          <h2 className="text-xl font-extrabold text-black flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-[#DA434C]" />
             <span>Your Enrolled Subjects</span>
           </h2>
 
@@ -144,7 +143,7 @@ export const StudentDashboardPage: React.FC = () => {
                 <div className={`p-6 rounded-3xl border transition-all flex flex-col justify-between space-y-6 ${
                   isActive
                     ? 'bg-white border-emerald-300 shadow-md hover:shadow-xl'
-                    : 'bg-slate-50 border-slate-200 opacity-70'
+                    : 'bg-[#FAFAFA] border-[#E5E5E5] opacity-70'
                 }`}>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -157,7 +156,7 @@ export const StudentDashboardPage: React.FC = () => {
                           <span>ACTIVE</span>
                         </span>
                       ) : (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-[#555555] border border-[#E5E5E5] flex items-center gap-1">
                           <Lock className="w-3.5 h-3.5" />
                           <span>LOCKED</span>
                         </span>
@@ -165,8 +164,8 @@ export const StudentDashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-bold text-slate-900">Chemistry</h3>
-                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                      <h3 className="text-2xl font-bold text-black">Chemistry</h3>
+                      <p className="text-xs text-[#555555] mt-1 leading-relaxed">
                         10 Full NCERT Units: Solutions, Electrochemistry, Kinetics, d-& f-Block, Coordination, Haloalkanes, Organic Chemistry.
                       </p>
                     </div>
@@ -176,13 +175,13 @@ export const StudentDashboardPage: React.FC = () => {
                     {isActive ? (
                       <Link
                         to="/chemistry"
-                        className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all group"
+                        className="w-full py-3 px-4 rounded-xl bg-[#DA434C] hover:bg-[#C93640] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all group cursor-pointer"
                       >
                         <span>Explore Chemistry Lessons</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     ) : (
-                      <div className="w-full py-3 px-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-400 font-mono text-xs text-center flex items-center justify-center gap-2">
+                      <div className="w-full py-3 px-4 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5] text-slate-400 font-mono text-xs text-center flex items-center justify-center gap-2">
                         <Lock className="w-4 h-4 text-slate-400" />
                         <span>Enrollment Required</span>
                       </div>
@@ -199,21 +198,21 @@ export const StudentDashboardPage: React.FC = () => {
               return (
                 <div className={`p-6 rounded-3xl border transition-all flex flex-col justify-between space-y-6 ${
                   isActive
-                    ? 'bg-white border-cyan-300 shadow-md hover:shadow-xl'
-                    : 'bg-slate-50 border-slate-200 opacity-70'
+                    ? 'bg-white border-[#E5E5E5] shadow-md hover:shadow-xl'
+                    : 'bg-[#FAFAFA] border-[#E5E5E5] opacity-70'
                 }`}>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200">
+                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200">
                         PHYSICS 12
                       </span>
                       {isActive ? (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>ACTIVE</span>
                         </span>
                       ) : (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-[#555555] border border-[#E5E5E5] flex items-center gap-1">
                           <Lock className="w-3.5 h-3.5" />
                           <span>LOCKED</span>
                         </span>
@@ -221,8 +220,8 @@ export const StudentDashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-bold text-slate-900">Physics</h3>
-                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                      <h3 className="text-2xl font-bold text-black">Physics</h3>
+                      <p className="text-xs text-[#555555] mt-1 leading-relaxed">
                         Electrostatics, Current Electricity, Magnetism, Optics, Dual Nature, Atoms & Semiconductors.
                       </p>
                     </div>
@@ -230,12 +229,12 @@ export const StudentDashboardPage: React.FC = () => {
 
                   <div>
                     {isActive ? (
-                      <div className="w-full py-3 px-4 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-800 font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
-                        <Clock className="w-4 h-4 text-cyan-600" />
+                      <div className="w-full py-3 px-4 rounded-xl bg-rose-50 border border-rose-200 text-[#DA434C] font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4 text-[#DA434C]" />
                         <span>Enrolled • Content Coming Soon</span>
                       </div>
                     ) : (
-                      <div className="w-full py-3 px-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-400 font-mono text-xs text-center flex items-center justify-center gap-2">
+                      <div className="w-full py-3 px-4 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5] text-slate-400 font-mono text-xs text-center flex items-center justify-center gap-2">
                         <Lock className="w-4 h-4 text-slate-400" />
                         <span>Enrollment Required</span>
                       </div>
@@ -252,21 +251,21 @@ export const StudentDashboardPage: React.FC = () => {
               return (
                 <div className={`p-6 rounded-3xl border transition-all flex flex-col justify-between space-y-6 ${
                   isActive
-                    ? 'bg-white border-indigo-300 shadow-md hover:shadow-xl'
-                    : 'bg-slate-50 border-slate-200 opacity-70'
+                    ? 'bg-white border-[#E5E5E5] shadow-md hover:shadow-xl'
+                    : 'bg-[#FAFAFA] border-[#E5E5E5] opacity-70'
                 }`}>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200">
                         MATHS 12
                       </span>
                       {isActive ? (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>ACTIVE</span>
                         </span>
                       ) : (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-[#555555] border border-[#E5E5E5] flex items-center gap-1">
                           <Lock className="w-3.5 h-3.5" />
                           <span>LOCKED</span>
                         </span>
@@ -274,8 +273,8 @@ export const StudentDashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-bold text-slate-900">Mathematics</h3>
-                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                      <h3 className="text-2xl font-bold text-black">Mathematics</h3>
+                      <p className="text-xs text-[#555555] mt-1 leading-relaxed">
                         Relations & Functions, Calculus, Vectors, 3D Geometry, Linear Programming & Probability.
                       </p>
                     </div>
@@ -283,12 +282,12 @@ export const StudentDashboardPage: React.FC = () => {
 
                   <div>
                     {isActive ? (
-                      <div className="w-full py-3 px-4 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-800 font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
-                        <Clock className="w-4 h-4 text-indigo-600" />
+                      <div className="w-full py-3 px-4 rounded-xl bg-rose-50 border border-rose-200 text-[#DA434C] font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4 text-[#DA434C]" />
                         <span>Enrolled • Content Coming Soon</span>
                       </div>
                     ) : (
-                      <div className="w-full py-3 px-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-400 font-mono text-xs text-center flex items-center justify-center gap-2">
+                      <div className="w-full py-3 px-4 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5] text-slate-400 font-mono text-xs text-center flex items-center justify-center gap-2">
                         <Lock className="w-4 h-4 text-slate-400" />
                         <span>Enrollment Required</span>
                       </div>

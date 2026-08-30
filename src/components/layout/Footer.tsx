@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
 
         <div className="flex items-center gap-4 text-[11px] font-medium text-slate-500">
           <span className="flex items-center gap-1.5">
-            <BookOpen className="w-3.5 h-3.5 text-[#15009A]" /> The Digitalized Learning World
+            <BookOpen className="w-3.5 h-3.5 text-[#DA434C]" /> The Digitalized Learning World
           </span>
           <span className="text-slate-300">•</span>
           <span>© 2026 Learnova • EDUiDEAL ACADEMY</span>

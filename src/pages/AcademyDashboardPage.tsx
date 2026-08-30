@@ -12,10 +12,11 @@ import {
   LogIn, Play, Award, BarChart2
 } from 'lucide-react';
 
-/* ─── Brand color tokens ──────────────────────────────────── */
-const BRAND = 'rgb(21,0,154)';
-const BRAND_LIGHT = 'rgba(21,0,154,0.06)';
-const BRAND_BORDER = 'rgba(21,0,154,0.18)';
+/* ─── Brand color tokens: EDUiDEAL Academy ────────────────── */
+const BRAND = '#DA434C';
+const BRAND_HOVER = '#C93640';
+const BRAND_LIGHT = 'rgba(218, 67, 76, 0.08)';
+const BRAND_BORDER = 'rgba(218, 67, 76, 0.22)';
 
 /* ─── Icon resolver map ───────────────────────────────────── */
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -70,8 +71,8 @@ const SubjectCard: React.FC<{
       onClick={handleClick}
       className={`group relative flex flex-col justify-between rounded-3xl p-7 transition-all duration-300 border ${
         isChemistry
-          ? 'bg-white border-emerald-300 shadow-md hover:shadow-2xl hover:border-[#15009A] hover:-translate-y-1.5 cursor-pointer ring-2 ring-emerald-500/20'
-          : 'bg-slate-50/80 border-slate-200/80 opacity-75 cursor-pointer hover:border-slate-300'
+          ? 'bg-white border-emerald-300 shadow-md hover:shadow-2xl hover:border-[#DA434C] hover:-translate-y-1.5 cursor-pointer ring-2 ring-emerald-500/20'
+          : 'bg-[#FAFAFA] border-[#E5E5E5] opacity-75 cursor-pointer hover:border-slate-300'
       }`}
       style={{
         minHeight: '420px',
@@ -86,7 +87,7 @@ const SubjectCard: React.FC<{
             }`}
             style={{
               background: isChemistry ? BRAND_LIGHT : 'rgba(100, 116, 139, 0.08)',
-              color: isChemistry ? BRAND : '#64748B',
+              color: isChemistry ? BRAND : '#555555',
               border: `1px solid ${isChemistry ? BRAND_BORDER : 'rgba(100, 116, 139, 0.2)'}`,
             }}
           >
@@ -94,7 +95,7 @@ const SubjectCard: React.FC<{
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200 font-mono">
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#FAFAFA] text-[#555555] border border-[#E5E5E5] font-mono">
               {subject.badge}
             </span>
             {isChemistry ? (
@@ -114,7 +115,7 @@ const SubjectCard: React.FC<{
         {/* Title */}
         <h3
           className={`text-2xl font-black mb-3 tracking-tight ${
-            isChemistry ? 'text-slate-900 group-hover:text-[#15009A] transition-colors' : 'text-slate-700'
+            isChemistry ? 'text-black group-hover:text-[#DA434C] transition-colors' : 'text-[#555555]'
           }`}
         >
           {subject.name}
@@ -239,9 +240,9 @@ export const AcademyDashboardPage: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={scrollToSubjects}
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-black bg-[#FAFAFA] hover:bg-slate-100 border border-[#E5E5E5] transition-all cursor-pointer"
             >
-              <Play className="w-3.5 h-3.5 text-indigo-600 fill-indigo-600" />
+              <Play className="w-3.5 h-3.5 text-[#DA434C] fill-[#DA434C]" />
               <span>Try Demo</span>
             </button>
 
@@ -250,7 +251,7 @@ export const AcademyDashboardPage: React.FC = () => {
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all duration-200 active:scale-95 shadow-sm cursor-pointer"
               style={{
                 background: BRAND,
-                boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
+                boxShadow: '0 4px 14px rgba(218,67,76,0.3)',
               }}
             >
               <LogIn className="w-4 h-4" />
@@ -261,12 +262,12 @@ export const AcademyDashboardPage: React.FC = () => {
       </header>
 
       {/* ─── Hero Section with Two Students Illustration ────────── */}
-      <section className="relative overflow-hidden bg-white border-b border-slate-100">
+      <section className="relative overflow-hidden bg-white border-b border-[#E5E5E5]">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `linear-gradient(rgba(21,0,154,0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(21,0,154,0.03) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(218,67,76,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(218,67,76,0.03) 1px, transparent 1px)`,
             backgroundSize: '36px 36px',
           }}
         />
@@ -285,17 +286,17 @@ export const AcademyDashboardPage: React.FC = () => {
               </div>
 
               {/* Main Heading */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-4">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tight leading-[1.1] mb-4">
                 Welcome to <span style={{ color: BRAND }}>Learnova</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight mb-4">
+              <p className="text-xl sm:text-2xl font-bold text-black tracking-tight mb-4">
                 The Digitalized Learning World
               </p>
 
               {/* Supporting Description */}
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-xl">
+              <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-8 max-w-xl">
                 Explore interactive concepts, visual learning, formulas, notes, and practice questions designed for CBSE Class 12 students.
               </p>
 
@@ -304,22 +305,22 @@ export const AcademyDashboardPage: React.FC = () => {
                 <button
                   onClick={scrollToSubjects}
                   className="flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold text-white transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg cursor-pointer"
-                  style={{ background: BRAND, boxShadow: '0 6px 20px rgba(21,0,154,0.35)' }}
+                  style={{ background: BRAND, boxShadow: '0 6px 20px rgba(218,67,76,0.35)' }}
                 >
                   Choose Your Subject <ArrowRight className="w-5 h-5" />
                 </button>
 
                 <button
                   onClick={scrollToSubjects}
-                  className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-black bg-[#FAFAFA] hover:bg-slate-100 border border-[#E5E5E5] transition-all cursor-pointer"
                 >
-                  <Play className="w-4 h-4 text-indigo-600 fill-indigo-600" />
+                  <Play className="w-4 h-4 text-[#DA434C] fill-[#DA434C]" />
                   <span>Try Demo</span>
                 </button>
               </div>
 
               {/* Generic Platform Trust Badges */}
-              <div className="flex flex-wrap items-center gap-6 mt-10 pt-6 border-t border-slate-100 text-xs sm:text-sm text-slate-500 font-medium">
+              <div className="flex flex-wrap items-center gap-6 mt-10 pt-6 border-t border-[#E5E5E5] text-xs sm:text-sm text-[#555555] font-medium">
                 <div className="flex items-center gap-1.5">
                   <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: BRAND_LIGHT }}>
                     <span style={{ color: BRAND, fontSize: 9, fontWeight: 800 }}>✓</span>
@@ -346,7 +347,7 @@ export const AcademyDashboardPage: React.FC = () => {
               <div
                 className="absolute w-72 h-72 rounded-full pointer-events-none opacity-50 blur-3xl -z-0"
                 style={{
-                  background: 'radial-gradient(circle, rgba(79, 70, 229, 0.2) 0%, rgba(21, 0, 154, 0.08) 60%, transparent 80%)',
+                  background: 'radial-gradient(circle, rgba(218, 67, 76, 0.15) 0%, rgba(218, 67, 76, 0.05) 60%, transparent 80%)',
                 }}
               />
               <img
@@ -354,7 +355,7 @@ export const AcademyDashboardPage: React.FC = () => {
                 alt="Learnova CBSE Class 12 Students"
                 className="relative z-10 w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[460px] h-auto object-contain select-none transition-transform duration-300 hover:scale-[1.02]"
                 style={{
-                  filter: 'drop-shadow(0 15px 25px rgba(21, 0, 154, 0.12))',
+                  filter: 'drop-shadow(0 15px 25px rgba(218, 67, 76, 0.12))',
                 }}
               />
             </div>
@@ -363,7 +364,7 @@ export const AcademyDashboardPage: React.FC = () => {
       </section>
 
       {/* ─── Main Subject Section (Public Demo Target) ───────────── */}
-      <section id="subjects" className="py-16 sm:py-24 bg-slate-50/60 border-b border-slate-200">
+      <section id="subjects" className="py-16 sm:py-24 bg-[#FAFAFA] border-b border-[#E5E5E5]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span
@@ -372,11 +373,11 @@ export const AcademyDashboardPage: React.FC = () => {
             >
               CLASS 12 CBSE CURRICULUM
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl font-black text-black tracking-tight mb-4">
               Choose Your Subject
             </h2>
-            <p className="text-base text-slate-600">
-              Select a subject below to access chapter-wise interactive learning modules. <strong className="text-[#15009A]">Chemistry</strong> is unlocked for public demo access!
+            <p className="text-base text-[#555555]">
+              Select a subject below to access chapter-wise interactive learning modules. <strong className="text-[#DA434C]">Chemistry</strong> is unlocked for public demo access!
             </p>
           </div>
 
@@ -390,13 +391,13 @@ export const AcademyDashboardPage: React.FC = () => {
       </section>
 
       {/* ─── Platform Features Grid ─────────────────────────────── */}
-      <section id="features" className="py-16 sm:py-24 bg-white border-b border-slate-200">
+      <section id="features" className="py-16 sm:py-24 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-3">
+            <h2 className="text-3xl font-black text-black tracking-tight mb-3">
               Why Learn with Learnova?
             </h2>
-            <p className="text-slate-600 text-sm">
+            <p className="text-[#555555] text-sm">
               Our digitalized learning tools are engineered specifically for CBSE Class 12 board preparation and competitive entrance exams.
             </p>
           </div>
@@ -407,7 +408,7 @@ export const AcademyDashboardPage: React.FC = () => {
               return (
                 <div
                   key={i}
-                  className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition-shadow"
+                  className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs hover:shadow-md transition-shadow"
                 >
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
@@ -415,8 +416,8 @@ export const AcademyDashboardPage: React.FC = () => {
                   >
                     <IconComp className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">{feat.label}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">{feat.desc}</p>
+                  <h3 className="text-lg font-bold text-black mb-2">{feat.label}</h3>
+                  <p className="text-xs text-[#555555] leading-relaxed">{feat.desc}</p>
                 </div>
               );
             })}
@@ -425,28 +426,28 @@ export const AcademyDashboardPage: React.FC = () => {
       </section>
 
       {/* ─── How It Works Step Guide ────────────────────────────── */}
-      <section id="how" className="py-16 sm:py-24 bg-slate-50/60 border-b border-slate-200">
+      <section id="how" className="py-16 sm:py-24 bg-[#FAFAFA] border-b border-[#E5E5E5]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-3">
+            <h2 className="text-3xl font-black text-black tracking-tight mb-3">
               How It Works
             </h2>
-            <p className="text-slate-600 text-sm">
+            <p className="text-[#555555] text-sm">
               A structured 4-step learning path to master CBSE Class 12 concepts.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {howItWorks.map((hw) => (
-              <div key={hw.step} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs relative">
+              <div key={hw.step} className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs relative">
                 <span
                   className="text-2xl font-black font-mono block mb-3"
                   style={{ color: BRAND }}
                 >
                   {hw.step}
                 </span>
-                <h3 className="text-base font-bold text-slate-900 mb-2">{hw.label}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{hw.desc}</p>
+                <h3 className="text-base font-bold text-black mb-2">{hw.label}</h3>
+                <p className="text-xs text-[#555555] leading-relaxed">{hw.desc}</p>
               </div>
             ))}
           </div>
@@ -481,7 +482,7 @@ export const AcademyDashboardPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {branches.map((b) => (
                   <div key={b.city} className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                    <p className="text-xs font-bold text-indigo-400 uppercase tracking-wide font-mono">{b.city}</p>
+                    <p className="text-xs font-bold text-[#DA434C] uppercase tracking-wide font-mono">{b.city}</p>
                     <p className="text-xs text-slate-300 font-medium">{b.address}</p>
                     <p className="text-xs text-slate-400 font-mono flex items-center gap-1 pt-1">
                       <Phone className="w-3 h-3 text-slate-500" />
@@ -496,9 +497,9 @@ export const AcademyDashboardPage: React.FC = () => {
           <div className="pt-8 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono">
             <div>© 2026 Learnova — The Digitalized Learning World. All rights reserved.</div>
             <div className="flex items-center gap-4">
-              <Link to="/login" className="hover:text-white transition-colors">Portal Login</Link>
+              <Link to="/login" className="hover:text-[#DA434C] transition-colors">Portal Login</Link>
               <span>•</span>
-              <a href="#subjects" className="hover:text-white transition-colors">Class 12 CBSE</a>
+              <a href="#subjects" className="hover:text-[#DA434C] transition-colors">Class 12 CBSE</a>
             </div>
           </div>
         </div>

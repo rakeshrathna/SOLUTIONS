@@ -43,10 +43,10 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-sm tracking-tight text-slate-900 group-hover:text-[#15009A] transition-colors">
+                <span className="font-extrabold text-sm tracking-tight text-black group-hover:text-[#DA434C] transition-colors">
                   Learnova
                 </span>
-                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
+                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-rose-50 text-[#DA434C] border border-rose-200">
                   CHEMISTRY 12
                 </span>
               </div>
@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
         </div>
 
         {/* Center: Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+        <nav className="hidden md:flex items-center gap-1 bg-[#FAFAFA] p-1 rounded-xl border border-[#E5E5E5]">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to;
             return (
@@ -64,14 +64,14 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
                 to={link.to}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-white text-cyan-700 font-semibold shadow-sm border border-slate-200'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60 border border-transparent'
+                    ? 'bg-white text-[#DA434C] font-semibold shadow-sm border border-[#E5E5E5]'
+                    : 'text-[#555555] hover:text-black hover:bg-white/60 border border-transparent'
                 }`}
               >
                 {link.icon}
                 <span>{link.label}</span>
                 {link.count !== undefined && link.count > 0 && (
-                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-cyan-100 text-cyan-800">
+                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-rose-100 text-[#DA434C]">
                     {link.count}
                   </span>
                 )}
@@ -84,11 +84,11 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
         <div className="flex items-center gap-3">
           <Link
             to="/progress"
-            className="flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 hover:border-cyan-500 transition-all text-xs"
+            className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E5E5E5] hover:border-[#DA434C] transition-all text-xs"
           >
-            <span className="text-[11px] text-slate-500 font-mono">Mastery</span>
-            <span className="font-bold text-cyan-700 font-mono">{progressPct}%</span>
-            <div className="w-5 h-5 rounded-full bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 font-mono text-[10px] font-bold">
+            <span className="text-[11px] text-[#555555] font-mono">Mastery</span>
+            <span className="font-bold text-[#DA434C] font-mono">{progressPct}%</span>
+            <div className="w-5 h-5 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-[#DA434C] font-mono text-[10px] font-bold">
               ✓
             </div>
           </Link>

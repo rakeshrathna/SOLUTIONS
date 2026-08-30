@@ -22,10 +22,10 @@ export const GlassCard: React.FC<GlassCardProps> = ({
   }[padding];
 
   const variantClasses = {
-    default: 'rounded-2xl border border-slate-200/80 bg-white shadow-card',
-    interactive: 'rounded-2xl border border-slate-200/80 bg-white shadow-card hover:border-cyan-500/50 hover:shadow-card-hover transition-all duration-200 cursor-pointer',
-    accent: 'rounded-2xl border border-cyan-500/30 bg-white shadow-glow',
-    subtle: 'rounded-2xl border border-slate-200/60 bg-slate-50/80 backdrop-blur-md'
+    default: 'rounded-2xl border border-[#E5E5E5] bg-white shadow-card',
+    interactive: 'rounded-2xl border border-[#E5E5E5] bg-white shadow-card hover:border-[#DA434C] hover:shadow-card-hover transition-all duration-200 cursor-pointer',
+    accent: 'rounded-2xl border border-[#DA434C]/30 bg-white shadow-glow',
+    subtle: 'rounded-2xl border border-[#E5E5E5] bg-[#FAFAFA] backdrop-blur-md'
   }[variant];
 
   return (

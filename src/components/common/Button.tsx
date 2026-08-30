@@ -28,13 +28,13 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     primary:
-      'bg-cyan-600 hover:bg-cyan-700 text-white shadow-sm transition-all duration-200 active:scale-[0.98]',
+      'bg-[#DA434C] hover:bg-[#C93640] text-white shadow-sm transition-all duration-200 active:scale-[0.98]',
     secondary:
-      'bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200 hover:border-slate-300 shadow-sm transition-all duration-200 active:scale-[0.98]',
+      'bg-white hover:bg-slate-50 text-black hover:text-slate-900 border border-[#E5E5E5] hover:border-slate-300 shadow-sm transition-all duration-200 active:scale-[0.98]',
     outline:
-      'bg-transparent hover:bg-cyan-50 text-cyan-700 border border-cyan-600/30 hover:border-cyan-600 transition-all duration-200 active:scale-[0.98]',
+      'bg-transparent hover:bg-rose-50 text-[#DA434C] border border-[#DA434C]/40 hover:border-[#DA434C] transition-all duration-200 active:scale-[0.98]',
     ghost:
-      'bg-transparent hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-transparent transition-all duration-200',
+      'bg-transparent hover:bg-slate-100 text-[#555555] hover:text-black border border-transparent transition-all duration-200',
     danger:
       'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 hover:border-rose-300 transition-all duration-200'
   }[variant];
@@ -43,7 +43,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       disabled={disabled || isLoading}
       className={clsx(
-        'inline-flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none focus:outline-none focus:ring-2 focus:ring-cyan-500/30',
+        'inline-flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none focus:outline-none focus:ring-2 focus:ring-[#DA434C]/30',
         sizeClasses,
         variantClasses,
         className

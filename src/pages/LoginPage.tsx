@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { Lock, Key, ShieldCheck, UserCheck, ArrowRight, ArrowLeft } from 'lucide-react';
-import logoImg from '../assets/logo.png';
+import eduidealLogo from '../assets/eduideal-logo.png';
 
-const BRAND = 'rgb(21,0,154)';
+const BRAND = '#DA434C';
+const BRAND_HOVER = '#C93640';
 
 export const LoginPage: React.FC = () => {
   const [registerNumber, setRegisterNumber] = useState('');
@@ -33,32 +34,21 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col justify-between selection:bg-[#15009A] selection:text-white font-sans antialiased">
+    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#DA434C] selection:text-white font-sans antialiased">
       {/* ── STICKY WHITE HEADER (Matches Main Dashboard) ────────────────── */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform overflow-hidden">
-              <img src={logoImg} alt="EDUiDEAL Academy Logo" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black text-lg tracking-tight text-slate-900 group-hover:text-[#15009A] transition-colors">
-                  Learnova
-                </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  CBSE 12
-                </span>
-              </div>
-              <div className="text-[10px] text-slate-500 font-medium tracking-wide">
-                EDUiDEAL ACADEMY
-              </div>
-            </div>
+            <img
+              src={eduidealLogo}
+              alt="EDUiDEAL Academy Logo"
+              className="h-8 sm:h-9 w-auto object-contain block group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           <Link
             to="/"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FAFAFA] hover:bg-slate-100 border border-[#E5E5E5] text-black text-xs font-bold transition-all"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Overview</span>
@@ -66,22 +56,22 @@ export const LoginPage: React.FC = () => {
         </div>
       </header>
 
-      {/* ── MAIN LOGIN CONTAINER (White Primary, Blue Secondary) ─────────── */}
+      {/* ── MAIN LOGIN CONTAINER (White Primary, Red Action) ─────────── */}
       <main className="max-w-md w-full mx-auto px-4 py-12">
-        <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/50">
+        <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 shadow-xl shadow-slate-200/50">
           <div className="text-center mb-8">
             <div
               className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-md"
               style={{
-                background: 'rgba(21,0,154,0.06)',
+                background: 'rgba(218,67,76,0.08)',
                 color: BRAND,
-                border: '1px solid rgba(21,0,154,0.18)',
+                border: '1px solid rgba(218,67,76,0.22)',
               }}
             >
               <Lock className="w-7 h-7" />
             </div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Portal Authentication</h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <h1 className="text-2xl font-black text-black tracking-tight">Portal Authentication</h1>
+            <p className="text-sm text-[#555555] mt-1">
               Sign in using your assigned Register Number & Password
             </p>
           </div>
@@ -95,7 +85,7 @@ export const LoginPage: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-mono font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
+              <label className="block text-xs font-mono font-bold text-black mb-1.5 uppercase tracking-wider">
                 Register Number
               </label>
               <div className="relative">
@@ -105,14 +95,14 @@ export const LoginPage: React.FC = () => {
                   placeholder="e.g. 212224040265 or 00000001"
                   value={registerNumber}
                   onChange={(e) => setRegisterNumber(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#15009A] focus:ring-2 focus:ring-indigo-500/20 transition-all font-mono text-sm shadow-xs"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#DA434C] focus:ring-2 focus:ring-[#DA434C]/20 transition-all font-mono text-sm shadow-xs"
                 />
                 <UserCheck className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-mono font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
+              <label className="block text-xs font-mono font-bold text-black mb-1.5 uppercase tracking-wider">
                 Password
               </label>
               <div className="relative">
@@ -122,7 +112,7 @@ export const LoginPage: React.FC = () => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#15009A] focus:ring-2 focus:ring-indigo-500/20 transition-all text-sm shadow-xs"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#DA434C] focus:ring-2 focus:ring-[#DA434C]/20 transition-all text-sm shadow-xs"
                 />
                 <Key className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
               </div>
@@ -131,10 +121,10 @@ export const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
+              className="w-full py-3.5 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 group disabled:opacity-50 cursor-pointer"
               style={{
                 background: BRAND,
-                boxShadow: '0 4px 14px rgba(21,0,154,0.3)',
+                boxShadow: '0 4px 14px rgba(218,67,76,0.3)',
               }}
             >
               {isLoading ? (
@@ -149,14 +139,14 @@ export const LoginPage: React.FC = () => {
           </form>
 
           {/* Quick Admin Helper Button */}
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <p className="text-xs text-slate-500 mb-3 text-center font-medium">Initial Administrator Credentials Helper:</p>
+          <div className="mt-8 pt-6 border-t border-[#E5E5E5]">
+            <p className="text-xs text-[#555555] mb-3 text-center font-medium">Initial Administrator Credentials Helper:</p>
             <button
               type="button"
               onClick={handleAdminDemoFill}
-              className="w-full py-2.5 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100/80 border border-indigo-200 text-[#15009A] text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+              className="w-full py-2.5 px-3 rounded-xl bg-rose-50/60 hover:bg-rose-100/80 border border-rose-200 text-[#DA434C] text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
             >
-              <ShieldCheck className="w-4 h-4 text-[#15009A]" />
+              <ShieldCheck className="w-4 h-4 text-[#DA434C]" />
               <span>Fill Admin: 212224040265 / htna2006</span>
             </button>
           </div>
@@ -164,7 +154,7 @@ export const LoginPage: React.FC = () => {
       </main>
 
       {/* ── FOOTER ──────────────────────────────────────────────────────── */}
-      <footer className="py-6 text-center text-xs text-slate-500 border-t border-slate-200 bg-white font-mono">
+      <footer className="py-6 text-center text-xs text-[#555555] border-t border-[#E5E5E5] bg-white font-mono">
         EDUiDEAL Academy — Learnova Digitalized Learning World © 2026
       </footer>
     </div>
