@@ -38,7 +38,7 @@ export const graphsData: Record<string, GraphConfig> = {
           { x: 0.0175, y: 700 },
           { x: 0.0190, y: 760 }
         ],
-        color: '#DA434C'
+        color: '#C0222E'
       }
     ],
     controls: [
@@ -88,7 +88,7 @@ export const graphsData: Record<string, GraphConfig> = {
         y: 600,
         label: 'A',
         position: 'right',
-        color: '#DA434C'
+        color: '#C0222E'
       }
     ],
     annotations: [
@@ -124,7 +124,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'p₁ = p₁⁰ (1 - x₂)',
         formula: 'p1_0 * (1 - x2)',
-        color: '#DA434C'
+        color: '#C0222E'
       },
       {
         name: 'p₂ = p₂⁰ · x₂',
@@ -270,7 +270,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'Actual Total Pressure (Negative Deviation)',
         formula: 'p1_0 * (1 - x2) + p2_0 * x2 - deviation * x2 * (1 - x2)',
-        color: '#DA434C'
+        color: '#C0222E'
       }
     ],
     controls: [
@@ -334,7 +334,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'Pure Solvent (Water)',
         formula: 'Math.exp(12.5 - 4660 / T)',
-        color: '#DA434C'
+        color: '#C0222E'
       },
       {
         name: 'Solution (with Non-Volatile Solute)',
@@ -364,7 +364,7 @@ export const graphsData: Record<string, GraphConfig> = {
         type: 'verticalLine',
         x: 373.15,
         label: 'T_b⁰ = 373.15 K (Pure Solvent)',
-        color: '#DA434C'
+        color: '#C0222E'
       }
     ]
   },
@@ -392,7 +392,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'Liquid Solvent',
         formula: 'Math.exp(10.5 - 2800 / T)',
-        color: '#DA434C'
+        color: '#C0222E'
       },
       {
         name: 'Frozen Solid Solvent (Ice)',
@@ -421,7 +421,7 @@ export const graphsData: Record<string, GraphConfig> = {
         type: 'verticalLine',
         x: 273.15,
         label: 'T_f⁰ = 273.15 K (Pure Solvent)',
-        color: '#DA434C'
+        color: '#C0222E'
       }
     ]
   },
@@ -454,7 +454,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'ΔT_f = i · K_f · m (Water K_f=1.86)',
         formula: 'i * 1.86 * m',
-        color: '#DA434C'
+        color: '#C0222E'
       }
     ],
     controls: [
@@ -497,7 +497,7 @@ export const graphsData: Record<string, GraphConfig> = {
       {
         name: 'NaCl (n = 2, i → 2.0)',
         formula: '2 - 0.13 * Math.sqrt(m)',
-        color: '#DA434C'
+        color: '#C0222E'
       },
       {
         name: 'MgSO₄ (n = 2, 2:2 salt, i → 2.0)',
@@ -570,7 +570,7 @@ export const graphsData: Record<string, GraphConfig> = {
         y: 2.0,
         label: 'i = 2',
         position: 'right',
-        color: '#DA434C'
+        color: '#C0222E'
       },
       {
         x: 0,

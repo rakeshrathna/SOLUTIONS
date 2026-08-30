@@ -14,12 +14,12 @@ export default {
         'slate-dark': '#E5E5E5',
         'muted': '#555555',
         'muted-dark': '#777777',
-        'brand-primary': '#DA434C',
-        'brand-hover': '#C93640',
-        'brand-light': 'rgba(218, 67, 76, 0.08)',
-        'cyan-glow': '#DA434C',
+        'brand-primary': '#C0222E',
+        'brand-hover': '#A61B26',
+        'brand-light': 'rgba(192, 34, 46, 0.08)',
+        'cyan-glow': '#C0222E',
         'cyan-bright': '#EF4444',
-        'cyan-dark': '#C93640',
+        'cyan-dark': '#A61B26',
         cyan: {
           50: '#FEF2F2',
           100: '#FEE2E2',
@@ -27,10 +27,10 @@ export default {
           300: '#FCA5A5',
           400: '#F87171',
           500: '#EF4444',
-          600: '#DA434C', // EDUiDEAL Brand Red
-          700: '#C93640', // EDUiDEAL Red Hover
-          800: '#991B1B',
-          900: '#7F1D1D',
+          600: '#C0222E', // EDUiDEAL Darker Brand Red
+          700: '#A61B26', // EDUiDEAL Red Hover
+          800: '#8E141E',
+          900: '#721018',
           950: '#450A0A',
         },
         brand: {
@@ -40,10 +40,10 @@ export default {
           300: '#FCA5A5',
           400: '#F87171',
           500: '#EF4444',
-          600: '#DA434C', // EDUiDEAL Brand Red
-          700: '#C93640', // EDUiDEAL Red Hover
-          800: '#991B1B',
-          900: '#7F1D1D',
+          600: '#C0222E', // EDUiDEAL Darker Brand Red
+          700: '#A61B26', // EDUiDEAL Red Hover
+          800: '#8E141E',
+          900: '#721018',
           950: '#450A0A',
         },
         surface: {
@@ -65,9 +65,9 @@ export default {
       },
       boxShadow: {
         'card': '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03)',
-        'card-hover': '0 10px 25px -3px rgba(218, 67, 76, 0.15), 0 4px 10px -2px rgba(0, 0, 0, 0.04)',
-        'glow': '0 0 30px -5px rgba(218, 67, 76, 0.15)',
-        'glow-strong': '0 0 25px rgba(218, 67, 76, 0.25)',
+        'card-hover': '0 10px 25px -3px rgba(192, 34, 46, 0.15), 0 4px 10px -2px rgba(0, 0, 0, 0.04)',
+        'glow': '0 0 30px -5px rgba(192, 34, 46, 0.15)',
+        'glow-strong': '0 0 25px rgba(192, 34, 46, 0.25)',
       },
       animation: {
         'fade-in': 'fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1)',

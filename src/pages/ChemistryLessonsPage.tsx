@@ -10,11 +10,11 @@ import {
 } from 'lucide-react';
 
 /* ─── Brand Colors: EDUiDEAL Academy ──────────────────────── */
-const BRAND = '#DA434C';
-const BRAND_HOVER = '#C93640';
-const BRAND_LIGHT = 'rgba(218, 67, 76, 0.08)';
-const BRAND_BORDER = 'rgba(218, 67, 76, 0.22)';
-const BRAND_MED = 'rgba(218, 67, 76, 0.12)';
+const BRAND = '#C0222E';
+const BRAND_HOVER = '#A61B26';
+const BRAND_LIGHT = 'rgba(192, 34, 46, 0.08)';
+const BRAND_BORDER = 'rgba(192, 34, 46, 0.22)';
+const BRAND_MED = 'rgba(192, 34, 46, 0.12)';
 
 /* ─── Icon resolver map ───────────────────────────────────── */
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -30,7 +30,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 const catStyles: Record<string, { bg: string; text: string; border: string }> = {
-  Physical: { bg: 'rgba(218, 67, 76, 0.08)', text: BRAND, border: 'rgba(218, 67, 76, 0.2)' },
+  Physical: { bg: 'rgba(192, 34, 46, 0.08)', text: BRAND, border: 'rgba(192, 34, 46, 0.2)' },
   Inorganic: { bg: 'rgba(5,150,105,0.08)', text: '#047857', border: 'rgba(5,150,105,0.2)' },
   Organic: { bg: 'rgba(217,119,6,0.08)', text: '#B45309', border: 'rgba(217,119,6,0.2)' },
 };
@@ -208,7 +208,7 @@ export const ChemistryLessonsPage: React.FC = () => {
                 placeholder="Search chemistry lessons..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-white border border-[#E5E5E5] text-xs text-black placeholder:text-[#777777] focus:outline-none focus:border-[#DA434C] focus:ring-2 focus:ring-[#DA434C]/20 transition-all"
+                className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-white border border-[#E5E5E5] text-xs text-black placeholder:text-[#777777] focus:outline-none focus:border-[#C0222E] focus:ring-2 focus:ring-[#C0222E]/20 transition-all"
               />
             </div>
           </div>
@@ -236,7 +236,7 @@ export const ChemistryLessonsPage: React.FC = () => {
                   }}
                   className={`group relative rounded-2xl border p-6 flex flex-col justify-between transition-all duration-200 select-none ${
                     isActive
-                      ? 'bg-white border-[#E5E5E5] hover:border-[#DA434C] hover:shadow-xl hover:shadow-red-900/5 cursor-pointer'
+                      ? 'bg-white border-[#E5E5E5] hover:border-[#C0222E] hover:shadow-xl hover:shadow-red-900/5 cursor-pointer'
                       : 'bg-[#FAFAFA]/60 border-[#E5E5E5] opacity-55 cursor-not-allowed'
                   }`}
                   style={{
@@ -294,7 +294,7 @@ export const ChemistryLessonsPage: React.FC = () => {
                     {/* Title */}
                     <h3
                       className={`text-lg font-bold tracking-tight mb-1.5 ${
-                        isActive ? 'text-black group-hover:text-[#DA434C] transition-colors' : 'text-[#555555]'
+                        isActive ? 'text-black group-hover:text-[#C0222E] transition-colors' : 'text-[#555555]'
                       }`}
                     >
                       {lesson.title}
@@ -382,11 +382,11 @@ export const ChemistryLessonsPage: React.FC = () => {
                 {branches.map((b) => (
                   <div key={b.city} className="p-3 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5]">
                     <div className="flex items-center gap-1 text-xs font-bold text-black">
-                      <MapPin className="w-3 h-3 text-[#DA434C]" />
+                      <MapPin className="w-3 h-3 text-[#C0222E]" />
                       <span>{b.city}</span>
                     </div>
                     <div className="text-[11px] text-[#555555] mt-0.5">{b.address}</div>
-                    <div className="text-[11px] font-semibold text-[#DA434C] mt-1">{b.phone}</div>
+                    <div className="text-[11px] font-semibold text-[#C0222E] mt-1">{b.phone}</div>
                   </div>
                 ))}
               </div>

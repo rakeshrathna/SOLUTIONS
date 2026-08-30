@@ -4,8 +4,8 @@ import { useAuthStore, UserInfo } from '../stores/authStore';
 import { BookOpen, Lock, CheckCircle2, User, LogOut, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import eduidealLogo from '../assets/eduideal-logo.png';
 
-const BRAND = '#DA434C';
-const BRAND_HOVER = '#C93640';
+const BRAND = '#C0222E';
+const BRAND_HOVER = '#A61B26';
 
 const getEffectiveUser = (storeUser: UserInfo | null): UserInfo | null => {
   if (storeUser) return storeUser;
@@ -51,7 +51,7 @@ export const StudentDashboardPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
         <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center justify-center mx-auto">
+          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#C0222E] border border-rose-200 flex items-center justify-center mx-auto">
             🎓
           </div>
           <h2 className="text-xl font-black text-black">Student Portal Login Required</h2>
@@ -71,7 +71,7 @@ export const StudentDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans antialiased selection:bg-[#DA434C] selection:text-white">
+    <div className="min-h-screen bg-white text-black font-sans antialiased selection:bg-[#C0222E] selection:text-white">
       {/* ── STICKY WHITE HEADER ────────────────────────────────────────── */}
       <header className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -86,13 +86,13 @@ export const StudentDashboardPage: React.FC = () => {
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
               <p className="text-xs font-bold text-black">{studentDashboard?.studentName || activeUser.studentName || 'Student'}</p>
-              <p className="text-[11px] text-[#DA434C] font-mono font-bold">
+              <p className="text-[11px] text-[#C0222E] font-mono font-bold">
                 Reg: {activeUser.registerNumber} • {studentDashboard?.className || 'Class 12'} ({studentDashboard?.board || 'CBSE'})
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-[#DA434C] text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-[#C0222E] text-xs font-bold transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Sign Out</span>
@@ -106,7 +106,7 @@ export const StudentDashboardPage: React.FC = () => {
         {/* Student Profile Banner */}
         <div
           className="p-8 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-          style={{ background: BRAND, boxShadow: '0 10px 25px -3px rgba(218, 67, 76, 0.25)' }}
+          style={{ background: BRAND, boxShadow: '0 10px 25px -3px rgba(192, 34, 46, 0.25)' }}
         >
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-mono font-semibold border border-white/20">
@@ -130,7 +130,7 @@ export const StudentDashboardPage: React.FC = () => {
         {/* 3 Subject Cards Section */}
         <div className="space-y-4">
           <h2 className="text-xl font-extrabold text-black flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-[#DA434C]" />
+            <BookOpen className="w-5 h-5 text-[#C0222E]" />
             <span>Your Enrolled Subjects</span>
           </h2>
 
@@ -175,7 +175,7 @@ export const StudentDashboardPage: React.FC = () => {
                     {isActive ? (
                       <Link
                         to="/chemistry"
-                        className="w-full py-3 px-4 rounded-xl bg-[#DA434C] hover:bg-[#C93640] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all group cursor-pointer"
+                        className="w-full py-3 px-4 rounded-xl bg-[#C0222E] hover:bg-[#A61B26] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all group cursor-pointer"
                       >
                         <span>Explore Chemistry Lessons</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -203,11 +203,11 @@ export const StudentDashboardPage: React.FC = () => {
                 }`}>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200">
+                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-50 text-[#C0222E] border border-rose-200">
                         PHYSICS 12
                       </span>
                       {isActive ? (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-[#C0222E] border border-rose-200 flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>ACTIVE</span>
                         </span>
@@ -229,8 +229,8 @@ export const StudentDashboardPage: React.FC = () => {
 
                   <div>
                     {isActive ? (
-                      <div className="w-full py-3 px-4 rounded-xl bg-rose-50 border border-rose-200 text-[#DA434C] font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
-                        <Clock className="w-4 h-4 text-[#DA434C]" />
+                      <div className="w-full py-3 px-4 rounded-xl bg-rose-50 border border-rose-200 text-[#C0222E] font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4 text-[#C0222E]" />
                         <span>Enrolled • Content Coming Soon</span>
                       </div>
                     ) : (
@@ -256,11 +256,11 @@ export const StudentDashboardPage: React.FC = () => {
                 }`}>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200">
+                      <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-rose-50 text-[#C0222E] border border-rose-200">
                         MATHS 12
                       </span>
                       {isActive ? (
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center gap-1">
+                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-[#C0222E] border border-rose-200 flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>ACTIVE</span>
                         </span>
@@ -282,8 +282,8 @@ export const StudentDashboardPage: React.FC = () => {
 
                   <div>
                     {isActive ? (
-                      <div className="w-full py-3 px-4 rounded-xl bg-rose-50 border border-rose-200 text-[#DA434C] font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
-                        <Clock className="w-4 h-4 text-[#DA434C]" />
+                      <div className="w-full py-3 px-4 rounded-xl bg-rose-50 border border-rose-200 text-[#C0222E] font-mono text-xs font-bold text-center flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4 text-[#C0222E]" />
                         <span>Enrolled • Content Coming Soon</span>
                       </div>
                     ) : (

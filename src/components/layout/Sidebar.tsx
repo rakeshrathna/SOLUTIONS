@@ -35,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         {/* Sidebar Header */}
         <div className="p-4 border-b border-[#E5E5E5] flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-black">
-            <Layers className="w-3.5 h-3.5 text-[#DA434C]" />
+            <Layers className="w-3.5 h-3.5 text-[#C0222E]" />
             <span>Curriculum Units</span>
           </div>
           <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-[#FAFAFA] text-[#555555] border border-[#E5E5E5]">
@@ -58,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 onClick={onClose}
                 className={`flex flex-col gap-2 p-3 rounded-xl border transition-all duration-150 group ${
                   isActive
-                    ? 'bg-rose-50/70 border-[#DA434C] shadow-sm'
+                    ? 'bg-rose-50/70 border-[#C0222E] shadow-sm'
                     : 'bg-white border-[#E5E5E5] hover:border-slate-300 hover:bg-[#FAFAFA]'
                 }`}
               >
@@ -69,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                         isCompleted
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : isActive
-                          ? 'bg-[#DA434C] text-white font-bold'
+                          ? 'bg-[#C0222E] text-white font-bold'
                           : 'bg-slate-100 text-slate-600'
                       }`}
                     >
@@ -77,7 +77,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     </span>
                     <h4
                       className={`text-xs font-medium line-clamp-1 ${
-                        isActive ? 'text-[#DA434C] font-semibold' : 'text-black group-hover:text-black'
+                        isActive ? 'text-[#C0222E] font-semibold' : 'text-black group-hover:text-black'
                       }`}
                     >
                       {lesson.title}
@@ -88,8 +88,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                   ) : (
                     <ChevronRight
-                      className={`w-3.5 h-3.5 text-slate-400 group-hover:text-[#DA434C] transition-colors shrink-0 ${
-                        isActive ? 'text-[#DA434C]' : ''
+                      className={`w-3.5 h-3.5 text-slate-400 group-hover:text-[#C0222E] transition-colors shrink-0 ${
+                        isActive ? 'text-[#C0222E]' : ''
                       }`}
                     />
                   )}
@@ -105,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     <span>{lessonProgress?.completedSections.length || 0}/{lesson.sections.length}</span>
                     <div className="w-12 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#DA434C] rounded-full transition-all"
+                        className="h-full bg-[#C0222E] rounded-full transition-all"
                         style={{ width: `${progressPct}%` }}
                       />
                     </div>
@@ -124,11 +124,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             className="w-full py-2 px-3 rounded-xl bg-white hover:bg-slate-50 border border-[#E5E5E5] text-black text-xs font-semibold flex items-center justify-between transition-all shadow-sm"
           >
             <div className="flex items-center gap-2">
-              <StickyNote className="w-3.5 h-3.5 text-[#DA434C]" />
+              <StickyNote className="w-3.5 h-3.5 text-[#C0222E]" />
               <span>Saved Notes</span>
             </div>
             {notesCount > 0 && (
-              <span className="text-[10px] font-mono font-bold px-2 py-0.2 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200">
+              <span className="text-[10px] font-mono font-bold px-2 py-0.2 rounded-full bg-rose-50 text-[#C0222E] border border-rose-200">
                 {notesCount}
               </span>
             )}
@@ -137,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <NavLink
             to="/practice"
             onClick={onClose}
-            className="w-full py-2 px-3 rounded-xl bg-[#DA434C] hover:bg-[#C93640] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
+            className="w-full py-2 px-3 rounded-xl bg-[#C0222E] hover:bg-[#A61B26] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
           >
             <Award className="w-3.5 h-3.5 text-white" />
             <span>Practice Mode</span>

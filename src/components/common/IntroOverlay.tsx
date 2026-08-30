@@ -96,7 +96,7 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onComplete, onFadeSt
       {phase === 'loading' && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-0 transition-opacity duration-300">
           <img src={logoImg} alt="Learnova" className="w-16 h-16 object-contain animate-pulse mb-3" />
-          <span className="text-xs font-bold tracking-widest text-[#DA434C] uppercase">
+          <span className="text-xs font-bold tracking-widest text-[#C0222E] uppercase">
             Learnova
           </span>
         </div>

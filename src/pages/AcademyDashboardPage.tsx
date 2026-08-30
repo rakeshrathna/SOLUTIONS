@@ -13,10 +13,10 @@ import {
 } from 'lucide-react';
 
 /* ─── Brand color tokens: EDUiDEAL Academy ────────────────── */
-const BRAND = '#DA434C';
-const BRAND_HOVER = '#C93640';
-const BRAND_LIGHT = 'rgba(218, 67, 76, 0.08)';
-const BRAND_BORDER = 'rgba(218, 67, 76, 0.22)';
+const BRAND = '#C0222E';
+const BRAND_HOVER = '#A61B26';
+const BRAND_LIGHT = 'rgba(192, 34, 46, 0.08)';
+const BRAND_BORDER = 'rgba(192, 34, 46, 0.22)';
 
 /* ─── Icon resolver map ───────────────────────────────────── */
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -71,7 +71,7 @@ const SubjectCard: React.FC<{
       onClick={handleClick}
       className={`group relative flex flex-col justify-between rounded-3xl p-7 transition-all duration-300 border ${
         isChemistry
-          ? 'bg-white border-emerald-300 shadow-md hover:shadow-2xl hover:border-[#DA434C] hover:-translate-y-1.5 cursor-pointer ring-2 ring-emerald-500/20'
+          ? 'bg-white border-emerald-300 shadow-md hover:shadow-2xl hover:border-[#C0222E] hover:-translate-y-1.5 cursor-pointer ring-2 ring-emerald-500/20'
           : 'bg-[#FAFAFA] border-[#E5E5E5] opacity-75 cursor-pointer hover:border-slate-300'
       }`}
       style={{
@@ -115,7 +115,7 @@ const SubjectCard: React.FC<{
         {/* Title */}
         <h3
           className={`text-2xl font-black mb-3 tracking-tight ${
-            isChemistry ? 'text-black group-hover:text-[#DA434C] transition-colors' : 'text-[#555555]'
+            isChemistry ? 'text-black group-hover:text-[#C0222E] transition-colors' : 'text-[#555555]'
           }`}
         >
           {subject.name}
@@ -242,7 +242,7 @@ export const AcademyDashboardPage: React.FC = () => {
               onClick={scrollToSubjects}
               className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-black bg-[#FAFAFA] hover:bg-slate-100 border border-[#E5E5E5] transition-all cursor-pointer"
             >
-              <Play className="w-3.5 h-3.5 text-[#DA434C] fill-[#DA434C]" />
+              <Play className="w-3.5 h-3.5 text-[#C0222E] fill-[#C0222E]" />
               <span>Try Demo</span>
             </button>
 
@@ -314,7 +314,7 @@ export const AcademyDashboardPage: React.FC = () => {
                   onClick={scrollToSubjects}
                   className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-black bg-[#FAFAFA] hover:bg-slate-100 border border-[#E5E5E5] transition-all cursor-pointer"
                 >
-                  <Play className="w-4 h-4 text-[#DA434C] fill-[#DA434C]" />
+                  <Play className="w-4 h-4 text-[#C0222E] fill-[#C0222E]" />
                   <span>Try Demo</span>
                 </button>
               </div>
@@ -377,7 +377,7 @@ export const AcademyDashboardPage: React.FC = () => {
               Choose Your Subject
             </h2>
             <p className="text-base text-[#555555]">
-              Select a subject below to access chapter-wise interactive learning modules. <strong className="text-[#DA434C]">Chemistry</strong> is unlocked for public demo access!
+              Select a subject below to access chapter-wise interactive learning modules. <strong className="text-[#C0222E]">Chemistry</strong> is unlocked for public demo access!
             </p>
           </div>
 
@@ -482,7 +482,7 @@ export const AcademyDashboardPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {branches.map((b) => (
                   <div key={b.city} className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                    <p className="text-xs font-bold text-[#DA434C] uppercase tracking-wide font-mono">{b.city}</p>
+                    <p className="text-xs font-bold text-[#C0222E] uppercase tracking-wide font-mono">{b.city}</p>
                     <p className="text-xs text-slate-300 font-medium">{b.address}</p>
                     <p className="text-xs text-slate-400 font-mono flex items-center gap-1 pt-1">
                       <Phone className="w-3 h-3 text-slate-500" />
@@ -497,9 +497,9 @@ export const AcademyDashboardPage: React.FC = () => {
           <div className="pt-8 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono">
             <div>© 2026 Learnova — The Digitalized Learning World. All rights reserved.</div>
             <div className="flex items-center gap-4">
-              <Link to="/login" className="hover:text-[#DA434C] transition-colors">Portal Login</Link>
+              <Link to="/login" className="hover:text-[#C0222E] transition-colors">Portal Login</Link>
               <span>•</span>
-              <a href="#subjects" className="hover:text-[#DA434C] transition-colors">Class 12 CBSE</a>
+              <a href="#subjects" className="hover:text-[#C0222E] transition-colors">Class 12 CBSE</a>
             </div>
           </div>
         </div>

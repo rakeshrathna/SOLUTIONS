@@ -43,10 +43,10 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-sm tracking-tight text-black group-hover:text-[#DA434C] transition-colors">
+                <span className="font-extrabold text-sm tracking-tight text-black group-hover:text-[#C0222E] transition-colors">
                   Learnova
                 </span>
-                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-rose-50 text-[#DA434C] border border-rose-200">
+                <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-rose-50 text-[#C0222E] border border-rose-200">
                   CHEMISTRY 12
                 </span>
               </div>
@@ -64,14 +64,14 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
                 to={link.to}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-white text-[#DA434C] font-semibold shadow-sm border border-[#E5E5E5]'
+                    ? 'bg-white text-[#C0222E] font-semibold shadow-sm border border-[#E5E5E5]'
                     : 'text-[#555555] hover:text-black hover:bg-white/60 border border-transparent'
                 }`}
               >
                 {link.icon}
                 <span>{link.label}</span>
                 {link.count !== undefined && link.count > 0 && (
-                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-rose-100 text-[#DA434C]">
+                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-rose-100 text-[#C0222E]">
                     {link.count}
                   </span>
                 )}
@@ -84,11 +84,11 @@ export const Header: React.FC<HeaderProps> = ({ isSidebarOpen = true, onToggleSi
         <div className="flex items-center gap-3">
           <Link
             to="/progress"
-            className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E5E5E5] hover:border-[#DA434C] transition-all text-xs"
+            className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-[#E5E5E5] hover:border-[#C0222E] transition-all text-xs"
           >
             <span className="text-[11px] text-[#555555] font-mono">Mastery</span>
-            <span className="font-bold text-[#DA434C] font-mono">{progressPct}%</span>
-            <div className="w-5 h-5 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-[#DA434C] font-mono text-[10px] font-bold">
+            <span className="font-bold text-[#C0222E] font-mono">{progressPct}%</span>
+            <div className="w-5 h-5 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-[#C0222E] font-mono text-[10px] font-bold">
               ✓
             </div>
           </Link>

@@ -71,7 +71,7 @@ export const SimulationWidget: React.FC<SimulationWidgetProps> = ({ config }) =>
         vx: (Math.random() - 0.5) * 1.5,
         vy: (Math.random() - 0.5) * 1.5,
         radius: 4.5,
-        color: '#DA434C',
+        color: '#C0222E',
         type: 'solvent'
       });
     }
@@ -97,7 +97,7 @@ export const SimulationWidget: React.FC<SimulationWidgetProps> = ({ config }) =>
       ctx.fillStyle = '#F8FAFC';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.strokeStyle = '#DA434C';
+      ctx.strokeStyle = '#C0222E';
       ctx.lineWidth = 2;
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
@@ -174,9 +174,9 @@ export const SimulationWidget: React.FC<SimulationWidgetProps> = ({ config }) =>
 
       // Left chamber
       const leftLevel = 70 + heightShift;
-      ctx.fillStyle = 'rgba(218, 67, 76, 0.12)';
+      ctx.fillStyle = 'rgba(192, 34, 46, 0.12)';
       ctx.fillRect(20, leftLevel, midX - 30, height - leftLevel - 20);
-      ctx.strokeStyle = '#DA434C';
+      ctx.strokeStyle = '#C0222E';
       ctx.lineWidth = 1.5;
       ctx.strokeRect(20, leftLevel, midX - 30, height - leftLevel - 20);
 
@@ -189,7 +189,7 @@ export const SimulationWidget: React.FC<SimulationWidgetProps> = ({ config }) =>
       ctx.strokeRect(midX + 10, rightLevel, midX - 30, height - rightLevel - 20);
 
       // Semipermeable membrane
-      ctx.strokeStyle = '#DA434C';
+      ctx.strokeStyle = '#C0222E';
       ctx.lineWidth = 3;
       ctx.setLineDash([5, 4]);
       ctx.beginPath();
@@ -198,7 +198,7 @@ export const SimulationWidget: React.FC<SimulationWidgetProps> = ({ config }) =>
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = '#DA434C';
+      ctx.fillStyle = '#C0222E';
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'center';
       ctx.fillText('SPM (Semipermeable Membrane)', midX, 28);
@@ -207,7 +207,7 @@ export const SimulationWidget: React.FC<SimulationWidgetProps> = ({ config }) =>
         const arrowDir = netPressure > 0 ? 1 : -1;
         const pulse = (Math.sin(frameCount * 0.1) + 1) * 3;
 
-        ctx.fillStyle = netPressure > 0 ? '#DA434C' : '#059669';
+        ctx.fillStyle = netPressure > 0 ? '#C0222E' : '#059669';
         ctx.font = 'bold 16px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(arrowDir > 0 ? '➔ ➔ ➔' : '⬅ ⬅ ⬅', midX + (arrowDir * (12 + pulse)), height / 2);

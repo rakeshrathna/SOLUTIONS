@@ -47,7 +47,7 @@ export const LessonPage: React.FC = () => {
       <div className="flex items-center justify-between gap-4">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs text-[#555555] hover:text-[#DA434C] transition-colors font-medium cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs text-[#555555] hover:text-[#C0222E] transition-colors font-medium cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
           <span>Back to Chapter Directory</span>
@@ -82,7 +82,7 @@ export const LessonPage: React.FC = () => {
       {/* Lesson Header Banner */}
       <div className="w-full rounded-2xl border border-[#E5E5E5] bg-white p-6 sm:p-8 shadow-card space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded bg-rose-50 text-[#DA434C] border border-rose-200 uppercase tracking-wider">
+          <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded bg-rose-50 text-[#C0222E] border border-rose-200 uppercase tracking-wider">
             Unit {lesson.order} of {chapterData.lessons.length}
           </span>
           <div className="flex items-center gap-3 text-xs font-mono text-[#555555]">

@@ -24,8 +24,8 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   }[size];
 
   const colorGradients = {
-    brand: 'from-[#DA434C] to-rose-400',
-    accent: 'from-[#DA434C] to-red-400',
+    brand: 'from-[#C0222E] to-rose-400',
+    accent: 'from-[#C0222E] to-red-400',
     success: 'from-emerald-600 to-teal-400',
     amber: 'from-amber-600 to-yellow-400'
   }[color];
@@ -35,7 +35,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       {(label || showPercentage) && (
         <div className="flex items-center justify-between text-xs font-medium text-black">
           {label && <span>{label}</span>}
-          {showPercentage && <span className="font-mono text-[#DA434C] font-semibold">{clamped}%</span>}
+          {showPercentage && <span className="font-mono text-[#C0222E] font-semibold">{clamped}%</span>}
         </div>
       )}
       <div className={`w-full bg-slate-200/80 rounded-full overflow-hidden border border-slate-200 ${heightClasses}`}>

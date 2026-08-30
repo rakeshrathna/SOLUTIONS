@@ -62,14 +62,14 @@ export const SliderInput: React.FC<SliderInputProps> = ({
   const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
 
   return (
-    <div className="flex-1 flex flex-col justify-between gap-3.5 p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#DA434C] transition-all duration-200 shadow-2xs">
+    <div className="flex-1 flex flex-col justify-between gap-3.5 p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#C0222E] transition-all duration-200 shadow-2xs">
       {/* Top Row: Variable Label & Symbol + Editable Typing Input */}
       <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black truncate">
             {label}
           </span>
-          <span className="text-xs sm:text-sm px-2.5 py-0.5 rounded-md bg-white text-[#DA434C] font-mono font-bold border border-rose-200 shadow-2xs shrink-0">
+          <span className="text-xs sm:text-sm px-2.5 py-0.5 rounded-md bg-white text-[#C0222E] font-mono font-bold border border-rose-200 shadow-2xs shrink-0">
             <MathRenderer math={symbol} />
           </span>
         </div>
@@ -84,7 +84,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
               onChange={handleTextChange}
               onBlur={handleBlur}
               aria-label={`Enter ${label} value`}
-              className="w-28 sm:w-32 px-3 py-1.5 text-sm font-bold font-mono text-black bg-white border border-[#E5E5E5] rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-[#DA434C]/20 focus:border-[#DA434C] transition-all text-right"
+              className="w-28 sm:w-32 px-3 py-1.5 text-sm font-bold font-mono text-black bg-white border border-[#E5E5E5] rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-[#C0222E]/20 focus:border-[#C0222E] transition-all text-right"
             />
           </div>
           {unit && (
@@ -102,7 +102,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
         </p>
       )}
 
-      {/* Slider Track Area with EDUiDEAL Red #DA434C */}
+      {/* Slider Track Area with EDUiDEAL Red #C0222E */}
       <div className="space-y-2 pt-0.5">
         <div className="relative flex items-center py-1">
           <input
@@ -114,7 +114,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
             onChange={handleSliderChange}
             className="w-full h-2 rounded-lg appearance-none cursor-pointer"
             style={{
-              background: `linear-gradient(to right, #DA434C 0%, #DA434C ${percentage}%, #E5E5E5 ${percentage}%, #E5E5E5 100%)`
+              background: `linear-gradient(to right, #C0222E 0%, #C0222E ${percentage}%, #E5E5E5 ${percentage}%, #E5E5E5 100%)`
             }}
           />
         </div>
@@ -124,7 +124,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
           <button
             type="button"
             onClick={() => { setStrVal(String(min)); onChange(min); }}
-            className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5] hover:border-[#DA434C] hover:text-[#DA434C] transition-all cursor-pointer shadow-2xs text-[11px]"
+            className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5] hover:border-[#C0222E] hover:text-[#C0222E] transition-all cursor-pointer shadow-2xs text-[11px]"
             title="Set to minimum"
           >
             Min: <span className="font-semibold text-black">{min}</span> {unit}
@@ -133,7 +133,7 @@ export const SliderInput: React.FC<SliderInputProps> = ({
           <button
             type="button"
             onClick={() => { setStrVal(String(max)); onChange(max); }}
-            className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5] hover:border-[#DA434C] hover:text-[#DA434C] transition-all cursor-pointer shadow-2xs text-[11px]"
+            className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5] hover:border-[#C0222E] hover:text-[#C0222E] transition-all cursor-pointer shadow-2xs text-[11px]"
             title="Set to maximum"
           >
             Max: <span className="font-semibold text-black">{max}</span> {unit}

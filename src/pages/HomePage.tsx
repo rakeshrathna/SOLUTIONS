@@ -29,10 +29,10 @@ export const HomePage: React.FC = () => {
       <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 shadow-card">
         <div className="relative z-10 w-full space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-rose-50 text-[#DA434C] border border-rose-200">
+            <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-rose-50 text-[#C0222E] border border-rose-200">
               EDUiDEAL Academy
             </span>
-            <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-rose-50 text-[#DA434C] border border-rose-200">
+            <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-rose-50 text-[#C0222E] border border-rose-200">
               {chapterData.class}
             </span>
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded bg-[#FAFAFA] text-[#555555] border border-[#E5E5E5]">
@@ -44,7 +44,7 @@ export const HomePage: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-black tracking-tight">
-            Chapter 1: <span className="text-[#DA434C]">Solutions</span>
+            Chapter 1: <span className="text-[#C0222E]">Solutions</span>
           </h1>
 
           <p className="text-sm text-[#555555] leading-relaxed max-w-4xl">
@@ -59,11 +59,11 @@ export const HomePage: React.FC = () => {
             </div>
             <div className="p-3.5 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5]">
               <span className="text-[11px] text-[#555555] font-medium uppercase tracking-wider">Particle Labs</span>
-              <div className="text-base sm:text-lg font-bold text-[#DA434C] font-mono mt-0.5">3 Interactive</div>
+              <div className="text-base sm:text-lg font-bold text-[#C0222E] font-mono mt-0.5">3 Interactive</div>
             </div>
             <div className="p-3.5 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5]">
               <span className="text-[11px] text-[#555555] font-medium uppercase tracking-wider">Visual Curves</span>
-              <div className="text-base sm:text-lg font-bold text-[#DA434C] font-mono mt-0.5">8 Interactive</div>
+              <div className="text-base sm:text-lg font-bold text-[#C0222E] font-mono mt-0.5">8 Interactive</div>
             </div>
             <div className="p-3.5 rounded-xl bg-[#FAFAFA] border border-[#E5E5E5]">
               <span className="text-[11px] text-[#555555] font-medium uppercase tracking-wider">Exam Bank</span>
@@ -99,10 +99,10 @@ export const HomePage: React.FC = () => {
           <div className="space-y-1.5 w-full sm:w-1/2">
             <div className="flex items-center justify-between text-xs font-semibold text-[#555555]">
               <span className="flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5 text-[#DA434C]" />
+                <Flame className="w-3.5 h-3.5 text-[#C0222E]" />
                 <span>Chapter Mastery Progress</span>
               </span>
-              <span className="font-mono text-[#DA434C] font-bold">{chapterPct}%</span>
+              <span className="font-mono text-[#C0222E] font-bold">{chapterPct}%</span>
             </div>
             <ProgressBar value={chapterPct} size="md" color="brand" showPercentage={false} />
             <p className="text-[11px] text-[#777777]">
@@ -153,11 +153,11 @@ export const HomePage: React.FC = () => {
                 to={`/lesson/${lesson.id}`}
                 className="group block"
               >
-                <div className="h-full flex flex-col justify-between p-5 rounded-2xl border border-[#E5E5E5] bg-white shadow-card hover:border-[#DA434C] hover:shadow-card-hover transition-all duration-150">
+                <div className="h-full flex flex-col justify-between p-5 rounded-2xl border border-[#E5E5E5] bg-white shadow-card hover:border-[#C0222E] hover:shadow-card-hover transition-all duration-150">
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-md bg-[#FAFAFA] border border-[#E5E5E5] text-[#DA434C] font-mono font-bold text-xs flex items-center justify-center">
+                        <span className="w-6 h-6 rounded-md bg-[#FAFAFA] border border-[#E5E5E5] text-[#C0222E] font-mono font-bold text-xs flex items-center justify-center">
                           {lesson.order}
                         </span>
                         <span className="text-xs font-mono text-[#777777] flex items-center gap-1">
@@ -177,7 +177,7 @@ export const HomePage: React.FC = () => {
                       )}
                     </div>
 
-                    <h3 className="text-base font-semibold text-black group-hover:text-[#DA434C] transition-colors leading-snug">
+                    <h3 className="text-base font-semibold text-black group-hover:text-[#C0222E] transition-colors leading-snug">
                       {lesson.title}
                     </h3>
 
@@ -189,7 +189,7 @@ export const HomePage: React.FC = () => {
                   <div className="pt-3 mt-3 border-t border-[#E5E5E5] space-y-1.5">
                     <div className="flex items-center justify-between text-[10px] font-mono text-[#777777]">
                       <span>Progress</span>
-                      <span className="font-semibold text-[#DA434C]">{pct}%</span>
+                      <span className="font-semibold text-[#C0222E]">{pct}%</span>
                     </div>
                     <ProgressBar value={pct} size="sm" showPercentage={false} />
                   </div>

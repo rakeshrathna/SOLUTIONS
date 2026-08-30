@@ -23,8 +23,8 @@ export const GlassCard: React.FC<GlassCardProps> = ({
 
   const variantClasses = {
     default: 'rounded-2xl border border-[#E5E5E5] bg-white shadow-card',
-    interactive: 'rounded-2xl border border-[#E5E5E5] bg-white shadow-card hover:border-[#DA434C] hover:shadow-card-hover transition-all duration-200 cursor-pointer',
-    accent: 'rounded-2xl border border-[#DA434C]/30 bg-white shadow-glow',
+    interactive: 'rounded-2xl border border-[#E5E5E5] bg-white shadow-card hover:border-[#C0222E] hover:shadow-card-hover transition-all duration-200 cursor-pointer',
+    accent: 'rounded-2xl border border-[#C0222E]/30 bg-white shadow-glow',
     subtle: 'rounded-2xl border border-[#E5E5E5] bg-[#FAFAFA] backdrop-blur-md'
   }[variant];
 

@@ -4,8 +4,8 @@ import { useAuthStore } from '../stores/authStore';
 import { Lock, Key, ShieldCheck, UserCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 import eduidealLogo from '../assets/eduideal-logo.png';
 
-const BRAND = '#DA434C';
-const BRAND_HOVER = '#C93640';
+const BRAND = '#C0222E';
+const BRAND_HOVER = '#A61B26';
 
 export const LoginPage: React.FC = () => {
   const [registerNumber, setRegisterNumber] = useState('');
@@ -34,7 +34,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#DA434C] selection:text-white font-sans antialiased">
+    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#C0222E] selection:text-white font-sans antialiased">
       {/* ── STICKY WHITE HEADER (Matches Main Dashboard) ────────────────── */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -95,7 +95,7 @@ export const LoginPage: React.FC = () => {
                   placeholder="e.g. 212224040265 or 00000001"
                   value={registerNumber}
                   onChange={(e) => setRegisterNumber(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#DA434C] focus:ring-2 focus:ring-[#DA434C]/20 transition-all font-mono text-sm shadow-xs"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#C0222E] focus:ring-2 focus:ring-[#C0222E]/20 transition-all font-mono text-sm shadow-xs"
                 />
                 <UserCheck className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
               </div>
@@ -112,7 +112,7 @@ export const LoginPage: React.FC = () => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#DA434C] focus:ring-2 focus:ring-[#DA434C]/20 transition-all text-sm shadow-xs"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#C0222E] focus:ring-2 focus:ring-[#C0222E]/20 transition-all text-sm shadow-xs"
                 />
                 <Key className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
               </div>
@@ -144,9 +144,9 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               onClick={handleAdminDemoFill}
-              className="w-full py-2.5 px-3 rounded-xl bg-rose-50/60 hover:bg-rose-100/80 border border-rose-200 text-[#DA434C] text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+              className="w-full py-2.5 px-3 rounded-xl bg-rose-50/60 hover:bg-rose-100/80 border border-rose-200 text-[#C0222E] text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
             >
-              <ShieldCheck className="w-4 h-4 text-[#DA434C]" />
+              <ShieldCheck className="w-4 h-4 text-[#C0222E]" />
               <span>Fill Admin: 212224040265 / htna2006</span>
             </button>
           </div>

@@ -4,8 +4,8 @@ import { useAuthStore, StudentAdminItem, UserInfo } from '../stores/authStore';
 import { UserPlus, LogOut, CheckCircle2, Users, Sparkles, AlertCircle } from 'lucide-react';
 import eduidealLogo from '../assets/eduideal-logo.png';
 
-const BRAND = '#DA434C';
-const BRAND_HOVER = '#C93640';
+const BRAND = '#C0222E';
+const BRAND_HOVER = '#A61B26';
 
 const getEffectiveUser = (storeUser: UserInfo | null): UserInfo | null => {
   if (storeUser) return storeUser;
@@ -96,7 +96,7 @@ export const AdminDashboardPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
         <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#DA434C] border border-rose-200 flex items-center justify-center mx-auto text-xl">
+          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#C0222E] border border-rose-200 flex items-center justify-center mx-auto text-xl">
             🔒
           </div>
           <h2 className="text-xl font-black text-black">Admin Authorization Required</h2>
@@ -118,7 +118,7 @@ export const AdminDashboardPage: React.FC = () => {
   const safeStudents = Array.isArray(students) ? students : [];
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans antialiased selection:bg-[#DA434C] selection:text-white">
+    <div className="min-h-screen bg-white text-black font-sans antialiased selection:bg-[#C0222E] selection:text-white">
       {/* ── STICKY WHITE HEADER ────────────────────────────────────────── */}
       <header className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -127,7 +127,7 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="hidden sm:block">
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-sm text-black">Learnova Admin</span>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-rose-50 text-[#DA434C] border border-rose-200">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-rose-50 text-[#C0222E] border border-rose-200">
                   ADMINISTRATION
                 </span>
               </div>
@@ -142,7 +142,7 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-[#DA434C] text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-[#C0222E] text-xs font-bold transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Sign Out</span>
@@ -156,7 +156,7 @@ export const AdminDashboardPage: React.FC = () => {
         {/* Banner Section */}
         <div
           className="p-8 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-          style={{ background: BRAND, boxShadow: '0 10px 25px -3px rgba(218, 67, 76, 0.25)' }}
+          style={{ background: BRAND, boxShadow: '0 10px 25px -3px rgba(192, 34, 46, 0.25)' }}
         >
           <div className="space-y-2 z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-mono font-semibold border border-white/20">
@@ -176,9 +176,9 @@ export const AdminDashboardPage: React.FC = () => {
               setIsModalOpen(true);
               setCreatedResult(null);
             }}
-            className="z-10 px-6 py-3.5 rounded-2xl bg-white text-[#DA434C] hover:bg-rose-50 font-extrabold text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 shrink-0 group cursor-pointer"
+            className="z-10 px-6 py-3.5 rounded-2xl bg-white text-[#C0222E] hover:bg-rose-50 font-extrabold text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 shrink-0 group cursor-pointer"
           >
-            <UserPlus className="w-5 h-5 text-[#DA434C] group-hover:scale-110 transition-transform" />
+            <UserPlus className="w-5 h-5 text-[#C0222E] group-hover:scale-110 transition-transform" />
             <span>+ Add Student</span>
           </button>
         </div>
@@ -193,7 +193,7 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-2xl bg-white border border-emerald-200 shadow-xs">
               <div>
                 <p className="text-xs text-[#555555] font-mono">Register Number</p>
-                <p className="text-xl font-extrabold text-[#DA434C] font-mono">{createdResult.registerNumber}</p>
+                <p className="text-xl font-extrabold text-[#C0222E] font-mono">{createdResult.registerNumber}</p>
               </div>
               <div>
                 <p className="text-xs text-[#555555] font-mono">Temporary Password</p>
@@ -207,7 +207,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <p className="text-xs text-[#555555] font-mono">Enrolled Subjects</p>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {(createdResult.enrolledSubjects || []).map((sub) => (
-                    <span key={sub} className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-50 text-[#DA434C] font-bold border border-rose-200">
+                    <span key={sub} className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-50 text-[#C0222E] font-bold border border-rose-200">
                       {sub}
                     </span>
                   ))}
@@ -225,7 +225,7 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="bg-white border border-[#E5E5E5] rounded-3xl p-6 shadow-md space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-[#DA434C]" />
+              <Users className="w-5 h-5 text-[#C0222E]" />
               <h2 className="text-lg font-extrabold text-black">Registered Students ({safeStudents.length})</h2>
             </div>
           </div>
@@ -253,7 +253,7 @@ export const AdminDashboardPage: React.FC = () => {
                     const enrolled = Array.isArray(st.enrolledSubjects) ? st.enrolledSubjects : [];
                     return (
                       <tr key={st.registerNumber || st.studentId} className="hover:bg-slate-50 transition-colors">
-                        <td className="py-4 px-4 font-mono font-extrabold text-[#DA434C]">{st.registerNumber}</td>
+                        <td className="py-4 px-4 font-mono font-extrabold text-[#C0222E]">{st.registerNumber}</td>
                         <td className="py-4 px-4 font-bold text-black">{st.studentName}</td>
                         <td className="py-4 px-4 text-[#555555] font-medium">{st.className} ({st.board})</td>
                         <td className="py-4 px-4">
@@ -269,7 +269,7 @@ export const AdminDashboardPage: React.FC = () => {
                             )}
 
                             {enrolled.includes('PHYSICS') ? (
-                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-rose-50 text-[#DA434C] border border-rose-200">
+                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-rose-50 text-[#C0222E] border border-rose-200">
                                 Physics ✓
                               </span>
                             ) : (
@@ -279,7 +279,7 @@ export const AdminDashboardPage: React.FC = () => {
                             )}
 
                             {enrolled.includes('MATHEMATICS') ? (
-                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-rose-50 text-[#DA434C] border border-rose-200">
+                              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-rose-50 text-[#C0222E] border border-rose-200">
                                 Mathematics ✓
                               </span>
                             ) : (
@@ -310,7 +310,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 max-w-lg w-full shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-[#E5E5E5] pb-4">
               <div className="flex items-center gap-2.5">
-                <UserPlus className="w-6 h-6 text-[#DA434C]" />
+                <UserPlus className="w-6 h-6 text-[#C0222E]" />
                 <h2 className="text-xl font-extrabold text-black">Add New Student</h2>
               </div>
               <button
@@ -339,7 +339,7 @@ export const AdminDashboardPage: React.FC = () => {
                   placeholder="e.g. Rahul Kumar"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#DA434C] focus:ring-2 focus:ring-[#DA434C]/20 text-sm shadow-xs"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] text-black placeholder-[#777777] focus:outline-none focus:border-[#C0222E] focus:ring-2 focus:ring-[#C0222E]/20 text-sm shadow-xs"
                 />
               </div>
 
@@ -379,7 +379,7 @@ export const AdminDashboardPage: React.FC = () => {
                       type="checkbox"
                       checked={selectedSubjects.includes('CHEMISTRY')}
                       onChange={() => handleToggleSubject('CHEMISTRY')}
-                      className="w-5 h-5 rounded accent-[#DA434C] cursor-pointer"
+                      className="w-5 h-5 rounded accent-[#C0222E] cursor-pointer"
                     />
                   </label>
 
@@ -389,7 +389,7 @@ export const AdminDashboardPage: React.FC = () => {
                       type="checkbox"
                       checked={selectedSubjects.includes('PHYSICS')}
                       onChange={() => handleToggleSubject('PHYSICS')}
-                      className="w-5 h-5 rounded accent-[#DA434C] cursor-pointer"
+                      className="w-5 h-5 rounded accent-[#C0222E] cursor-pointer"
                     />
                   </label>
 
@@ -399,7 +399,7 @@ export const AdminDashboardPage: React.FC = () => {
                       type="checkbox"
                       checked={selectedSubjects.includes('MATHEMATICS')}
                       onChange={() => handleToggleSubject('MATHEMATICS')}
-                      className="w-5 h-5 rounded accent-[#DA434C] cursor-pointer"
+                      className="w-5 h-5 rounded accent-[#C0222E] cursor-pointer"
                     />
                   </label>
                 </div>

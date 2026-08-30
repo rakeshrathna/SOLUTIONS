@@ -39,7 +39,7 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
   };
 
   const chartOption = useMemo(() => {
-    const defaultColors = ['#DA434C', '#C93640', '#E11D48', '#059669', '#D97706'];
+    const defaultColors = ['#C0222E', '#A61B26', '#E11D48', '#059669', '#D97706'];
 
     // Dynamic active point based on X-axis slider control
     const activeX = controlValues.x_slider ?? controlValues.x2_slider ?? controlValues.T_slider ?? controlValues.m_slider;
@@ -87,11 +87,11 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
         symbol: 'circle',
         symbolSize: 13,
         itemStyle: {
-          color: '#DA434C',
+          color: '#C0222E',
           borderColor: '#ffffff',
           borderWidth: 2.5,
           shadowBlur: 5,
-          shadowColor: 'rgba(218, 67, 76, 0.4)'
+          shadowColor: 'rgba(192, 34, 46, 0.4)'
         },
         label: {
           show: true,
@@ -162,7 +162,7 @@ export const GraphWidget: React.FC<GraphWidgetProps> = ({ config }) => {
         extraCssText: 'box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1); border-radius: 8px; padding: 10px;',
         axisPointer: {
           type: 'cross',
-          lineStyle: { color: 'rgba(218, 67, 76, 0.4)', type: 'dashed' }
+          lineStyle: { color: 'rgba(192, 34, 46, 0.4)', type: 'dashed' }
         },
         formatter: (params: any) => {
           if (!params || !params.length) return '';

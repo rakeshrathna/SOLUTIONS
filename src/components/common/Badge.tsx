@@ -21,8 +21,8 @@ export const Badge: React.FC<BadgeProps> = ({
   }[size];
 
   const variantClasses: Record<string, string> = {
-    brand: 'bg-rose-50 text-[#DA434C] border-rose-200',
-    accent: 'bg-rose-50 text-[#DA434C] border-rose-200',
+    brand: 'bg-rose-50 text-[#C0222E] border-rose-200',
+    accent: 'bg-rose-50 text-[#C0222E] border-rose-200',
     success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     warning: 'bg-amber-50 text-amber-700 border-amber-200',
     danger: 'bg-rose-50 text-rose-700 border-rose-200',
@@ -31,7 +31,7 @@ export const Badge: React.FC<BadgeProps> = ({
     INTERMEDIATE: 'bg-amber-50 text-amber-700 border-amber-200',
     ADVANCED: 'bg-rose-50 text-rose-700 border-rose-200',
     HARD: 'bg-rose-50 text-rose-700 border-rose-200',
-    BOARD: 'bg-rose-50 text-[#DA434C] border-rose-200'
+    BOARD: 'bg-rose-50 text-[#C0222E] border-rose-200'
   };
 
   return (
