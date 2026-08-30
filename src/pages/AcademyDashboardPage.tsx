@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
 import studentsImg from '../assets/hero-students.png';
 import { subjectsData, Subject } from '../data/curriculumData';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../stores/authStore';
 import {
   FlaskConical, Zap, Calculator, TrendingUp, Lock,
   StickyNote, CheckSquare, Phone, ArrowRight, GraduationCap,
@@ -167,7 +167,7 @@ const SubjectCard: React.FC<{
 /* ─── Main Dashboard Page ─────────────────────────────────── */
 export const AcademyDashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, role } = useAuth();
+  const { user } = useAuthStore();
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const showToast = (subjName: string) => {
@@ -183,9 +183,9 @@ export const AcademyDashboardPage: React.FC = () => {
   };
 
   const handlePortalClick = () => {
-    if (!isAuthenticated) {
+    if (!user) {
       navigate('/login');
-    } else if (role === 'ADMIN') {
+    } else if (user.role === 'ADMIN') {
       navigate('/admin/dashboard');
     } else {
       navigate('/student/dashboard');
@@ -264,7 +264,7 @@ export const AcademyDashboardPage: React.FC = () => {
               }}
             >
               <LogIn className="w-4 h-4" />
-              <span>{isAuthenticated ? (role === 'ADMIN' ? 'Admin Portal' : 'My Dashboard') : 'Sign In Portal'}</span>
+              <span>{user ? (user.role === 'ADMIN' ? 'Admin Portal' : 'My Dashboard') : 'Sign In Portal'}</span>
             </button>
           </div>
         </div>
