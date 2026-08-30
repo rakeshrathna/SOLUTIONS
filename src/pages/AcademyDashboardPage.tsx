@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import logoImg from '../assets/logo.png';
+import eduidealLogo from '../assets/eduideal-logo.png';
 import studentsImg from '../assets/hero-students.png';
 import { subjectsData, Subject } from '../data/curriculumData';
 import { useAuthStore } from '../stores/authStore';
@@ -212,24 +213,13 @@ export const AcademyDashboardPage: React.FC = () => {
       {/* Sticky Header / Navigation */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          {/* Logo & Brand */}
-          <a href="#" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center p-1 shadow-xs group-hover:scale-105 transition-transform overflow-hidden">
-              <img src={logoImg} alt="EDUiDEAL Academy" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black text-lg tracking-tight text-slate-900 group-hover:text-[#15009A] transition-colors">
-                  Learnova
-                </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  CBSE 12
-                </span>
-              </div>
-              <div className="text-[10px] text-slate-500 font-medium tracking-wide">
-                EDUiDEAL ACADEMY
-              </div>
-            </div>
+          {/* Logo & Brand: EDUiDEAL Academy */}
+          <a href="#" className="flex items-center transition-opacity hover:opacity-90 py-1" aria-label="EDUiDEAL Academy">
+            <img
+              src={eduidealLogo}
+              alt="EDUiDEAL Academy"
+              className="h-8 sm:h-9 md:h-10 w-auto object-contain block"
+            />
           </a>
 
           {/* Center Navigation Links */}
@@ -245,7 +235,7 @@ export const AcademyDashboardPage: React.FC = () => {
             ))}
           </nav>
 
-          {/* Right Header Buttons: Try Demo (Scrolls to Subjects) + Sign In Portal */}
+          {/* Right Header Buttons: Try Demo (Scrolls to Subjects) + Login */}
           <div className="flex items-center gap-3">
             <button
               onClick={scrollToSubjects}
@@ -264,7 +254,7 @@ export const AcademyDashboardPage: React.FC = () => {
               }}
             >
               <LogIn className="w-4 h-4" />
-              <span>{user ? (user.role === 'ADMIN' ? 'Admin Portal' : 'My Dashboard') : 'Sign In Portal'}</span>
+              <span>Login</span>
             </button>
           </div>
         </div>
